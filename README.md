@@ -6,7 +6,7 @@ The main goal is to create an online portal where customers can seek for or prov
 
 The current and main focus is on activities practiced online e.g.: yoga instructor offering online yoga classes.
 
-The service keeps records of customer and their:
+The service keeps records of customers and their:
 
 - Necessary personal details.
 - Services they provide / consume.
