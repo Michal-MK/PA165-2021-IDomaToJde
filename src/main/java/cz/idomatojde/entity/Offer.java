@@ -3,6 +3,7 @@ package cz.idomatojde.entity;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 
@@ -30,11 +31,11 @@ public class Offer {
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
     @NotNull
     @Temporal(TemporalType.DATE)
-    private LocalDateTime expirationDate;
+    private Date expirationDate;
 
     @OneToMany
     private TimetableEntry event;
