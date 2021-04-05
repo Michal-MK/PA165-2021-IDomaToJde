@@ -47,7 +47,11 @@ public class User {
 
     @NotNull
     private boolean wantsAdvertisment;
-
+/*
+    //we have to discuss this
+    @OneToMany
+    private Rating rating;
+*/
     public Long getUserid() {
         return userid;
     }
