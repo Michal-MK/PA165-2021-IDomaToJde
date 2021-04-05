@@ -1,7 +1,14 @@
 package cz.idomatojde.entity;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.persistence.GenerationType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.sql.Date;
 
