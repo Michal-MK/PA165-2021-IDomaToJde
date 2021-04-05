@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 
 /*
@@ -44,7 +45,7 @@ public class Offer {
     private LocalDate expirationDate;
 
     @OneToMany
-    private TimetableEntry event;
+    private List<TimetableEntry> events;
 
     private Category category;
 
@@ -86,11 +87,11 @@ public class Offer {
         this.description = description;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -110,12 +111,12 @@ public class Offer {
         this.expirationDate = expirationDate;
     }
 
-    public TimetableEntry getEvent() {
-        return event;
+    public List<TimetableEntry> getEvents() {
+        return events;
     }
 
-    public void setEvent(TimetableEntry event) {
-        this.event = event;
+    public void setEvents(List<TimetableEntry> events) {
+        this.events = events;
     }
 
     public Category getCategory() {
