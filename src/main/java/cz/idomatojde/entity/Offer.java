@@ -2,6 +2,7 @@ package cz.idomatojde.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
@@ -26,7 +27,7 @@ public class Offer {
     @NotNull
     private String description;
 
-    private double price;
+    private BigDecimal price;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
