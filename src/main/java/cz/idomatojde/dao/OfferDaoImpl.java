@@ -2,6 +2,7 @@ package cz.idomatojde.dao;
 
 import cz.idomatojde.entity.Offer;
 import org.springframework.stereotype.Repository;
+import cz.idomatojde.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
