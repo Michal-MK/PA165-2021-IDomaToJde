@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.List;
 
 /*
@@ -51,8 +52,9 @@ public class OfferDaoImpl implements OfferDao {
     public List<Offer> getActiveOffers() {
         return em
                 .createQuery(
-                        "SELECT o FROM Offer o WHERE o.expirationDate >= CURRENT_DATE",
+                        "SELECT o FROM Offer o WHERE o.expirationDate >= :today",
                         Offer.class)
+                .setParameter("today", LocalDate.now())
                 .getResultList();
     }
 }
