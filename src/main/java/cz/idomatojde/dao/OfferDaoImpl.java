@@ -5,9 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
-import java.sql.Date;
 
 /*
 Created by Jiri Vrbka
@@ -33,8 +31,9 @@ public class OfferDaoImpl implements OfferDao {
     @Override
     public List<Offer> findByUser(User u) {
         return em.createQuery(
-                "Select o from Offer o where o.owner = '" + u + "'",
+                "Select o from Offer o where o.owner = :userid",
                 Offer.class)
+                .setParameter("userid", u)
                 .getResultList();
     }
 
