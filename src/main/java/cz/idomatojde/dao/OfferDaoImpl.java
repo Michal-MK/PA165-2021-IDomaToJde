@@ -25,19 +25,17 @@ public class OfferDaoImpl implements OfferDao {
 
     @Override
     public List<Offer> findAll() {
-        TypedQuery<Offer> query = em.createQuery("SELECT o FROM Offer o",
-                Offer.class);
-        return query.getResultList();
+        return em.createQuery("SELECT o FROM Offer o",
+                Offer.class)
+                .getResultList();
     }
 
     @Override
     public List<Offer> findByUser(User u) {
-        TypedQuery<Offer> query = em.createQuery(
-                "Select o from Offer o where o.owner = :userid",
-                Offer.class);
-
-        query.setParameter("userid", u);
-        return query.getResultList();
+        return em.createQuery(
+                "Select o from Offer o where o.owner = '" + u + "'",
+                Offer.class)
+                .getResultList();
     }
 
     @Override
@@ -52,11 +50,10 @@ public class OfferDaoImpl implements OfferDao {
 
     @Override
     public List<Offer> getActiveOffers() {
-
-        TypedQuery<Offer> query = em
+        return em
                 .createQuery(
                         "SELECT o FROM Offer o WHERE o.expirationDate >= CURRENT_DATE",
-                        Offer.class);
-        return query.getResultList();
+                        Offer.class)
+                .getResultList();
     }
 }

@@ -1,8 +1,7 @@
 package cz.idomatojde.entity;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
@@ -14,7 +13,7 @@ Created by Jiri Vrbka
 public class Offer {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -27,7 +26,7 @@ public class Offer {
     @NotNull
     private String description;
 
-    private int price;
+    private double price;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -88,19 +87,19 @@ public class Offer {
         this.price = price;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getExpirationDate() {
+    public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDateTime expirationDate) {
+    public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
 
