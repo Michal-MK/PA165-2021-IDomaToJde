@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/** DAO implementation for Timetable chat messages
+ * @author Michal Hazdra
+ */
 @Repository
 public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> implements ChatMessagesDAO {
 
