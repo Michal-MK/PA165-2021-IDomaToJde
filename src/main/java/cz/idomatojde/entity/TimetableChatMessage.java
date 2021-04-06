@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.util.Objects;
 
+/** Entity for holding messages posted on timetable entries
+ * @author Michal Hazdra
+ */
 @Entity
 public class TimetableChatMessage {
 

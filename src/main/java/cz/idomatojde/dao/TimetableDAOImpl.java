@@ -14,8 +14,11 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoField;
 import java.util.List;
 
-@Repository
 
+/** DAO implementation for all Timetable related entities
+ * @author Michal Hazdra
+ */
+@Repository
 public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements TimetableDAO {
 
     public TimetableDAOImpl() {

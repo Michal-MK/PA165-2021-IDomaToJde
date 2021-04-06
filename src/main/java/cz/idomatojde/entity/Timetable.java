@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/** Entity for holding timetable data
+ * @author Michal Hazdra
+ */
 @Entity
 public class Timetable {
 
