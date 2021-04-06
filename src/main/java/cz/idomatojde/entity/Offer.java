@@ -1,5 +1,6 @@
 package cz.idomatojde.entity;
 
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.persistence.GenerationType;
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ import java.util.Objects;
  * @author Jiri Vrbka
  */
 @Entity
+@SuppressWarnings("JpaDataSourceORMInspection")
+@Table(name = "\"Offer\"")
 public class Offer {
 
     @Id
