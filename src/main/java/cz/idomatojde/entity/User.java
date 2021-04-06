@@ -1,15 +1,19 @@
 package cz.idomatojde.entity;
 
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
 
 /*
-Created by Ondrej Urbanovsky
-Updated by Jiri Vrbka
+ * @author by Ondrej Urbanovsky
+ * Updated by Jiri Vrbka
  */
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
