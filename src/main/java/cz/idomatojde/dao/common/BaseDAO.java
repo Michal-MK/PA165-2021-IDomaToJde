@@ -12,7 +12,7 @@ public interface BaseDAO<TEntity> {
     @Transactional
     void create(TEntity entity);
 
-    List<TEntity> getAll();
+    List<TEntity> findAll();
 
     TEntity getById(Long id);
 

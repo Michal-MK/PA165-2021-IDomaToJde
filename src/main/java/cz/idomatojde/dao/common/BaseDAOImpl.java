@@ -28,7 +28,7 @@ public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
         em.persist(entity);
     }
 
-    public List<TEntity> getAll() {
+    public List<TEntity> findAll() {
         return em.createQuery("select a from " + cls.getName() + " a", cls).getResultList();
     }
 
