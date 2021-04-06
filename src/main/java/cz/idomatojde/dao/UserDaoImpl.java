@@ -3,7 +3,9 @@ package cz.idomatojde.dao;
 import cz.idomatojde.dao.Utils.UserContactInfo;
 import cz.idomatojde.dao.common.BaseDAOImpl;
 import cz.idomatojde.entity.User;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
 
     public UserDaoImpl() {
@@ -38,6 +40,6 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
 
     @Override
     public void update(User user) {
-        // TODO do update
+        em.merge(user);
     }
 }

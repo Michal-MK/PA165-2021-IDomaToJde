@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /*
-Created by Jiri Vrbka
+ * @author Jiri Vrbka
  */
 @Repository
 public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
@@ -25,8 +25,7 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
     @Override
     @Transactional
     public void update(Offer offer) {
-        em.unwrap(Offer.class).
-        em.unwrap(Offer.class).update(offer); // TODO update
+        em.merge(offer);
     }
 
     @Override
