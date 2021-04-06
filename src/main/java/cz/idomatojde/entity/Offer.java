@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 
 /*
@@ -141,5 +142,40 @@ public class Offer {
 
     public void setRegistered(Integer registered) {
         this.registered = registered;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if(o == null) return false;
+        if (!(o instanceof Offer)) return false;
+
+        Offer offer = (Offer) o;
+        return Objects.equals(getOwner(), offer.getOwner())
+                && Objects.equals(getTitle(), offer.getTitle())
+                && Objects.equals(getDescription(), offer.getDescription())
+                && Objects.equals(getPrice(), offer.getPrice())
+                && Objects.equals(getCreatedDate(), offer.getCreatedDate())
+                && Objects.equals(getExpirationDate(), offer.getExpirationDate())
+                && Objects.equals(getEvents(), offer.getEvents())
+                && getCategory() == offer.getCategory()
+                && Objects.equals(getCapacity(), offer.getCapacity())
+                && Objects.equals(getRegistered(), offer.getRegistered()
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getTitle(),
+                getDescription(),
+                getPrice(),
+                getCreatedDate(),
+                getExpirationDate(),
+                getEvents(),
+                getCategory(),
+                getCapacity(),
+                getRegistered()
+        );
     }
 }
