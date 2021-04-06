@@ -28,6 +28,21 @@ public class ChatMessagesDAOImpl implements ChatMessagesDAO {
     }
 
     @Override
+    @Transactional
+    public void editMessage(Long messageId, String newText) {
+        em.createQuery("update TimetableChatMessage m set m.text = :text where m.id = :id")
+                .setParameter("text", newText)
+                .setParameter("id", messageId)
+                .executeUpdate();
+    }
+
+    @Override
+    @Transactional
+    public void deleteMessage(TimetableChatMessage message) {
+        em.remove(message);
+    }
+
+    @Override
     public List<TimetableChatMessage> getAllMessagesForEntry(TimetableEntry entry) {
        return em.createQuery("select tcm from TimetableChatMessage tcm where tcm.timetableEntry = :entry",
                TimetableChatMessage.class)
