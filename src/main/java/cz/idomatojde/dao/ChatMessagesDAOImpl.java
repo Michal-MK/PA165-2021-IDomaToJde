@@ -17,7 +17,6 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
     }
 
     @Override
-    @Transactional
     public void addMessage(User sender, TimetableEntry entry, String text) {
         TimetableChatMessage message = new TimetableChatMessage();
         message.setSender(sender);
@@ -36,7 +35,6 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
     }
 
     @Override
-    @Transactional
     public void update(TimetableChatMessage timetableChatMessage) {
         em.createQuery("update TimetableChatMessage tcm set tcm.text = :text where tcm.id = :id")
                 .setParameter("text", timetableChatMessage.getText())

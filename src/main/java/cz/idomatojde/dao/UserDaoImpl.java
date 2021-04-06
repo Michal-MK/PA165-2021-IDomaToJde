@@ -3,7 +3,11 @@ package cz.idomatojde.dao;
 import cz.idomatojde.dao.Utils.UserContactInfo;
 import cz.idomatojde.dao.common.BaseDAOImpl;
 import cz.idomatojde.entity.User;
+import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+
+@Repository
 public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
 
     public UserDaoImpl() {

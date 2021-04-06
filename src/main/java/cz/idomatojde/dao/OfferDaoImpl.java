@@ -1,5 +1,6 @@
 package cz.idomatojde.dao;
 
+import cz.idomatojde.dao.common.BaseDAOImpl;
 import cz.idomatojde.entity.Offer;
 import org.springframework.stereotype.Repository;
 import cz.idomatojde.entity.User;
@@ -7,6 +8,7 @@ import cz.idomatojde.entity.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.sql.Date;
 
@@ -14,21 +16,21 @@ import java.sql.Date;
 Created by Jiri Vrbka
  */
 @Repository
-public class OfferDaoImpl implements OfferDao {
+public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
 
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public void create(Offer offer) {
-        em.persist(offer);
+    /**
+     * Constructs the base type with the necessary information
+     */
+    public OfferDaoImpl() {
+        super(Offer.class);
     }
 
     @Override
-    public List<Offer> findAll() {
-        TypedQuery<Offer> query = em.createQuery("SELECT o FROM Offer o",
-                Offer.class);
-        return query.getResultList();
+    public void update(Offer offer) {
+
     }
 
     @Override
@@ -40,24 +42,14 @@ public class OfferDaoImpl implements OfferDao {
         query.setParameter("userid", u);
         return query.getResultList();
     }
-
-    @Override
-    public Offer findById(Long id) {
-        return em.find(Offer.class, id);
-    }
-
-    @Override
-    public void remove(Offer o) throws IllegalArgumentException {
-        em.remove(o);
-    }
-
+    
     @Override
     public List<Offer> getActiveOffers() {
 
         TypedQuery<Offer> query = em
                 .createQuery(
-                        "SELECT o FROM Offer o WHERE o.expirationDate >= CURRENT_DATE",
-                        Offer.class);
+                        "SELECT o FROM Offer o WHERE o.expirationDate >= :date",
+                        Offer.class).setParameter("date", LocalDateTime.now());
         return query.getResultList();
     }
 }
