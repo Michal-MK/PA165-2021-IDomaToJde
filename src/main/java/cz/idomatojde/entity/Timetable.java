@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +28,7 @@ public class Timetable {
     private int year;
 
     @OneToMany(mappedBy = "timetable", targetEntity = TimetableEntry.class)
-    private List<TimetableEntry> entries;
+    private List<TimetableEntry> entries = new ArrayList<>();
 
 
     public void setId(Long id) {
