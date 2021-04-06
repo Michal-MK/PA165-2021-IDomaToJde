@@ -12,6 +12,8 @@ Created by Ondrej Urbanovsky
 Updated by Jiri Vrbka
  */
 @Entity
+@SuppressWarnings("JpaDataSourceORMInspection")
+@Table(name = "\"User\"")
 public class User {
 
     @Id
