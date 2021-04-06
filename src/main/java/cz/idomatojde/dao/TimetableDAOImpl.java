@@ -46,7 +46,7 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    public void moveEntry(TimetableEntry entry, LocalDate newStart, Duration newDuration) {
+    public void moveEntry(TimetableEntry entry, LocalTime newStart, Duration newDuration) {
         em.createQuery("update TimetableEntry te set te.entryStart = :start, te.length = :len")
                 .setParameter("start", newStart)
                 .setParameter("len", newDuration)
@@ -54,7 +54,7 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    public void moveEntry(TimetableEntry entry, LocalDate newStart) {
+    public void moveEntry(TimetableEntry entry, LocalTime newStart) {
         moveEntry(entry, newStart, entry.getLength());
     }
 
@@ -66,10 +66,11 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     @Override
     public void updateEntry(TimetableEntry entry) {
         em.createQuery("update TimetableEntry te set te.entryStart = :start, te.length = :len, " +
-                "te.description = :desc, te.messages = :msg, te.offer = :offer")
+                "te.description = :desc, te.day = :day, te.messages = :msg, te.offer = :offer")
                 .setParameter("start", entry.getEntryStart())
                 .setParameter("len", entry.getLength())
                 .setParameter("desc", entry.getDescription())
+                .setParameter("day", entry.getDay())
                 .setParameter("msg", entry.getMessages())
                 .setParameter("offer", entry.getOffer())
                 .executeUpdate();

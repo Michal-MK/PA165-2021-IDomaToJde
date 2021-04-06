@@ -25,6 +25,8 @@ public class TimetableEntry {
     @ManyToOne
     private Offer offer;
 
+    private int day;
+
     private LocalTime entryStart;
 
     private Duration length;
@@ -90,6 +92,14 @@ public class TimetableEntry {
         this.description = description;
     }
 
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -100,11 +110,13 @@ public class TimetableEntry {
                 Objects.equals(getEntryStart(), that.getEntryStart()) &&
                 Objects.equals(getLength(), that.getLength()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getDay(), that.getDay()) &&
                 Objects.equals(getMessages(), that.getMessages());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTimetable(), getOffer(), getEntryStart(), getLength(), getDescription(), getMessages());
+        return Objects.hash(getTimetable(), getOffer(), getEntryStart(),
+                getLength(), getDescription(), getDay(), getMessages());
     }
 }
