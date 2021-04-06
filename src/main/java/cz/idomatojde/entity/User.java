@@ -2,8 +2,12 @@ package cz.idomatojde.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 @Entity
+@SuppressWarnings("JpaDataSourceORMInspection")
+@Table(name = "\"User\"")
 public class User {
 
     @Id
