@@ -17,7 +17,7 @@ public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
     private final Class<TEntity> cls;
 
     @PersistenceContext
-    public EntityManager em;
+    protected EntityManager em;
 
     public BaseDAOImpl(Class<TEntity> cls) {
         this.cls = cls;
