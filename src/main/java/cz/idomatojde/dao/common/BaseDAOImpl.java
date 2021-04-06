@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
-/**
+/** Base class for all DAOs
  * @author Michal Hazdra
  * @param <TEntity> Any entity
  */
@@ -19,11 +19,14 @@ public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
     @PersistenceContext
     protected EntityManager em;
 
+
+    /** Constructs the base type with the necessary information
+     * @param cls the Class instance for reflection
+     */
     public BaseDAOImpl(Class<TEntity> cls) {
         this.cls = cls;
     }
 
-    @Transactional
     public void create(TEntity entity) {
         em.persist(entity);
     }
@@ -39,10 +42,12 @@ public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
                 .getSingleResult();
     }
 
-    @Transactional
+
+    /** The function to override to handle updates of this entity
+     * @param entity the entity to update within the database
+     */
     public abstract void update(TEntity entity);
 
-    @Transactional
     public void delete(TEntity entity) {
         em.remove(entity);
     }
