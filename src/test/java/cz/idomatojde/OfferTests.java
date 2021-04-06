@@ -2,7 +2,6 @@ package cz.idomatojde;
 
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.UserDao;
-import cz.idomatojde.dao.Utils.UserContactInfo;
 import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
@@ -16,7 +15,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -69,7 +67,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         assertThat(offerDao.getById(1L).getTitle()).isEqualTo(name);
     }
 
-    @Test()
+    @Test
     public void offerFindByUserEmpty() {
         //Setup
         final String title = "Offer";
