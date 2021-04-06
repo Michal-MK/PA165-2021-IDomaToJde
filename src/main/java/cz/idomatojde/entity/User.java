@@ -3,18 +3,20 @@ package cz.idomatojde.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 
 /*
 Created by Ondrej Urbanovsky
+Updated by Jiri Vrbka
  */
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long userid;
+    private Long id;
 
     @NotNull
     private String username;
@@ -41,19 +43,22 @@ public class User {
     private Integer credits;
 
     private Integer bonusCredits;
-    //???
+
     @OneToMany
-    private HashMap<Long,Offer> offerHashMap;
+    private List<Offer> offers;
 
     @NotNull
-    private boolean wantsAdvertisment;
+    private boolean wantsAdvertisement;
 
-    public Long getUserid() {
-        return userid;
+    @NotNull
+    private boolean isAdmin;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setUserid(Long userid) {
-        this.userid = userid;
+    public void setId(Long userid) {
+        this.id = userid;
     }
 
     public String getUsername() {
@@ -128,19 +133,68 @@ public class User {
         this.bonusCredits = bonusCredits;
     }
 
-    public HashMap<Long, Offer> getOfferHashMap() {
-        return offerHashMap;
+    public List<Offer> getOffers() {
+        return offers;
     }
 
-    public void setOfferHashMap(HashMap<Long, Offer> offerHashMap) {
-        this.offerHashMap = offerHashMap;
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
     }
 
-    public boolean isWantsAdvertisment() {
-        return wantsAdvertisment;
+    public boolean isWantsAdvertisement() {
+        return wantsAdvertisement;
     }
 
-    public void setWantsAdvertisment(boolean wantsAdvertisment) {
-        this.wantsAdvertisment = wantsAdvertisment;
+    public void setWantsAdvertisement(boolean wantsAdvertisment) {
+        this.wantsAdvertisement = wantsAdvertisment;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+        return isWantsAdvertisement() == user.isWantsAdvertisement()
+                && isAdmin() == user.isAdmin()
+                && Objects.equals(getUsername(), user.getUsername())
+                && Objects.equals(getPassHash(), user.getPassHash())
+                && Objects.equals(getPassSalt(), user.getPassSalt())
+                && Objects.equals(getEmail(), user.getEmail())
+                && Objects.equals(getName(), user.getName())
+                && Objects.equals(getSurname(), user.getSurname())
+                && Objects.equals(getPhoneNumber(), user.getPhoneNumber())
+                && Objects.equals(getCredits(), user.getCredits())
+                && Objects.equals(getBonusCredits(), user.getBonusCredits())
+                && Objects.equals(getOffers(), user.getOffers()
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getUsername(),
+                getPassHash(),
+                getPassSalt(),
+                getEmail(),
+                getName(),
+                getSurname(),
+                getPhoneNumber(),
+                getCredits(),
+                getBonusCredits(),
+                getOffers(),
+                isWantsAdvertisement(),
+                isAdmin()
+        );
     }
 }
