@@ -7,7 +7,6 @@ import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,7 +25,6 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    @Transactional
     public Timetable createTimetable(User user, int year, int week) {
         Timetable tt = new Timetable();
         tt.setYear(year);
@@ -38,7 +36,6 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    @Transactional
     public TimetableEntry createEntry(Timetable timetable, Offer offer, LocalTime start, Duration duration) {
         TimetableEntry entry = new TimetableEntry();
         entry.setEntryStart(start);
@@ -53,7 +50,6 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    @Transactional
     public void moveEntry(TimetableEntry entry, LocalTime newStart, Duration newDuration) {
         em.createQuery("update TimetableEntry te set te.entryStart = :start, te.length = :len")
                 .setParameter("start", newStart)
@@ -62,19 +58,16 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    @Transactional
     public void moveEntry(TimetableEntry entry, LocalTime newStart) {
         moveEntry(entry, newStart, entry.getLength());
     }
 
     @Override
-    @Transactional
     public void removeEntry(TimetableEntry entry) {
         em.remove(entry);
     }
 
     @Override
-    @Transactional
     public void updateEntry(TimetableEntry entry) {
         em.createQuery("update TimetableEntry te set te.entryStart = :start, te.length = :len, " +
                 "te.description = :desc, te.day = :day")
@@ -116,7 +109,6 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    @Transactional
     public void update(Timetable timetable) {
         em.createQuery("update Timetable t set t.year = :year, t.week = :week, t.entries = :entries")
                 .setParameter("year", timetable.getYear())

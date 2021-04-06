@@ -7,11 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,18 +37,17 @@ public class Offer {
     @NotNull
     private String description;
 
+    @NotNull
     private BigDecimal price;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate createdDate;
 
     @NotNull
-    @Temporal(TemporalType.DATE)
     private LocalDate expirationDate;
 
     @OneToMany
-    private List<TimetableEntry> events;
+    private List<TimetableEntry> events = new ArrayList<>();
 
     private Category category;
 
@@ -62,7 +60,6 @@ public class Offer {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
     }

@@ -6,7 +6,6 @@ import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /** DAO implementation for Timetable chat messages
@@ -20,7 +19,6 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
     }
 
     @Override
-    @Transactional
     public void addMessage(User sender, TimetableEntry entry, String text) {
         TimetableChatMessage message = new TimetableChatMessage();
         message.setSender(sender);
@@ -39,7 +37,6 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
     }
 
     @Override
-    @Transactional
     public void update(TimetableChatMessage timetableChatMessage) {
         em.createQuery("update TimetableChatMessage tcm set tcm.text = :text where tcm.id = :id")
                 .setParameter("text", timetableChatMessage.getText())

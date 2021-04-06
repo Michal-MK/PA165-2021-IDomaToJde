@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk12
+
+jobs:
+  include:
+    - os:
+        - linux
+      install:
+        - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      script:
+        - mvn clean test
