@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Offer {
+public class Timetable {
 
     @Id
     private Long id;
