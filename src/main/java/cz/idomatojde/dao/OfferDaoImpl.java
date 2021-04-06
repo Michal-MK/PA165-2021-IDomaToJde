@@ -1,11 +1,13 @@
 package cz.idomatojde.dao;
 
+import cz.idomatojde.dao.common.BaseDAOImpl;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,21 +15,17 @@ import java.util.List;
 Created by Jiri Vrbka
  */
 @Repository
-public class OfferDaoImpl implements OfferDao {
+public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
 
-    @PersistenceContext
-    private EntityManager em;
-
-    @Override
-    public void create(Offer offer) {
-        em.persist(offer);
+    public OfferDaoImpl() {
+        super(Offer.class);
     }
 
     @Override
-    public List<Offer> findAll() {
-        return em.createQuery("SELECT o FROM Offer o",
-                Offer.class)
-                .getResultList();
+    @Transactional
+    public void update(Offer offer) {
+        em.unwrap(Offer.class).
+        em.unwrap(Offer.class).update(offer); // TODO update
     }
 
     @Override
@@ -37,16 +35,6 @@ public class OfferDaoImpl implements OfferDao {
                 Offer.class)
                 .setParameter("userid", u)
                 .getResultList();
-    }
-
-    @Override
-    public Offer findById(Long id) {
-        return em.find(Offer.class, id);
-    }
-
-    @Override
-    public void remove(Offer o) throws IllegalArgumentException {
-        em.remove(o);
     }
 
     @Override

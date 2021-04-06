@@ -16,7 +16,7 @@ import java.util.Objects;
 
 
 /*
-Created by Jiri Vrbka
+ * @author Jiri Vrbka
  */
 @Entity
 public class Offer {
