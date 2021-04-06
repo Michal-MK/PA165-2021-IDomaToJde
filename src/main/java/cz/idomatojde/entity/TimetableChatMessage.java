@@ -41,7 +41,7 @@ public class TimetableChatMessage {
         return timetableEntry;
     }
 
-    public void setTimetableEntryId(TimetableEntry timetableEntry) {
+    public void setTimetableEntry(TimetableEntry timetableEntry) {
         this.timetableEntry = timetableEntry;
     }
 
