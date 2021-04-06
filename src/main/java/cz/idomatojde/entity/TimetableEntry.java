@@ -29,6 +29,8 @@ public class TimetableEntry {
 
     private Duration length;
 
+    private String description;
+
     @OneToMany(mappedBy = "timetableEntry", targetEntity = TimetableChatMessage.class)
     private List<TimetableChatMessage> messages = new ArrayList<>();
 
@@ -80,6 +82,14 @@ public class TimetableEntry {
         this.messages = messages;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,11 +99,12 @@ public class TimetableEntry {
                 Objects.equals(getOffer(), that.getOffer()) &&
                 Objects.equals(getEntryStart(), that.getEntryStart()) &&
                 Objects.equals(getLength(), that.getLength()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getMessages(), that.getMessages());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTimetable(), getOffer(), getEntryStart(), getLength(), getMessages());
+        return Objects.hash(getTimetable(), getOffer(), getEntryStart(), getLength(), getDescription(), getMessages());
     }
 }
