@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Timetable {
@@ -67,5 +68,21 @@ public class Timetable {
 
     public void setEntries(List<TimetableEntry> entries) {
         this.entries = entries;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Timetable)) return false;
+        Timetable timetable = (Timetable) o;
+        return getWeek() == timetable.getWeek() &&
+                getYear() == timetable.getYear() &&
+                Objects.equals(getUser(), timetable.getUser()) &&
+                Objects.equals(getEntries(), timetable.getEntries());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getWeek(), getYear(), getEntries());
     }
 }
