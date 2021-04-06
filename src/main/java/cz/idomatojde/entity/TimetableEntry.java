@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class TimetableEntry {
@@ -77,5 +78,22 @@ public class TimetableEntry {
 
     public void setMessages(List<TimetableChatMessage> messages) {
         this.messages = messages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TimetableEntry)) return false;
+        TimetableEntry that = (TimetableEntry) o;
+        return Objects.equals(getTimetable(), that.getTimetable()) &&
+                Objects.equals(getOffer(), that.getOffer()) &&
+                Objects.equals(getEntryStart(), that.getEntryStart()) &&
+                Objects.equals(getLength(), that.getLength()) &&
+                Objects.equals(getMessages(), that.getMessages());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTimetable(), getOffer(), getEntryStart(), getLength(), getMessages());
     }
 }

@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Objects;
 
 @Entity
 public class TimetableChatMessage {
@@ -51,5 +52,20 @@ public class TimetableChatMessage {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TimetableChatMessage)) return false;
+        TimetableChatMessage that = (TimetableChatMessage) o;
+        return Objects.equals(getSender(), that.getSender()) &&
+                Objects.equals(getTimetableEntry(), that.getTimetableEntry()) &&
+                Objects.equals(getText(), that.getText());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTimetableEntry(), getText());
     }
 }
