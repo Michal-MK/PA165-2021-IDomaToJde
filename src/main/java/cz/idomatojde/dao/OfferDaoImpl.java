@@ -1,63 +1,50 @@
 package cz.idomatojde.dao;
 
+import cz.idomatojde.dao.common.BaseDAOImpl;
 import cz.idomatojde.entity.Offer;
+import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
 import cz.idomatojde.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
-import java.sql.Date;
 
 /*
 Created by Jiri Vrbka
  */
 @Repository
-public class OfferDaoImpl implements OfferDao {
+public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
 
-    @PersistenceContext
-    private EntityManager em;
-
-    @Override
-    public void create(Offer offer) {
-        em.persist(offer);
+    public OfferDaoImpl() {
+        super(Offer.class);
     }
 
     @Override
-    public List<Offer> findAll() {
-        TypedQuery<Offer> query = em.createQuery("SELECT o FROM Offer o",
-                Offer.class);
-        return query.getResultList();
+    @Transactional
+    public void update(Offer offer) {
+        em.unwrap(Offer.class).
+        em.unwrap(Offer.class).update(offer); // TODO update
     }
 
     @Override
     public List<Offer> findByUser(User u) {
-        TypedQuery<Offer> query = em.createQuery(
+        return em.createQuery(
                 "Select o from Offer o where o.owner = :userid",
-                Offer.class);
-
-        query.setParameter("userid", u);
-        return query.getResultList();
-    }
-
-    @Override
-    public Offer findById(Long id) {
-        return em.find(Offer.class, id);
-    }
-
-    @Override
-    public void remove(Offer o) throws IllegalArgumentException {
-        em.remove(o);
+                Offer.class)
+                .setParameter("userid", u)
+                .getResultList();
     }
 
     @Override
     public List<Offer> getActiveOffers() {
-
-        TypedQuery<Offer> query = em
+        return em
                 .createQuery(
-                        "SELECT o FROM Offer o WHERE o.expirationDate >= CURRENT_DATE",
-                        Offer.class);
-        return query.getResultList();
+                        "SELECT o FROM Offer o WHERE o.expirationDate >= :today",
+                        Offer.class)
+                .setParameter("today", LocalDate.now())
+                .getResultList();
     }
 }
