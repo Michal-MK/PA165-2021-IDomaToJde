@@ -51,10 +51,9 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
 
     @Override
     public void moveEntry(TimetableEntry entry, LocalTime newStart, Duration newDuration) {
-        em.createQuery("update TimetableEntry te set te.entryStart = :start, te.length = :len")
-                .setParameter("start", newStart)
-                .setParameter("len", newDuration)
-                .executeUpdate();
+        entry.setEntryStart(newStart);
+        entry.setLength(newDuration);
+        updateEntry(entry);
     }
 
     @Override
@@ -85,7 +84,9 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
 
     @Override
     public TimetableEntry findEntry(Long entryId) {
-        return null;
+        return em.createQuery("select a from TimetableEntry a where a.id = :id", TimetableEntry.class)
+                .setParameter("id", entryId)
+                .getSingleResult();
     }
 
     public Timetable getTimetableForCurrentWeek(User user) {
