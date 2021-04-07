@@ -69,13 +69,7 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
 
     @Override
     public void updateEntry(TimetableEntry entry) {
-        em.createQuery("update TimetableEntry te set te.entryStart = :start, te.length = :len, " +
-                "te.description = :desc, te.day = :day")
-                .setParameter("start", entry.getEntryStart())
-                .setParameter("len", entry.getLength())
-                .setParameter("desc", entry.getDescription())
-                .setParameter("day", entry.getDay())
-                .executeUpdate();
+        em.merge(entry);
     }
 
     @Override
@@ -110,10 +104,6 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
 
     @Override
     public void update(Timetable timetable) {
-        em.createQuery("update Timetable t set t.year = :year, t.week = :week, t.entries = :entries")
-                .setParameter("year", timetable.getYear())
-                .setParameter("week", timetable.getWeek())
-                .setParameter("entries", timetable.getEntries())
-                .executeUpdate();
+        em.merge(timetable);
     }
 }
