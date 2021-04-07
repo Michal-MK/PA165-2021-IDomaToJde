@@ -1,7 +1,7 @@
 package cz.idomatojde;
 
 import cz.idomatojde.dao.UserDao;
-import cz.idomatojde.dao.Utils.UserContactInfo;
+import cz.idomatojde.dao.utils.UserContactInfo;
 import cz.idomatojde.entity.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -54,9 +54,17 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         dao.create(user);
 
         //Validate
-
         assertThat(user.getId()).isEqualTo(1L);
         assertThat(dao.getById(1L).getUsername()).isEqualTo("pepega");
+        assertThat(dao.getById(1L).getPassHash()).isEqualTo("UGFzc3dvcmQ=");
+        assertThat(dao.getById(1L).getPassSalt()).isEqualTo("U2FsdA==");
+        assertThat(dao.getById(1L).getName()).isEqualTo("Name");
+        assertThat(dao.getById(1L).getSurname()).isEqualTo("Surname");
+        assertThat(dao.getById(1L).getPhoneNumber()).isEqualTo("+420123456789");
+        assertThat(dao.getById(1L).getEmail()).isEqualTo("pepega@mail.com");
+        assertThat(dao.getById(1L).getCredits()).isEqualTo(123);
+        assertThat(dao.getById(1L).wantsAdvertisement()).isEqualTo(false);
+        assertThat(dao.getById(1L).isAdmin()).isEqualTo(false);
     }
 
     @Test
@@ -108,9 +116,33 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         UserContactInfo contact = dao.getContactInfo(user.getId());
 
         //Validate
-        assertThat(contact.name).isEqualTo("Name");
-        assertThat(contact.surname).isEqualTo("Surname");
-        assertThat(contact.email).isEqualTo("pepega@mail.com");
-        assertThat(contact.phone).isEqualTo("+420123456789");
+        assertThat(contact.getName()).isEqualTo("Name");
+        assertThat(contact.getSurname()).isEqualTo("Surname");
+        assertThat(contact.getEmail()).isEqualTo("pepega@mail.com");
+        assertThat(contact.getPhone()).isEqualTo("+420123456789");
+    }
+
+    @Test
+    public void userUpdate() {
+        //Setup
+        final String name = "pleaseRestartYourComputerToApplyUpdates";
+        User user = getUser(name);
+
+        //Act
+        dao.create(user);
+
+        user.setAdmin(true);
+        user.setWantsAdvertisement(true);
+        user.setCredits(Integer.MAX_VALUE);
+
+        dao.update(user);
+
+        User updated = dao.getById(1L);
+
+        //Validate
+        assertThat(updated.getUsername()).isEqualTo(name);
+        assertThat(updated.isAdmin()).isEqualTo(true);
+        assertThat(updated.wantsAdvertisement()).isEqualTo(true);
+        assertThat(updated.getCredits()).isEqualTo(Integer.MAX_VALUE);
     }
 }

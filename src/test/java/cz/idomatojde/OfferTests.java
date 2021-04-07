@@ -65,6 +65,14 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         //Validate
         assertThat(offer.getId()).isEqualTo(1L);
         assertThat(offerDao.getById(1L).getTitle()).isEqualTo(name);
+        assertThat(offerDao.getById(1L).getOwner()).isEqualTo(UserTests.getUser("user"));
+        assertThat(offerDao.getById(1L).getDescription()).isEqualTo("description");
+        assertThat(offerDao.getById(1L).getCategory()).isEqualTo(Category.EDUCATION);
+        assertThat(offerDao.getById(1L).getCapacity()).isEqualTo(10);
+        assertThat(offerDao.getById(1L).getRegistered()).isEqualTo(5);
+        assertThat(offerDao.getById(1L).getPrice()).isEqualTo(BigDecimal.ONE);
+        assertThat(offerDao.getById(1L).getCreatedDate()).isEqualTo(LocalDate.of(2021, 4, 1));
+        assertThat(offerDao.getById(1L).getExpirationDate()).isEqualTo(LocalDate.of(2021,4,20));
     }
 
     @Test
@@ -121,5 +129,29 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         assertThat(offerDao.getActiveOffers()).isNotNull();
         assertThat(offerDao.getActiveOffers().size()).isEqualTo(1);
         assertThat(offerDao.getActiveOffers().get(0).getTitle()).isEqualTo(title);
+    }
+
+    @Test
+    public void offerUpdate() {
+        //Setup
+        final String title = "Offer";
+        Offer offer = getOffer(title);
+        LocalDate newDate = LocalDate.of(2022,1,1);
+        //Act
+        userDao.create(offer.getOwner());
+        offerDao.create(offer);
+
+        offer.setPrice(BigDecimal.TEN);
+        offer.setCapacity(666);
+        offer.setExpirationDate(newDate);
+
+        offerDao.update(offer);
+        Offer updated = offerDao.getById(1L);
+
+        //Validate
+        assertThat(updated.getTitle()).isEqualTo(title);
+        assertThat(updated.getPrice()).isEqualTo(BigDecimal.TEN);
+        assertThat(updated.getCapacity()).isEqualTo(666);
+        assertThat(updated.getExpirationDate()).isEqualTo(newDate);
     }
 }

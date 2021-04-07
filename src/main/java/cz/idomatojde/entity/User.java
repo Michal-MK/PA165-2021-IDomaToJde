@@ -63,9 +63,6 @@ public class User {
         return id;
     }
 
-    public void setId(Long userid) {
-        this.id = userid;
-    }
 
     public String getUsername() {
         return username;
@@ -147,12 +144,12 @@ public class User {
         this.offers = offers;
     }
 
-    public boolean isWantsAdvertisement() {
+    public boolean wantsAdvertisement() {
         return wantsAdvertisement;
     }
 
-    public void setWantsAdvertisement(boolean wantsAdvertisment) {
-        this.wantsAdvertisement = wantsAdvertisment;
+    public void setWantsAdvertisement(boolean wantsAdvertisement) {
+        this.wantsAdvertisement = wantsAdvertisement;
     }
 
     public boolean isAdmin() {
@@ -171,7 +168,7 @@ public class User {
         if (!(o instanceof User)) return false;
 
         User user = (User) o;
-        return isWantsAdvertisement() == user.isWantsAdvertisement()
+        return wantsAdvertisement() == user.wantsAdvertisement()
                 && isAdmin() == user.isAdmin()
                 && Objects.equals(getUsername(), user.getUsername())
                 && Objects.equals(getPassHash(), user.getPassHash())
@@ -199,7 +196,7 @@ public class User {
                 getCredits(),
                 getBonusCredits(),
                 getOffers(),
-                isWantsAdvertisement(),
+                wantsAdvertisement(),
                 isAdmin()
         );
     }
