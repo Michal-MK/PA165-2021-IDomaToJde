@@ -126,10 +126,11 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         // Act
         var origin = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
         timetableDAO.moveEntry(origin, updatedTime, updatedDuration);
+        var updated = timetableDAO.findEntry(origin.getId());
 
         // Assert
-        Assert.assertEquals(updatedTime, origin.getEntryStart());
-        Assert.assertEquals(updatedDuration, origin.getLength());
+        Assert.assertEquals(updatedTime, updated.getEntryStart());
+        Assert.assertEquals(updatedDuration, updated.getLength());
     }
 
 
