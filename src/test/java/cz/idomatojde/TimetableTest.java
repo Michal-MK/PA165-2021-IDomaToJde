@@ -5,8 +5,6 @@ import cz.idomatojde.dao.TimetableDAO;
 import cz.idomatojde.dao.UserDao;
 import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
-import cz.idomatojde.entity.Timetable;
-import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.entity.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,9 +21,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.Year;
 import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalUnit;
 
 /**
  * @author Jiri Vrbka
