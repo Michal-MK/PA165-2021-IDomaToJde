@@ -113,7 +113,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void moveEntryTest(){
+    public void moveEntryAndDurationTest(){
         // Arrange
         var updatedTime = LocalTime.now().minusHours(1);
         var updatedDuration = Duration.ofMinutes(10);
@@ -131,6 +131,25 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         // Assert
         Assert.assertEquals(updatedTime, updated.getEntryStart());
         Assert.assertEquals(updatedDuration, updated.getLength());
+    }
+
+    @Test
+    public void moveEntryTest(){
+        // Arrange
+        var updatedTime = LocalTime.now().minusHours(1);
+
+        var offer = getOffer("moveEntryTest");
+        userDao.create(offer.getOwner());
+        offerDao.create(offer);
+        var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
+
+        // Act
+        var origin = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        timetableDAO.moveEntry(origin, updatedTime);
+        var updated = timetableDAO.findEntry(origin.getId());
+
+        // Assert
+        Assert.assertEquals(updatedTime, updated.getEntryStart());
     }
 
 
