@@ -1,6 +1,6 @@
 package cz.idomatojde.dao;
 
-import cz.idomatojde.dao.Utils.UserContactInfo;
+import cz.idomatojde.dao.utils.UserContactInfo;
 import cz.idomatojde.dao.common.BaseDAOImpl;
 import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
@@ -29,13 +29,7 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
     @Override
     public UserContactInfo getContactInfo(Long userId) {
         var user = this.getById(userId);
-        var info = new UserContactInfo();
-        info.email = user.getEmail();
-        info.name = user.getName();
-        info.phone = user.getPhoneNumber();
-        info.surname = user.getSurname();
-
-        return info;
+        return new UserContactInfo(user);
     }
 
     @Override
