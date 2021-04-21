@@ -48,7 +48,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         offer.setRegistered(5);
         offer.setPrice(BigDecimal.ONE);
         offer.setCreatedDate(LocalDate.of(2021, 4, 1));
-        offer.setExpirationDate(LocalDate.of(2021,4,20));
+        offer.setExpirationDate(LocalDate.now().plusDays(1));
         return offer;
     }
 
