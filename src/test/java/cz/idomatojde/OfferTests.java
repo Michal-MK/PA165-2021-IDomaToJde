@@ -72,7 +72,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         assertThat(offerDao.getById(1L).getRegistered()).isEqualTo(5);
         assertThat(offerDao.getById(1L).getPrice()).isEqualTo(BigDecimal.ONE);
         assertThat(offerDao.getById(1L).getCreatedDate()).isEqualTo(LocalDate.of(2021, 4, 1));
-        assertThat(offerDao.getById(1L).getExpirationDate()).isEqualTo(LocalDate.of(2021,4,20));
+        assertThat(offerDao.getById(1L).getExpirationDate()).isEqualTo(LocalDate.now().plusDays(1));
     }
 
     @Test
