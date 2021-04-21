@@ -1,6 +1,5 @@
 package cz.idomatojde.dao.common;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /** Base interface for all DAOs
