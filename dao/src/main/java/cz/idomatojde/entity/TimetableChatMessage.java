@@ -69,6 +69,6 @@ public class TimetableChatMessage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTimetableEntry(), getText());
+        return Objects.hash(getTimetableEntry(), getSender(), getText());
     }
 }

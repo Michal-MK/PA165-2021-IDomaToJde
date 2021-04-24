@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Entity for holding timetable data
+/**
+ * Entity for holding timetable data
+ *
  * @author Michal Hazdra
  */
 @Entity
@@ -81,12 +83,11 @@ public class Timetable {
         Timetable timetable = (Timetable) o;
         return getWeek() == timetable.getWeek() &&
                 getYear() == timetable.getYear() &&
-                Objects.equals(getUser(), timetable.getUser()) &&
-                Objects.equals(getEntries(), timetable.getEntries());
+                Objects.equals(getUser(), timetable.getUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getWeek(), getYear(), getEntries());
+        return Objects.hash(getWeek(), getYear(), getUser());
     }
 }
