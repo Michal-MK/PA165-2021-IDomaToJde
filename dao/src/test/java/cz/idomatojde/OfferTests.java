@@ -19,10 +19,12 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static cz.idomatojde.TestObjects.getOffer;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
  * Offer specific DAO tests
+ *
  * @author Michal Hazdra
  */
 @ContextConfiguration("classpath:applicationConfig.xml")
@@ -38,20 +40,6 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
     @Inject
     public UserDao userDao;
 
-    public Offer getOffer(String title) {
-        Offer offer = new Offer();
-        offer.setTitle(title);
-        offer.setOwner(UserTests.getUser("user"));
-        offer.setDescription("description");
-        offer.setCategory(Category.EDUCATION);
-        offer.setCapacity(10);
-        offer.setRegistered(5);
-        offer.setPrice(BigDecimal.ONE);
-        offer.setCreatedDate(LocalDate.of(2021, 4, 1));
-        offer.setExpirationDate(LocalDate.now().plusDays(1));
-        return offer;
-    }
-
     @Test
     public void offerCreation() {
         //Setup
@@ -65,7 +53,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         //Validate
         assertThat(offer.getId()).isEqualTo(1L);
         assertThat(offerDao.getById(1L).getTitle()).isEqualTo(name);
-        assertThat(offerDao.getById(1L).getOwner()).isEqualTo(UserTests.getUser("user"));
+        assertThat(offerDao.getById(1L).getOwner()).isEqualTo(offer.getOwner());
         assertThat(offerDao.getById(1L).getDescription()).isEqualTo("description");
         assertThat(offerDao.getById(1L).getCategory()).isEqualTo(Category.EDUCATION);
         assertThat(offerDao.getById(1L).getCapacity()).isEqualTo(10);
@@ -136,7 +124,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         //Setup
         final String title = "Offer";
         Offer offer = getOffer(title);
-        LocalDate newDate = LocalDate.of(2022,1,1);
+        LocalDate newDate = LocalDate.of(2022, 1, 1);
         //Act
         userDao.create(offer.getOwner());
         offerDao.create(offer);
