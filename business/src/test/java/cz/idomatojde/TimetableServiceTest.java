@@ -8,6 +8,8 @@ import cz.idomatojde.entity.User;
 import cz.idomatojde.services.TimetableService;
 import cz.idomatojde.services.TimetableServiceImpl;
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
 import java.time.Duration;
@@ -31,9 +33,15 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+/**
+ * @author Michal Hazdra
+ */
+@ContextConfiguration("classpath:applicationConfig.xml")
+@TestExecutionListeners(TransactionalTestExecutionListener.class)
 public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
 
     private TimetableDAO mockDao;
