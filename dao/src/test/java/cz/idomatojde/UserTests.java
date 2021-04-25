@@ -1,7 +1,6 @@
 package cz.idomatojde;
 
 import cz.idomatojde.dao.UserDao;
-import cz.idomatojde.dao.utils.UserContactInfo;
 import cz.idomatojde.entity.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -90,23 +89,6 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         //Validate
         assertThat(user.getPhoneNumber()).isEqualTo(phone);
         assertThat(dao.getById(user.getId()).getPhoneNumber()).isEqualTo(phone);
-    }
-
-    @Test
-    public void userContactInfo() {
-        //Setup
-        User user = getUser("thisUsedToBeAPublicFieldClass");
-
-        //Act
-        dao.create(user);
-
-        UserContactInfo contact = dao.getContactInfo(user.getId());
-
-        //Validate
-        assertThat(contact.getName()).isEqualTo("Name");
-        assertThat(contact.getSurname()).isEqualTo("Surname");
-        assertThat(contact.getEmail()).isEqualTo("pepega@mail.com");
-        assertThat(contact.getPhone()).isEqualTo("+420123456789");
     }
 
     @Test
