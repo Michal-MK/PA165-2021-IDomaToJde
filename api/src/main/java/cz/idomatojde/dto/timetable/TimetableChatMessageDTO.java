@@ -1,0 +1,38 @@
+package cz.idomatojde.dto.timetable;
+
+/**
+ * DTO Holding the necessary information to populate the rendered timetable chat message
+ *
+ * @author Michal Hazdra
+ */
+public class TimetableChatMessageDTO {
+    private long userId;
+
+    private long timetableEntryId;
+
+    private String text;
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getTimetableEntryId() {
+        return timetableEntryId;
+    }
+
+    public void setTimetableEntryId(long timetableEntryId) {
+        this.timetableEntryId = timetableEntryId;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+}
