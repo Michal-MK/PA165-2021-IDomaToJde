@@ -6,9 +6,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-/** Base class for all DAOs
- * @author Michal Hazdra
+/**
+ * Base class for all DAOs
+ *
  * @param <TEntity> Any entity
+ * @author Michal Hazdra
  */
 public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TEntity> {
 
@@ -18,7 +20,9 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
     protected EntityManager em;
 
 
-    /** Constructs the base type with the necessary information
+    /**
+     * Constructs the base type with the necessary information
+     *
      * @param cls the Class instance for reflection
      */
     public BaseDAOImpl(Class<TEntity> cls) {
@@ -42,7 +46,9 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
     }
 
 
-    /** The function to override to handle updates of this entity
+    /**
+     * The function to override to handle updates of this entity
+     *
      * @param entity the entity to update within the database
      */
     public abstract void update(TEntity entity);
