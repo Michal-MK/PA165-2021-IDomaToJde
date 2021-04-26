@@ -1,18 +1,16 @@
 package cz.idomatojde.dao.common;
 
-import org.springframework.stereotype.Repository;
+import cz.idomatojde.entity.base.IEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 /** Base class for all DAOs
  * @author Michal Hazdra
  * @param <TEntity> Any entity
  */
-@Repository
-public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
+public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TEntity> {
 
     private final Class<TEntity> cls;
 
@@ -27,8 +25,9 @@ public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
         this.cls = cls;
     }
 
-    public void create(TEntity entity) {
+    public long create(TEntity entity) {
         em.persist(entity);
+        return entity.getId();
     }
 
     public List<TEntity> findAll() {

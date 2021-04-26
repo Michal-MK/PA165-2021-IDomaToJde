@@ -1,18 +1,20 @@
 package cz.idomatojde.dao.common;
 
+import cz.idomatojde.entity.base.IEntity;
+
 import java.util.List;
 
 /** Base interface for all DAOs
  * @author Michal Hazdra
  * @param <TEntity> Any entity
  */
-public interface BaseDAO<TEntity> {
+public interface BaseDAO<TEntity extends IEntity> {
 
 
     /** Common functionality to persist a new entity
      * @param entity the entity to persist
      */
-    void create(TEntity entity);
+    long create(TEntity entity);
 
 
     /** Common functionality to find all entities

@@ -1,5 +1,7 @@
 package cz.idomatojde.entity;
 
+import cz.idomatojde.entity.base.IEntity;
+
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.persistence.GenerationType;
@@ -21,7 +23,7 @@ import java.util.Objects;
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Table(name = "\"Offer\"")
-public class Offer {
+public class Offer implements IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
