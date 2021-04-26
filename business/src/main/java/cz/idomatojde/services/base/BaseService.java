@@ -12,7 +12,7 @@ public interface BaseService<TEntity> {
      * <b>Create</b> operation for storing a new entity
      * @param entity the entity to create at the repository layer
      */
-    void create(TEntity entity);
+    long create(TEntity entity);
 
     /**
      * <b>Retrieve</b> operation for obtaining a list of all entities of class TEntity
