@@ -70,6 +70,25 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
 
 
     @Override
+    public Timetable getTimetableWithEntries(User user, int year, int week) {
+        Timetable t = getTimetable(user, year, week);
+
+        t.setEntries(getAllTimetableEntries(t.getId()));
+
+        return t;
+    }
+
+    @Override
+    public Timetable getTimetableWithEntries(long timetableId) {
+        Timetable t = getById(timetableId);
+
+        t.setEntries(getAllTimetableEntries(timetableId));
+
+        return t;
+    }
+
+
+    @Override
     public TimetableEntry findEntry(Long entryId) {
         return timetables.findEntry(entryId);
     }

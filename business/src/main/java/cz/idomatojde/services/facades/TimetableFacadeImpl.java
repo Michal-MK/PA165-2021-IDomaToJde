@@ -41,13 +41,8 @@ public class TimetableFacadeImpl implements TimetableFacade {
 
     @Override
     public TimetableDTO getTimetable(long timetableId) {
-        TimetableDTO tdto = new TimetableDTO();
-        Timetable t = timetableService.getById(timetableId);
+        Timetable t = timetableService.getTimetableWithEntries(timetableId);
 
-        tdto.setUserInfo(mapService.mapTo(t.getUser(), UserContactInfoDTO.class));
-        tdto.setYear(t.getYear());
-        tdto.setWeek(t.getWeek());
-
-        return tdto;
+        return mapService.mapTo(t, TimetableDTO.class);
     }
 }
