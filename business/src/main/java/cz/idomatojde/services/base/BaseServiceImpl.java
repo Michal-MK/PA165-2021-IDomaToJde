@@ -1,12 +1,11 @@
 package cz.idomatojde.services.base;
 
 import cz.idomatojde.dao.common.BaseDAO;
-import org.springframework.stereotype.Service;
+import cz.idomatojde.entity.base.IEntity;
 
 import java.util.List;
 
-@Service
-public abstract class BaseServiceImpl<TEntity> implements BaseService<TEntity> {
+public abstract class BaseServiceImpl<TEntity extends IEntity> implements BaseService<TEntity> {
 
     final BaseDAO<TEntity> base;
 
@@ -15,8 +14,9 @@ public abstract class BaseServiceImpl<TEntity> implements BaseService<TEntity> {
     }
 
     @Override
-    public void create(TEntity entity) {
+    public long create(TEntity entity) {
         base.create(entity);
+        return entity.getId();
     }
 
     @Override
