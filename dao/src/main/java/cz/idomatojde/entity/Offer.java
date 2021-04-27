@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Objects;
 
 
-/*
+/**
+ * An Entity representing an online offer for online lesson
+ *
  * @author Jiri Vrbka
  */
 @Entity

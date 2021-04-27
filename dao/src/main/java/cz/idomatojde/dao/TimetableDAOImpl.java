@@ -26,6 +26,9 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
         super(Timetable.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Timetable createTimetable(User user, int year, int week) {
         Timetable tt = new Timetable();
@@ -37,6 +40,9 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
         return tt;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimetableEntry createEntry(Timetable timetable, Offer offer, LocalTime start, Duration duration) {
         TimetableEntry entry = new TimetableEntry();
@@ -51,6 +57,9 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
         return entry;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveEntry(TimetableEntry entry, LocalTime newStart, Duration newDuration) {
         entry.setEntryStart(newStart);
@@ -58,21 +67,33 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
         updateEntry(entry);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void moveEntry(TimetableEntry entry, LocalTime newStart) {
         moveEntry(entry, newStart, entry.getLength());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeEntry(TimetableEntry entry) {
         em.remove(entry);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateEntry(TimetableEntry entry) {
         em.merge(entry);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Timetable getTimetable(User user, int year, int week) {
         return em.createQuery("select t from Timetable t where" +
@@ -84,6 +105,9 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
                 .getSingleResult();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimetableEntry findEntry(Long entryId) {
         return em.createQuery("select a from TimetableEntry a where a.id = :id", TimetableEntry.class)
@@ -97,6 +121,9 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
         return getTimetable(user, year, week);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TimetableEntry> getAllTimetableEntries(Long timetableId) {
         return em.createQuery("select t from Timetable t join fetch t.entries where t.id = :id", Timetable.class)
@@ -105,6 +132,9 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
                 .getEntries();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(Timetable timetable) {
         em.merge(timetable);

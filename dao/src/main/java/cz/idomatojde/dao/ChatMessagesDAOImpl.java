@@ -20,6 +20,9 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
         super(TimetableChatMessage.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addMessage(User sender, TimetableEntry entry, String text) {
         TimetableChatMessage message = new TimetableChatMessage();
@@ -30,6 +33,9 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
         em.persist(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TimetableChatMessage> getAllMessagesForEntry(TimetableEntry entry) {
         return em.createQuery("select tcm from TimetableChatMessage tcm where tcm.timetableEntry = :entry",
@@ -38,6 +44,9 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
                 .getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(TimetableChatMessage timetableChatMessage) {
         em.createQuery("update TimetableChatMessage tcm set tcm.text = :text where tcm.id = :id")

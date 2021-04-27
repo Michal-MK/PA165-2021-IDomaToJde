@@ -12,7 +12,9 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-/*
+/**
+ * DAO implementation for {@link OfferDao} API
+ *
  * @author Jiri Vrbka
  */
 @Repository
@@ -22,21 +24,30 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
         super(Offer.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void update(Offer offer) {
         em.merge(offer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List<Offer> findByUser(User u) {
+    public List<Offer> findByUser(User user) {
         return em.createQuery(
                 "Select o from Offer o where o.owner = :userid",
                 Offer.class)
-                .setParameter("userid", u)
+                .setParameter("userid", user)
                 .getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Offer> getActiveOffers() {
         return em

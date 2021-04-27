@@ -13,9 +13,10 @@ import java.util.List;
 import java.util.Objects;
 
 
-/*
- * @author by Ondrej Urbanovsky
- * Updated by Jiri Vrbka
+/**
+ * Entity representing a user on web.
+ *
+ * @author Jiri Vrbka
  */
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
