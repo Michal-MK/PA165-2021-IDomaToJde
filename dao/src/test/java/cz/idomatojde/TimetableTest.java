@@ -247,7 +247,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
     @Test
     public void updateTest() {
         // Arrange
-        var newUser = getUser("newUser");
+        var newUser = getUser("newUserForUpdating");
         userDao.create(newUser);
 
         var offer = getOffer("updateTest");

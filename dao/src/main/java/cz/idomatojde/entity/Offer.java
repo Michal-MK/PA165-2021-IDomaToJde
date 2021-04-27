@@ -2,6 +2,7 @@ package cz.idomatojde.entity;
 
 import cz.idomatojde.entity.base.IEntity;
 
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.persistence.GenerationType;
@@ -53,6 +54,7 @@ public class Offer implements IEntity {
     @OneToMany
     private List<TimetableEntry> events = new ArrayList<>();
 
+    @Enumerated
     private Category category;
 
     private Integer capacity;

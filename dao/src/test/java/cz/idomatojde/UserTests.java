@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
@@ -89,6 +90,32 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         //Validate
         assertThat(user.getPhoneNumber()).isEqualTo(phone);
         assertThat(dao.getById(user.getId()).getPhoneNumber()).isEqualTo(phone);
+    }
+
+    @Test
+    public void userGetByEmailCorrect() {
+        //Setup
+        User expectedUser = getUser("correctEmailSearch");
+        dao.create(expectedUser);
+
+        //Act
+        var actualUser = dao.getByEmail(expectedUser.getEmail());
+
+        //Validate
+        Assert.assertEquals(actualUser, expectedUser);
+    }
+
+    @Test
+    public void userGetByEmailIncorrect() {
+        //Setup
+        User expectedUser = getUser("incorrectEmailSearch");
+        dao.create(expectedUser);
+
+        //Act
+        var actualUser = dao.getByEmail("invalid@mail.com");
+
+        //Validate
+        Assert.assertNull(actualUser);
     }
 
     @Test
