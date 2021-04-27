@@ -104,8 +104,6 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         user.setWantsAdvertisement(true);
         user.setCredits(Integer.MAX_VALUE);
 
-        dao.update(user);
-
         User updated = dao.getById(1L);
 
         //Validate

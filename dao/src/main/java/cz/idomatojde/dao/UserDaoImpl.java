@@ -23,7 +23,6 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
     public void addPhone(String phoneNumber, Long userId) {
         var user = this.getById(userId);
         user.setPhoneNumber(phoneNumber);
-        em.persist(user);
     }
 
     /**
@@ -33,14 +32,5 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
     public void addCredits(Integer credits, Long userId) {
         var user = this.getById(userId);
         user.setCredits(user.getCredits() + credits);
-        em.persist(user);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void update(User user) {
-        em.merge(user);
     }
 }

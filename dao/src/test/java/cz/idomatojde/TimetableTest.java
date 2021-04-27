@@ -257,7 +257,6 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
 
         // Act
         timetable.setUser(newUser);
-        timetableDAO.update(timetable);
 
         // Assert
         Assert.assertEquals(newUser, timetable.getUser());
