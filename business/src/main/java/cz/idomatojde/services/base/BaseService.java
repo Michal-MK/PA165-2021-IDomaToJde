@@ -1,12 +1,14 @@
 package cz.idomatojde.services.base;
 
+import cz.idomatojde.entity.base.IEntity;
+
 import java.util.List;
 
 /**
  * Base service interface containing CRUD functionality
  * @param <TEntity> the backing Entity class this instance services
  */
-public interface BaseService<TEntity> {
+public interface BaseService<TEntity extends IEntity> {
 
     /**
      * <b>Create</b> operation for storing a new entity
