@@ -4,10 +4,7 @@ import cz.idomatojde.dao.ChatMessagesDAO;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.TimetableDAO;
 import cz.idomatojde.dao.UserDao;
-import cz.idomatojde.entity.Category;
-import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.TimetableChatMessage;
-import cz.idomatojde.entity.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -19,10 +16,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
-import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
+
+import static cz.idomatojde.TestObjects.getOffer;
 
 /**
  * @author Jiri Vrbka
@@ -46,38 +43,6 @@ public class ChatMessagesTest extends AbstractTestNGSpringContextTests {
 
     @Inject
     private UserDao userDao;
-
-    private User getUser(String username) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassHash("UGFzc3dvcmQ=");
-        user.setPassSalt("U2FsdA==");
-        user.setName("Name");
-        user.setSurname("Surname");
-        user.setPhoneNumber("+420123456789");
-        user.setEmail("pepega@mail.com");
-        user.setCredits(123);
-        user.setWantsAdvertisement(false);
-        user.setAdmin(false);
-
-        return user;
-    }
-
-
-    private Offer getOffer(String title) {
-        Offer offer = new Offer();
-        offer.setTitle(title);
-        offer.setOwner(getUser(title));
-        offer.setDescription("description");
-        offer.setCategory(Category.EDUCATION);
-        offer.setCapacity(10);
-        offer.setRegistered(5);
-        offer.setPrice(BigDecimal.ONE);
-        offer.setCreatedDate(LocalDate.of(2021, 4, 1));
-        offer.setExpirationDate(LocalDate.of(2021,4,20));
-
-        return offer;
-    }
 
 
     @Test
@@ -165,7 +130,7 @@ public class ChatMessagesTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void createTest(){
+    public void createTest() {
         // Arrange
         var offer = getOffer("createEntryTest");
         userDao.create(offer.getOwner());

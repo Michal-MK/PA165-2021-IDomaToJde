@@ -14,7 +14,9 @@ import java.time.temporal.ChronoField;
 import java.util.List;
 
 
-/** DAO implementation for all Timetable related entities
+/**
+ * DAO implementation for all Timetable related entities
+ *
  * @author Michal Hazdra
  */
 @Repository
@@ -74,7 +76,7 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     @Override
     public Timetable getTimetable(User user, int year, int week) {
         return em.createQuery("select t from Timetable t where" +
-                " t.user = :user and t.year = :y and t.week = :w",
+                        " t.user = :user and t.year = :y and t.week = :w",
                 Timetable.class)
                 .setParameter("user", user)
                 .setParameter("y", year)

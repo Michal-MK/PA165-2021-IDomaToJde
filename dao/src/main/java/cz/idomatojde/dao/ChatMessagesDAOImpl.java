@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/** DAO implementation for Timetable chat messages
+/**
+ * DAO implementation for Timetable chat messages
+ *
  * @author Michal Hazdra
  */
 @Repository

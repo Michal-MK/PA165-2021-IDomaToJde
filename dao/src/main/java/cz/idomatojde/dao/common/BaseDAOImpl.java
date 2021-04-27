@@ -1,18 +1,18 @@
 package cz.idomatojde.dao.common;
 
-import org.springframework.stereotype.Repository;
+import cz.idomatojde.entity.base.IEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
-/** Base class for all DAOs
- * @author Michal Hazdra
+/**
+ * Base class for all DAOs
+ *
  * @param <TEntity> Any entity
+ * @author Michal Hazdra
  */
-@Repository
-public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
+public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TEntity> {
 
     private final Class<TEntity> cls;
 
@@ -20,15 +20,18 @@ public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
     protected EntityManager em;
 
 
-    /** Constructs the base type with the necessary information
+    /**
+     * Constructs the base type with the necessary information
+     *
      * @param cls the Class instance for reflection
      */
     public BaseDAOImpl(Class<TEntity> cls) {
         this.cls = cls;
     }
 
-    public void create(TEntity entity) {
+    public long create(TEntity entity) {
         em.persist(entity);
+        return entity.getId();
     }
 
     public List<TEntity> findAll() {
@@ -43,7 +46,9 @@ public abstract class BaseDAOImpl<TEntity> implements BaseDAO<TEntity> {
     }
 
 
-    /** The function to override to handle updates of this entity
+    /**
+     * The function to override to handle updates of this entity
+     *
      * @param entity the entity to update within the database
      */
     public abstract void update(TEntity entity);

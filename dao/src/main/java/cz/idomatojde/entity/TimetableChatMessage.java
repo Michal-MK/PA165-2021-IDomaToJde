@@ -1,5 +1,7 @@
 package cz.idomatojde.entity;
 
+import cz.idomatojde.entity.base.IEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +13,7 @@ import java.util.Objects;
  * @author Michal Hazdra
  */
 @Entity
-public class TimetableChatMessage {
+public class TimetableChatMessage implements IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,6 +71,6 @@ public class TimetableChatMessage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTimetableEntry(), getText());
+        return Objects.hash(getTimetableEntry(), getSender(), getText());
     }
 }

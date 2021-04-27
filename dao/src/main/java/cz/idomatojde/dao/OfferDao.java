@@ -10,8 +10,6 @@ import java.util.List;
  * @author Jiri Vrbka
  */
 public interface OfferDao extends BaseDAO<Offer> {
-    public void create(Offer offer);
-    public List<Offer> findAll();
-    public List<Offer> findByUser(User u);
-    public List<Offer> getActiveOffers();
+    List<Offer> findByUser(User u);
+    List<Offer> getActiveOffers();
 }

@@ -1,5 +1,7 @@
 package cz.idomatojde.entity;
 
+import cz.idomatojde.entity.base.IEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +18,7 @@ import java.util.Objects;
  * @author Michal Hazdra
  */
 @Entity
-public class TimetableEntry {
+public class TimetableEntry implements IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

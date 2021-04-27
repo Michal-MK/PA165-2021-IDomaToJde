@@ -1,7 +1,6 @@
 package cz.idomatojde;
 
 import cz.idomatojde.dao.UserDao;
-import cz.idomatojde.dao.utils.UserContactInfo;
 import cz.idomatojde.entity.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,9 +13,12 @@ import org.testng.annotations.Test;
 
 import javax.inject.Inject;
 
+import static cz.idomatojde.TestObjects.getUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-/** User specific DAO tests
+/**
+ * User specific DAO tests
+ *
  * @author Michal Hazdra
  */
 @ContextConfiguration("classpath:applicationConfig.xml")
@@ -28,22 +30,6 @@ public class UserTests extends AbstractTestNGSpringContextTests {
 
     @Inject
     public UserDao dao;
-
-    public static User getUser(String username) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassHash("UGFzc3dvcmQ=");
-        user.setPassSalt("U2FsdA==");
-        user.setName("Name");
-        user.setSurname("Surname");
-        user.setPhoneNumber("+420123456789");
-        user.setEmail("pepega@mail.com");
-        user.setCredits(123);
-        user.setWantsAdvertisement(false);
-        user.setAdmin(false);
-
-        return user;
-    }
 
     @Test
     public void userCreation() {
@@ -79,7 +65,7 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         assertThat(dao.getById(1L).getCredits()).isEqualTo(123);
 
         //Act
-        dao.addCredits(1,user.getId());
+        dao.addCredits(1, user.getId());
 
         //Validate
         assertThat(user.getCredits()).isEqualTo(124);
@@ -103,23 +89,6 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         //Validate
         assertThat(user.getPhoneNumber()).isEqualTo(phone);
         assertThat(dao.getById(user.getId()).getPhoneNumber()).isEqualTo(phone);
-    }
-
-    @Test
-    public void userContactInfo() {
-        //Setup
-        User user = getUser("thisUsedToBeAPublicFieldClass");
-
-        //Act
-        dao.create(user);
-
-        UserContactInfo contact = dao.getContactInfo(user.getId());
-
-        //Validate
-        assertThat(contact.getName()).isEqualTo("Name");
-        assertThat(contact.getSurname()).isEqualTo("Surname");
-        assertThat(contact.getEmail()).isEqualTo("pepega@mail.com");
-        assertThat(contact.getPhone()).isEqualTo("+420123456789");
     }
 
     @Test
