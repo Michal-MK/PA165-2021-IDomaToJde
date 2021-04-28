@@ -17,11 +17,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-import static cz.idomatojde.TestMocks.mockOffer;
-import static cz.idomatojde.TestMocks.mockTimetable;
-import static cz.idomatojde.TestMocks.mockTimetableEntry;
-import static cz.idomatojde.TestMocks.mockUser;
+
+import static cz.idomatojde.TestObjects.getOffer;
+import static cz.idomatojde.TestObjects.getUser;
+import static cz.idomatojde.TestObjects.getTimetable;
+import static cz.idomatojde.TestObjects.getTimetableEntry;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -63,81 +65,90 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
         mockDao = mock(TimetableDAO.class);
         service = new TimetableServiceImpl(mockDao);
 
-        DEF_USER = mockUser("username");
-        DEF_OFFER = mockOffer(DEF_USER, "Yoga");
-        DEF_TIMETABLE = mockTimetable(DEF_USER, 2020, 1);
-        DEF_ENTRY = mockTimetableEntry(DEF_TIMETABLE, 20, TIME_4PM, DUR_2H);
+        DEF_USER = getUser("username");
+        DEF_OFFER = getOffer(DEF_USER, "Yoga");
+        DEF_TIMETABLE = getTimetable(DEF_USER, 2020, 1);
+        DEF_ENTRY = getTimetableEntry(DEF_TIMETABLE, 20, TIME_4PM, DUR_2H);
+
+        DEF_TIMETABLE.setId(1L);
+        DEF_ENTRY.setId(1L);
+
+        AtomicReference<Long> timetableId = new AtomicReference<>(1L);
 
         List<Timetable> list = List.of(
-                mockTimetable(DEF_USER, 2019, 1),
-                mockTimetable(DEF_USER, 2020, 1),
-                mockTimetable(mockUser("username1"), 2020, 1),
-                mockTimetable(mockUser("username2"), 2021, 1));
+                getTimetable(DEF_USER, 2019, 1),
+                getTimetable(DEF_USER, 2020, 1),
+                getTimetable(getUser("username1"), 2020, 1),
+                getTimetable(getUser("username2"), 2021, 1));
 
         when(mockDao.findAll()).thenReturn(list);
 
         when(mockDao.getById(anyLong())).thenAnswer(a -> {
-            when(DEF_TIMETABLE.getId()).thenReturn(a.getArgument(0));
-
+            DEF_TIMETABLE.setId(a.getArgument(0));
             return DEF_TIMETABLE;
         });
 
+        when(mockDao.create(any(Timetable.class))).thenAnswer((params) ->{
+            params.getArgument(0, Timetable.class).setId(timetableId.get());
+            timetableId.getAndSet(timetableId.get() + 1);
+            return timetableId.get();
+        });
+
         when(mockDao.findEntry(anyLong())).thenAnswer((param) -> {
-            when(DEF_ENTRY.getId()).thenReturn(param.getArgument(0));
-            when(DEF_ENTRY.getTimetable()).thenReturn(DEF_TIMETABLE);
+            DEF_ENTRY.setId(param.getArgument(0));
+            DEF_ENTRY.setTimetable(DEF_TIMETABLE);
 
             return DEF_ENTRY;
         });
 
         when(mockDao.createTimetable(any(User.class), anyInt(), anyInt())).thenAnswer((params) -> {
-            when(DEF_TIMETABLE.getId()).thenReturn(1L);
-            when(DEF_TIMETABLE.getUser()).thenReturn(params.getArgument(0));
-            when(DEF_TIMETABLE.getYear()).thenReturn(params.getArgument(1));
-            when(DEF_TIMETABLE.getWeek()).thenReturn(params.getArgument(2));
+            DEF_TIMETABLE.setId(1L);
+            DEF_TIMETABLE.setUser(params.getArgument(0));
+            DEF_TIMETABLE.setYear(params.getArgument(1));
+            DEF_TIMETABLE.setWeek(params.getArgument(2));
 
             return DEF_TIMETABLE;
         });
 
         when(mockDao.getTimetable(any(User.class), anyInt(), anyInt())).thenAnswer((params) -> {
-            when(DEF_TIMETABLE.getUser()).thenReturn(params.getArgument(0));
-            when(DEF_TIMETABLE.getYear()).thenReturn(params.getArgument(1));
-            when(DEF_TIMETABLE.getWeek()).thenReturn(params.getArgument(2));
-
-            when(DEF_TIMETABLE.getId()).thenReturn(1L);
+            DEF_TIMETABLE.setUser(params.getArgument(0));
+            DEF_TIMETABLE.setYear(params.getArgument(1));
+            DEF_TIMETABLE.setWeek(params.getArgument(2));
 
             return DEF_TIMETABLE;
         });
 
         when(mockDao.createEntry(any(Timetable.class), any(Offer.class), any(LocalTime.class), any(Duration.class)))
                 .thenAnswer((params) -> {
-                    TimetableEntry mockEntry = mockTimetableEntry(params.getArgument(0), 20,
+                    TimetableEntry entry = getTimetableEntry(params.getArgument(0), 20,
                             params.getArgument(2),
                             params.getArgument(3));
-                    when(mockEntry.getOffer()).thenReturn(params.getArgument(1));
-                    return mockEntry;
+
+                    entry.setOffer(params.getArgument(1));
+                    return entry;
                 });
 
         when(mockDao.getAllTimetableEntries(anyLong())).thenAnswer((params) -> {
-            TimetableEntry t1 = mockTimetableEntry(DEF_TIMETABLE, 19, TIME_4PM, DUR_2H);
+            TimetableEntry t1 = getTimetableEntry(DEF_TIMETABLE, 19, TIME_4PM, DUR_2H);
             TimetableEntry t2 = DEF_ENTRY;
-            TimetableEntry t3 = mockTimetableEntry(DEF_TIMETABLE, 21, TIME_4PM, Duration.ofHours(4L));
+            TimetableEntry t3 = getTimetableEntry(DEF_TIMETABLE, 21, TIME_4PM, Duration.ofHours(4L));
 
-            when(DEF_TIMETABLE.getId()).thenReturn(params.getArgument(0));
+            DEF_TIMETABLE.setId(params.getArgument(0));
 
-            when(t1.getId()).thenReturn(2L);
-            when(t2.getId()).thenReturn(3L);
-            when(t3.getId()).thenReturn(4L);
-            when(t1.getTimetable()).thenReturn(DEF_TIMETABLE);
-            when(t2.getTimetable()).thenReturn(DEF_TIMETABLE);
-            when(t3.getTimetable()).thenReturn(DEF_TIMETABLE);
+            t1.setId(2L);
+            t2.setId(3L);
+            t3.setId(4L);
+            t1.setTimetable(DEF_TIMETABLE);
+            t2.setTimetable(DEF_TIMETABLE);
+            t3.setTimetable(DEF_TIMETABLE);
 
             return List.of(t1, t2, t3);
         });
 
         when(mockDao.getTimetableForCurrentWeek(any(User.class))).thenAnswer((params) -> {
-            when(DEF_TIMETABLE.getUser()).thenReturn(params.getArgument(0));
-            when(DEF_TIMETABLE.getYear()).thenReturn(LocalDate.now().getYear());
-            when(DEF_TIMETABLE.getWeek()).thenReturn(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
+            DEF_TIMETABLE.setUser(params.getArgument(0));
+            DEF_TIMETABLE.setYear(LocalDate.now().getYear());
+            DEF_TIMETABLE.setWeek(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
 
             return DEF_TIMETABLE;
         });
@@ -276,7 +287,7 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getTimetable() {
+    public void getSimpleTimetable() {
         verifyNoInteractions(mockDao);
         Timetable t = service.getTimetable(DEF_USER, 2020, 1);
 

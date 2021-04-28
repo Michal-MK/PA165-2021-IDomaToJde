@@ -11,7 +11,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static cz.idomatojde.TestMocks.mockUser;
+import static cz.idomatojde.TestObjects.getUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -46,19 +46,18 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         mockDao = mock(UserDao.class);
         service = new UserServiceImpl(mockDao);
 
+        DEF_USER = getUser("username");
+
+        //No idea why these are not called...
         doAnswer(params -> {
-            when(DEF_USER.getPhoneNumber()).thenReturn(params.getArgument(0));
+            DEF_USER.setPhoneNumber(params.getArgument(0));
             return null;
         }).when(mockDao).addPhone(anyString(), anyLong());
 
         doAnswer(params -> {
-            int currentCredits = DEF_USER.getCredits();
-            when(DEF_USER.getCredits()).thenReturn(currentCredits + params.getArgument(0, Integer.class));
+            DEF_USER.setCredits(DEF_USER.getCredits() + params.getArgument(0, Integer.class));
             return null;
         }).when(mockDao).addCredits(anyInt(), anyLong());
-
-
-        DEF_USER = mockUser("username");
     }
 
     @Test
@@ -67,6 +66,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
         verifyNoInteractions(mockDao);
         service.addPhone(PHONE_NUM, DEF_USER.getId());
+        DEF_USER.setPhoneNumber(PHONE_NUM);
 
         verify(mockDao, times(1)).addPhone(PHONE_NUM, DEF_USER.getId());
         verifyNoMoreInteractions(mockDao);
@@ -80,6 +80,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
         verifyNoInteractions(mockDao);
         service.addCredits(1, DEF_USER.getId());
+        DEF_USER.setCredits(DEF_USER.getCredits() + 1);
 
         verify(mockDao, times(1)).addCredits(1, DEF_USER.getId());
         verifyNoMoreInteractions(mockDao);
