@@ -14,8 +14,7 @@ import java.util.Objects;
 
 
 /*
- * @author by Ondrej Urbanovsky
- * Updated by Jiri Vrbka
+ * @author Jiri Vrbka
  */
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
@@ -30,10 +29,7 @@ public class User implements IEntity {
     private String username;
 
     @NotNull
-    private String passHash;
-
-    @NotNull
-    private String passSalt;
+    private String password;
 
     @NotNull
     private String email;
@@ -74,20 +70,12 @@ public class User implements IEntity {
         this.username = username;
     }
 
-    public String getPassHash() {
-        return passHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassHash(String passHash) {
-        this.passHash = passHash;
-    }
-
-    public String getPassSalt() {
-        return passSalt;
-    }
-
-    public void setPassSalt(String passSalt) {
-        this.passSalt = passSalt;
+    public void setPassword(String passHash) {
+        this.password = passHash;
     }
 
     public String getEmail() {
@@ -173,8 +161,7 @@ public class User implements IEntity {
         return wantsAdvertisement() == user.wantsAdvertisement()
                 && isAdmin() == user.isAdmin()
                 && Objects.equals(getUsername(), user.getUsername())
-                && Objects.equals(getPassHash(), user.getPassHash())
-                && Objects.equals(getPassSalt(), user.getPassSalt())
+                && Objects.equals(getPassword(), user.getPassword())
                 && Objects.equals(getEmail(), user.getEmail())
                 && Objects.equals(getName(), user.getName())
                 && Objects.equals(getSurname(), user.getSurname())
@@ -189,8 +176,7 @@ public class User implements IEntity {
     public int hashCode() {
         return Objects.hash(
                 getUsername(),
-                getPassHash(),
-                getPassSalt(),
+                getPassword(),
                 getEmail(),
                 getName(),
                 getSurname(),
