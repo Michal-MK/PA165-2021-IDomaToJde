@@ -38,8 +38,8 @@ public class User implements IEntity {
     @NotNull
     private String passSalt;
 
-    @Column(nullable = false,unique = true)
-    @Pattern(regexp=".+@.+\\....?")
+    @Column(nullable = false, unique = true)
+    @Pattern(regexp = ".+@.+\\....?")
     private String email;
 
     @NotNull
