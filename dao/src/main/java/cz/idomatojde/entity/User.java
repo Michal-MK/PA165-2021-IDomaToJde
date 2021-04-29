@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -39,7 +38,7 @@ public class User implements IEntity {
     @NotNull
     private String passSalt;
 
-    @Column(nullable=false,unique=true)
+    @Column(nullable = false,unique = true)
     @Pattern(regexp=".+@.+\\....?")
     private String email;
 

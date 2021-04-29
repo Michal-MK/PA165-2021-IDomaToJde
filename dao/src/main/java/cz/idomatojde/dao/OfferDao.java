@@ -2,7 +2,6 @@ package cz.idomatojde.dao;
 
 import cz.idomatojde.dao.common.BaseDAO;
 import cz.idomatojde.entity.Offer;
-import cz.idomatojde.entity.TimetableChatMessage;
 import cz.idomatojde.entity.User;
 
 import java.util.List;

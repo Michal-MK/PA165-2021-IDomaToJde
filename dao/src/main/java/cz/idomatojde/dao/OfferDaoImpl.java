@@ -4,11 +4,6 @@ import cz.idomatojde.dao.common.BaseDAOImpl;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
-import cz.idomatojde.entity.User;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
