@@ -6,6 +6,7 @@ import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.services.UserService;
 import cz.idomatojde.services.base.MappingService;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -28,6 +29,11 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public void registerUser(RegisterUserDTO registrationInfo) {
         User u = mapService.mapTo(registrationInfo, User.class);
+
+        u.setCredits(0);
+        u.setBonusCredits(0);
+        u.setPassword(new Argon2PasswordEncoder().encode(registrationInfo.getPassword()));
+
         userService.create(u);
     }
 
@@ -36,5 +42,21 @@ public class UserFacadeImpl implements UserFacade {
         User u = userService.getById(userId);
 
         return mapService.mapTo(u, UserContactInfoDTO.class);
+    }
+
+    @Override
+    public void setCredits(long userId, int credits) {
+        User u = userService.getById(userId);
+
+        u.setCredits(credits);
+    }
+
+    @Override
+    public void changePhoneNumber(long userId, String phoneNumber) {
+        User u = userService.getById(userId);
+
+        // TODO Phone number verification
+
+        u.setPhoneNumber(phoneNumber);
     }
 }

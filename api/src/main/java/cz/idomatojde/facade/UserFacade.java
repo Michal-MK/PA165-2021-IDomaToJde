@@ -24,4 +24,20 @@ public interface UserFacade {
      * @return user's full name, phone number and e-mail account
      */
     UserContactInfoDTO getUserContactInfo(long userId);
+
+    /**
+     * Set a new amount of credits to a user
+     *
+     * @param userId  the unique user identifier
+     * @param credits the amount of credits to set
+     */
+    void setCredits(long userId, int credits);
+
+    /**
+     * Set a new phone number to a user
+     *
+     * @param userId      the unique user identifier
+     * @param phoneNumber the phone number to set
+     */
+    void changePhoneNumber(long userId, String phoneNumber);
 }
