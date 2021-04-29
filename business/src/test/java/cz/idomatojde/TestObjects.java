@@ -22,7 +22,7 @@ public final class TestObjects {
         user.setName("Name");
         user.setSurname("Surname");
         user.setPhoneNumber("+420123456789");
-        user.setEmail("pepega@mail.com");
+        user.setEmail(username + "@mail.com");
         user.setCredits(123);
         user.setWantsAdvertisement(false);
         user.setAdmin(false);
