@@ -3,16 +3,19 @@ package cz.idomatojde;
 import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class TestObjects {
-    public static User getUser(String username) {
+    public static User getUser(String username, String password) {
+
+        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
+
         User user = new User();
         user.setUsername(username);
-        user.setPassHash("UGFzc3dvcmQ=");
-        user.setPassSalt("U2FsdA==");
+        user.setPassword(encoder.encode(password));
         user.setName("Name");
         user.setSurname("Surname");
         user.setPhoneNumber("+420123456789");
@@ -24,10 +27,16 @@ public class TestObjects {
         return user;
     }
 
+    public static User getUser(String username) {
+        return getUser(username, "password");
+    }
+
+
+
     public static Offer getOffer(String title) {
         Offer offer = new Offer();
         offer.setTitle(title);
-        offer.setOwner(getUser(title));
+        offer.setOwner(getUser("Mr. " + title, "12345"));
         offer.setDescription("description");
         offer.setCategory(Category.EDUCATION);
         offer.setCapacity(10);

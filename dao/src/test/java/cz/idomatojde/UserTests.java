@@ -4,6 +4,7 @@ import cz.idomatojde.dao.UserDao;
 import cz.idomatojde.entity.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -34,7 +35,8 @@ public class UserTests extends AbstractTestNGSpringContextTests {
     @Test
     public void userCreation() {
         //Setup
-        User user = getUser("pepega");
+        User user = getUser("pepega", "12345");
+        Argon2PasswordEncoder decoder = new Argon2PasswordEncoder();
 
         //Act
         dao.create(user);
@@ -42,8 +44,7 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         //Validate
         assertThat(user.getId()).isEqualTo(1L);
         assertThat(dao.getById(1L).getUsername()).isEqualTo("pepega");
-        assertThat(dao.getById(1L).getPassHash()).isEqualTo("UGFzc3dvcmQ=");
-        assertThat(dao.getById(1L).getPassSalt()).isEqualTo("U2FsdA==");
+        assertThat(decoder.matches("12345", dao.getById(1L).getPassword())).isTrue();
         assertThat(dao.getById(1L).getName()).isEqualTo("Name");
         assertThat(dao.getById(1L).getSurname()).isEqualTo("Surname");
         assertThat(dao.getById(1L).getPhoneNumber()).isEqualTo("+420123456789");
