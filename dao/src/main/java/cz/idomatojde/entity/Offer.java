@@ -3,6 +3,7 @@ package cz.idomatojde.entity;
 import cz.idomatojde.entity.base.IEntity;
 
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.persistence.GenerationType;
@@ -53,6 +54,9 @@ public class Offer implements IEntity {
 
     @OneToMany
     private List<TimetableEntry> events = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "subscribedOffers")
+    private List<User> subscribers = new ArrayList<>();
 
     @Enumerated
     private Category category;
@@ -122,6 +126,14 @@ public class Offer implements IEntity {
         this.events = events;
     }
 
+    public List<User> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(List<User> subscribers) {
+        this.subscribers = subscribers;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -160,6 +172,7 @@ public class Offer implements IEntity {
                 && Objects.equals(getCreatedDate(), offer.getCreatedDate())
                 && Objects.equals(getExpirationDate(), offer.getExpirationDate())
                 && Objects.equals(getEvents(), offer.getEvents())
+                && Objects.equals(getSubscribers(), offer.getSubscribers())
                 && getCategory() == offer.getCategory()
                 && Objects.equals(getCapacity(), offer.getCapacity())
                 && Objects.equals(getRegistered(), offer.getRegistered()
@@ -175,6 +188,7 @@ public class Offer implements IEntity {
                 getCreatedDate(),
                 getExpirationDate(),
                 getEvents(),
+                getSubscribers(),
                 getCategory(),
                 getCapacity(),
                 getRegistered()
