@@ -38,15 +38,6 @@ public interface BaseDAO<TEntity extends IEntity> {
      */
     TEntity getById(Long id);
 
-
-    /**
-     * Common functionality to update the given entity
-     *
-     * @param entity the entity to update within the database
-     */
-    void update(TEntity entity);
-
-
     /**
      * Common functionality to delete an entity from the database
      *

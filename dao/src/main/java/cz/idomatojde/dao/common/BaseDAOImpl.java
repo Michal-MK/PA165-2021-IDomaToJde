@@ -45,14 +45,6 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
                 .getSingleResult();
     }
 
-
-    /**
-     * The function to override to handle updates of this entity
-     *
-     * @param entity the entity to update within the database
-     */
-    public abstract void update(TEntity entity);
-
     public void delete(TEntity entity) {
         em.remove(entity);
     }

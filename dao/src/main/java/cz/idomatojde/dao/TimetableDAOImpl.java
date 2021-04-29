@@ -104,9 +104,4 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
                 .getSingleResult()
                 .getEntries();
     }
-
-    @Override
-    public void update(Timetable timetable) {
-        em.merge(timetable);
-    }
 }
