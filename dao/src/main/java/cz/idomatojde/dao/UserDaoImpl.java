@@ -18,27 +18,18 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
         super(User.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addPhone(String phoneNumber, Long userId) {
         var user = this.getById(userId);
         user.setPhoneNumber(phoneNumber);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addCredits(Integer credits, Long userId) {
         var user = this.getById(userId);
         user.setCredits(user.getCredits() + credits);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public User getByEmail(String email){
         if (email == null || email.isEmpty())

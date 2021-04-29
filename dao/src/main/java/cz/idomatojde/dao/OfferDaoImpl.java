@@ -19,9 +19,6 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
         super(Offer.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Offer> findByUser(User user) {
         return em.createQuery(
@@ -31,9 +28,6 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
                 .getResultList();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Offer> getActiveOffers() {
         return em

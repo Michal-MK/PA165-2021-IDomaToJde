@@ -21,9 +21,6 @@ public class MappingServiceImpl implements MappingService {
         this.dozer = dozer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public <T> List<T> mapTo(Collection<?> objects, Class<T> mapToClass) {
         List<T> mappedCollection = new ArrayList<>();
         for (Object object : objects) {
@@ -32,16 +29,10 @@ public class MappingServiceImpl implements MappingService {
         return mappedCollection;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public <T> T mapTo(Object obj, Class<T> mapToClass) {
         return dozer.map(obj, mapToClass);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Mapper getMapper() {
         return dozer;
     }
