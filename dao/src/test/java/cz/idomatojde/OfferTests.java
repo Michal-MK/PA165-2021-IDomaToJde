@@ -133,7 +133,6 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         offer.setCapacity(666);
         offer.setExpirationDate(newDate);
 
-        offerDao.update(offer);
         Offer updated = offerDao.getById(1L);
 
         //Validate

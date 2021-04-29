@@ -121,7 +121,6 @@ public class ChatMessagesTest extends AbstractTestNGSpringContextTests {
 
         // Act
         chat.setText(msgUpdated);
-        chatMessagesDAO.update(chat);
         var chatDb = chatMessagesDAO.getById(chat.getId());
 
         // Assert

@@ -92,6 +92,32 @@ public class UserTests extends AbstractTestNGSpringContextTests {
     }
 
     @Test
+    public void userGetByEmailCorrect() {
+        //Setup
+        User expectedUser = getUser("correctEmailSearch");
+        dao.create(expectedUser);
+
+        //Act
+        var actualUser = dao.getByEmail(expectedUser.getEmail());
+
+        //Validate
+        assertThat(actualUser).isEqualTo(expectedUser);
+    }
+
+    @Test
+    public void userGetByEmailIncorrect() {
+        //Setup
+        User expectedUser = getUser("incorrectEmailSearch");
+        dao.create(expectedUser);
+
+        //Act
+        var actualUser = dao.getByEmail("invalid@mail.com");
+
+        //Validate
+        assertThat(actualUser).isNull();
+    }
+
+    @Test
     public void userUpdate() {
         //Setup
         final String name = "pleaseRestartYourComputerToApplyUpdates";
@@ -103,8 +129,6 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         user.setAdmin(true);
         user.setWantsAdvertisement(true);
         user.setCredits(Integer.MAX_VALUE);
-
-        dao.update(user);
 
         User updated = dao.getById(1L);
 

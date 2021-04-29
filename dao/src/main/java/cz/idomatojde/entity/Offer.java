@@ -2,6 +2,7 @@ package cz.idomatojde.entity;
 
 import cz.idomatojde.entity.base.IEntity;
 
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.persistence.GenerationType;
@@ -17,7 +18,9 @@ import java.util.List;
 import java.util.Objects;
 
 
-/*
+/**
+ * An Entity representing an offer for online lesson
+ *
  * @author Jiri Vrbka
  */
 @Entity
@@ -51,6 +54,7 @@ public class Offer implements IEntity {
     @OneToMany
     private List<TimetableEntry> events = new ArrayList<>();
 
+    @Enumerated
     private Category category;
 
     private Integer capacity;
@@ -145,7 +149,7 @@ public class Offer implements IEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if(o == null) return false;
+        if (o == null) return false;
         if (!(o instanceof Offer)) return false;
 
         Offer offer = (Offer) o;

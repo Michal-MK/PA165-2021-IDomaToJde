@@ -1,7 +1,9 @@
 package cz.idomatojde.entity;
 
-/*
-Created by Jiri Vrbka
+/**
+ * Category that an offer belongs to
+ *
+ * @author Jiri Vrbka
  */
 public enum Category {
     IT,

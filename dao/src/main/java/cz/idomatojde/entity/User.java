@@ -2,6 +2,7 @@ package cz.idomatojde.entity;
 
 import cz.idomatojde.entity.base.IEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,13 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Objects;
 
 
-/*
- * @author by Ondrej Urbanovsky
- * Updated by Jiri Vrbka
+/**
+ * Entity representing a user on web.
+ *
+ * @author Jiri Vrbka
  */
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
@@ -23,7 +26,7 @@ import java.util.Objects;
 public class User implements IEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -35,7 +38,8 @@ public class User implements IEntity {
     @NotNull
     private String passSalt;
 
-    @NotNull
+    @Column(nullable = false, unique = true)
+    @Pattern(regexp = ".+@.+\\....?")
     private String email;
 
     @NotNull

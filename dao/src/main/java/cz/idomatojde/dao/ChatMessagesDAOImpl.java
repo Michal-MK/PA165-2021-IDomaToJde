@@ -37,12 +37,4 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
                 .setParameter("entry", entry)
                 .getResultList();
     }
-
-    @Override
-    public void update(TimetableChatMessage timetableChatMessage) {
-        em.createQuery("update TimetableChatMessage tcm set tcm.text = :text where tcm.id = :id")
-                .setParameter("text", timetableChatMessage.getText())
-                .setParameter("id", timetableChatMessage.getId())
-                .executeUpdate();
-    }
 }
