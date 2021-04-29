@@ -19,7 +19,7 @@ import java.util.Objects;
 
 
 /**
- * An Entity representing an online offer for online lesson
+ * An Entity representing an offer for online lesson
  *
  * @author Jiri Vrbka
  */
