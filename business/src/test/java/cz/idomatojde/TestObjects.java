@@ -5,6 +5,7 @@ import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.entity.User;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -13,12 +14,12 @@ import java.time.LocalTime;
 
 public final class TestObjects {
 
-    public static User getUser(String username) {
+    public static User getUser(String username, String password) {
         User user = new User();
+        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
 
         user.setUsername(username);
-        user.setPassHash("UGFzc3dvcmQ=");
-        user.setPassSalt("U2FsdA==");
+        user.setPassword(encoder.encode(password));
         user.setName("Name");
         user.setSurname("Surname");
         user.setPhoneNumber("+420123456789");
@@ -28,6 +29,10 @@ public final class TestObjects {
         user.setAdmin(false);
 
         return user;
+    }
+
+    public static User getUser(String username) {
+        return getUser(username, "password");
     }
 
     public static Timetable getTimetable(User user, int year, int week) {
