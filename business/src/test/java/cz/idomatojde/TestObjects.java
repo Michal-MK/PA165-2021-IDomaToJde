@@ -12,6 +12,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Class providing predefined Entity objects
+ *
+ * @author Michal Hazdra
+ */
 public final class TestObjects {
 
     public static User getUser(String username, String password) {
@@ -55,7 +60,6 @@ public final class TestObjects {
 
         return timetableEntry;
     }
-
 
     public static Offer getOffer(User user, String title) {
         Offer offer = new Offer();
