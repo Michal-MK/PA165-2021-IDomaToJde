@@ -31,7 +31,7 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
     }
 
     @Override
-    public User getByEmail(String email){
+    public User getByEmail(String email) {
         if (email == null || email.isEmpty())
             throw new IllegalArgumentException("Cannot search for null e-mail");
 

@@ -4,6 +4,7 @@ import cz.idomatojde.dao.common.BaseDAOImpl;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
+
 import java.time.LocalDate;
 import java.util.List;
 

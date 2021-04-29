@@ -149,7 +149,7 @@ public class Offer implements IEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if(o == null) return false;
+        if (o == null) return false;
         if (!(o instanceof Offer)) return false;
 
         Offer offer = (Offer) o;
