@@ -14,7 +14,7 @@ public interface TimetableFacade {
      * Create a new timetable
      *
      * @param timetableDTO necessary timetable creation information
-     * @return uniqe id of the timetable
+     * @return unique id of the timetable
      */
     long addTimetable(AddTimetableDTO timetableDTO);
 

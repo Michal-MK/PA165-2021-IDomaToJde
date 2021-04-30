@@ -3,6 +3,7 @@ package cz.idomatojde.facade;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
+import cz.idomatojde.exceptions.InvalidPhoneNumberException;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -24,7 +25,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
     @Inject
     UserFacade userFacade;
 
-    @Test
+    @Test(expectedExceptions = InvalidPhoneNumberException.class)
     void userIntegration() {
         RegisterUserDTO userDto = new RegisterUserDTO();
         userDto.setUsername("testUser");
@@ -59,5 +60,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         assertThat(updatedContact.getName()).isEqualTo("John");
         assertThat(updatedContact.getSurname()).isEqualTo("Doe");
         assertThat(updatedContact.getPhoneNumber()).isEqualTo("+420987654321");
+
+        userFacade.changePhoneNumber(userId, "Invalid phone number!");
     }
 }

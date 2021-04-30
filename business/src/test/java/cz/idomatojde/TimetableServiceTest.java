@@ -50,13 +50,13 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
 
     private TimetableService service;
 
-    private final LocalTime TIME_4PM = LocalTime.of(16, 0);
-    private final Duration DUR_2H = Duration.ofHours(2);
+    private static final LocalTime TIME_4PM = LocalTime.of(16, 0);
+    private static final Duration DUR_2H = Duration.ofHours(2);
 
-    private User DEF_USER;
-    private Offer DEF_OFFER;
-    private Timetable DEF_TIMETABLE;
-    private TimetableEntry DEF_ENTRY;
+    private User defUser;
+    private Offer defOffer;
+    private Timetable defTimetable;
+    private TimetableEntry defEntry;
 
     @BeforeMethod
     void setup() {
@@ -65,27 +65,27 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
         mockDao = mock(TimetableDAO.class);
         service = new TimetableServiceImpl(mockDao);
 
-        DEF_USER = getUser("username");
-        DEF_OFFER = getOffer(DEF_USER, "Yoga");
-        DEF_TIMETABLE = getTimetable(DEF_USER, 2020, 1);
-        DEF_ENTRY = getTimetableEntry(DEF_TIMETABLE, 20, TIME_4PM, DUR_2H);
+        defUser = getUser("username");
+        defOffer = getOffer(defUser, "Yoga");
+        defTimetable = getTimetable(defUser, 2020, 1);
+        defEntry = getTimetableEntry(defTimetable, 20, TIME_4PM, DUR_2H);
 
-        DEF_TIMETABLE.setId(1L);
-        DEF_ENTRY.setId(1L);
+        defTimetable.setId(1L);
+        defEntry.setId(1L);
 
         AtomicReference<Long> timetableId = new AtomicReference<>(1L);
 
         List<Timetable> list = List.of(
-                getTimetable(DEF_USER, 2019, 1),
-                getTimetable(DEF_USER, 2020, 1),
+                getTimetable(defUser, 2019, 1),
+                getTimetable(defUser, 2020, 1),
                 getTimetable(getUser("username1"), 2020, 1),
                 getTimetable(getUser("username2"), 2021, 1));
 
         when(mockDao.findAll()).thenReturn(list);
 
         when(mockDao.getById(anyLong())).thenAnswer(a -> {
-            DEF_TIMETABLE.setId(a.getArgument(0));
-            return DEF_TIMETABLE;
+            defTimetable.setId(a.getArgument(0));
+            return defTimetable;
         });
 
         when(mockDao.create(any(Timetable.class))).thenAnswer((params) ->{
@@ -95,27 +95,27 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
         });
 
         when(mockDao.findEntry(anyLong())).thenAnswer((param) -> {
-            DEF_ENTRY.setId(param.getArgument(0));
-            DEF_ENTRY.setTimetable(DEF_TIMETABLE);
+            defEntry.setId(param.getArgument(0));
+            defEntry.setTimetable(defTimetable);
 
-            return DEF_ENTRY;
+            return defEntry;
         });
 
         when(mockDao.createTimetable(any(User.class), anyInt(), anyInt())).thenAnswer((params) -> {
-            DEF_TIMETABLE.setId(1L);
-            DEF_TIMETABLE.setUser(params.getArgument(0));
-            DEF_TIMETABLE.setYear(params.getArgument(1));
-            DEF_TIMETABLE.setWeek(params.getArgument(2));
+            defTimetable.setId(1L);
+            defTimetable.setUser(params.getArgument(0));
+            defTimetable.setYear(params.getArgument(1));
+            defTimetable.setWeek(params.getArgument(2));
 
-            return DEF_TIMETABLE;
+            return defTimetable;
         });
 
         when(mockDao.getTimetable(any(User.class), anyInt(), anyInt())).thenAnswer((params) -> {
-            DEF_TIMETABLE.setUser(params.getArgument(0));
-            DEF_TIMETABLE.setYear(params.getArgument(1));
-            DEF_TIMETABLE.setWeek(params.getArgument(2));
+            defTimetable.setUser(params.getArgument(0));
+            defTimetable.setYear(params.getArgument(1));
+            defTimetable.setWeek(params.getArgument(2));
 
-            return DEF_TIMETABLE;
+            return defTimetable;
         });
 
         when(mockDao.createEntry(any(Timetable.class), any(Offer.class), any(LocalTime.class), any(Duration.class)))
@@ -129,43 +129,43 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
                 });
 
         when(mockDao.getAllTimetableEntries(anyLong())).thenAnswer((params) -> {
-            TimetableEntry t1 = getTimetableEntry(DEF_TIMETABLE, 19, TIME_4PM, DUR_2H);
-            TimetableEntry t2 = DEF_ENTRY;
-            TimetableEntry t3 = getTimetableEntry(DEF_TIMETABLE, 21, TIME_4PM, Duration.ofHours(4L));
+            TimetableEntry t1 = getTimetableEntry(defTimetable, 19, TIME_4PM, DUR_2H);
+            TimetableEntry t2 = defEntry;
+            TimetableEntry t3 = getTimetableEntry(defTimetable, 21, TIME_4PM, Duration.ofHours(4L));
 
-            DEF_TIMETABLE.setId(params.getArgument(0));
+            defTimetable.setId(params.getArgument(0));
 
             t1.setId(2L);
             t2.setId(3L);
             t3.setId(4L);
-            t1.setTimetable(DEF_TIMETABLE);
-            t2.setTimetable(DEF_TIMETABLE);
-            t3.setTimetable(DEF_TIMETABLE);
+            t1.setTimetable(defTimetable);
+            t2.setTimetable(defTimetable);
+            t3.setTimetable(defTimetable);
 
             return List.of(t1, t2, t3);
         });
 
         when(mockDao.getTimetableForCurrentWeek(any(User.class))).thenAnswer((params) -> {
-            DEF_TIMETABLE.setUser(params.getArgument(0));
-            DEF_TIMETABLE.setYear(LocalDate.now().getYear());
-            DEF_TIMETABLE.setWeek(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
+            defTimetable.setUser(params.getArgument(0));
+            defTimetable.setYear(LocalDate.now().getYear());
+            defTimetable.setWeek(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
 
-            return DEF_TIMETABLE;
+            return defTimetable;
         });
 
         when(mockDao.getByIdWithUser(1)).thenAnswer((params) -> {
-            DEF_TIMETABLE.setUser(DEF_USER);
+            defTimetable.setUser(defUser);
 
-            return DEF_TIMETABLE;
+            return defTimetable;
         });
     }
 
     @Test
     public void create() {
         verifyNoInteractions(mockDao);
-        service.create(DEF_TIMETABLE);
+        service.create(defTimetable);
 
-        verify(mockDao, times(1)).create(DEF_TIMETABLE);
+        verify(mockDao, times(1)).create(defTimetable);
         verifyNoMoreInteractions(mockDao);
     }
 
@@ -241,9 +241,9 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void delete() {
         verifyNoInteractions(mockDao);
-        service.delete(DEF_TIMETABLE);
+        service.delete(defTimetable);
 
-        verify(mockDao, times(1)).delete(DEF_TIMETABLE);
+        verify(mockDao, times(1)).delete(defTimetable);
         verifyNoMoreInteractions(mockDao);
     }
 
@@ -251,69 +251,59 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     void createNewTimetable() {
         verifyNoInteractions(mockDao);
-        service.createTimetable(DEF_USER, 2020, 40);
+        service.createTimetable(defUser, 2020, 40);
 
-        verify(mockDao, times(1)).createTimetable(DEF_USER, 2020, 40);
+        verify(mockDao, times(1)).createTimetable(defUser, 2020, 40);
         verifyNoMoreInteractions(mockDao);
     }
 
     @Test
     public void createEntry() {
         verifyNoInteractions(mockDao);
-        service.createEntry(DEF_TIMETABLE, DEF_OFFER, LocalTime.of(16, 0), Duration.ofHours(2L));
+        service.createEntry(defTimetable, defOffer, LocalTime.of(16, 0), Duration.ofHours(2L));
 
         verify(mockDao, times(1))
-                .createEntry(DEF_TIMETABLE, DEF_OFFER, LocalTime.of(16, 0), Duration.ofHours(2L));
+                .createEntry(defTimetable, defOffer, LocalTime.of(16, 0), Duration.ofHours(2L));
         verifyNoMoreInteractions(mockDao);
     }
 
     @Test
     public void moveEntryThreeParams() {
         verifyNoInteractions(mockDao);
-        service.moveEntry(DEF_ENTRY, LocalTime.of(18, 0), Duration.ofHours(1L));
+        service.moveEntry(defEntry, LocalTime.of(18, 0), Duration.ofHours(1L));
 
         verify(mockDao, times(1))
-                .moveEntry(DEF_ENTRY, LocalTime.of(18, 0), Duration.ofHours(1L));
+                .moveEntry(defEntry, LocalTime.of(18, 0), Duration.ofHours(1L));
         verifyNoMoreInteractions(mockDao);
     }
 
     @Test
     public void moveEntryTwoParams() {
         verifyNoInteractions(mockDao);
-        service.moveEntry(DEF_ENTRY, LocalTime.of(8, 0));
+        service.moveEntry(defEntry, LocalTime.of(8, 0));
 
         verify(mockDao, times(1))
-                .moveEntry(DEF_ENTRY, LocalTime.of(8, 0));
+                .moveEntry(defEntry, LocalTime.of(8, 0));
         verifyNoMoreInteractions(mockDao);
     }
 
     @Test
     public void removeEntry() {
         verifyNoInteractions(mockDao);
-        service.removeEntry(DEF_ENTRY);
+        service.removeEntry(defEntry);
 
         verify(mockDao, times(1))
-                .removeEntry(DEF_ENTRY);
-        verifyNoMoreInteractions(mockDao);
-    }
-
-    @Test
-    public void updateEntry() {
-        verifyNoInteractions(mockDao);
-        service.updateEntry(DEF_ENTRY);
-
-        verify(mockDao, times(1))
-                .updateEntry(DEF_ENTRY);
+                .removeEntry(defEntry);
         verifyNoMoreInteractions(mockDao);
     }
 
     @Test
     public void getSimpleTimetable() {
         verifyNoInteractions(mockDao);
-        Timetable t = service.getTimetable(DEF_USER, 2020, 1);
+        Timetable t = service.getTimetable(defUser, 2020, 1);
 
         assertThat(t.getId()).isEqualTo(1L);
-        assertThat(t.getUser()).isEqualTo(DEF_USER);
+        assertThat(t.getUser()).isEqualTo(defUser);
         assertThat(t.getYear()).isEqualTo(2020);
         assertThat(t.getWeek()).isEqualTo(1);
     }
@@ -333,13 +323,13 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void getTimetableForCurrentWeek() {
         verifyNoInteractions(mockDao);
-        Timetable timetable = service.getTimetableForCurrentWeek(DEF_USER);
+        Timetable timetable = service.getTimetableForCurrentWeek(defUser);
 
         verify(mockDao, times(1))
-                .getTimetableForCurrentWeek(DEF_USER);
+                .getTimetableForCurrentWeek(defUser);
         verifyNoMoreInteractions(mockDao);
 
-        assertThat(timetable.getUser()).isEqualTo(DEF_USER);
+        assertThat(timetable.getUser()).isEqualTo(defUser);
         assertThat(timetable.getYear()).isEqualTo(LocalDate.now().getYear());
         assertThat(timetable.getWeek()).isEqualTo(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
     }
@@ -347,7 +337,7 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void getAllTimetableEntries() {
         verifyNoInteractions(mockDao);
-        Timetable t = DEF_TIMETABLE;
+        Timetable t = defTimetable;
         long id = t.getId();
 
         List<TimetableEntry> entries = service.getAllTimetableEntries(id);

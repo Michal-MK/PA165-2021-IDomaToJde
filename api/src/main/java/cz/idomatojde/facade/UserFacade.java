@@ -3,6 +3,7 @@ package cz.idomatojde.facade;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
+import cz.idomatojde.exceptions.InvalidPhoneNumberException;
 
 /**
  * Facade responsible for all things concerning users
@@ -49,5 +50,5 @@ public interface UserFacade {
      * @param userId      the unique user identifier
      * @param phoneNumber the phone number to set
      */
-    void changePhoneNumber(long userId, String phoneNumber);
+    void changePhoneNumber(long userId, String phoneNumber) throws InvalidPhoneNumberException;
 }

@@ -66,15 +66,6 @@ public interface TimetableService extends BaseService<Timetable> {
      */
     void removeEntry(TimetableEntry entry);
 
-
-    /**
-     * Updates the {@link TimetableEntry} in the database
-     *
-     * @param entry the entry to update
-     */
-    void updateEntry(TimetableEntry entry);
-
-
     /**
      * Function to obtain the {@link Timetable} for a given {@link User} based on the date
      *

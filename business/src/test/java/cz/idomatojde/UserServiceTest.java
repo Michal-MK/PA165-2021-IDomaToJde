@@ -22,7 +22,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Michal Hazdra
@@ -35,9 +34,9 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
     private UserService service;
 
-    private User DEF_USER;
+    private User defUser;
 
-    final String PHONE_NUM = "+420987654321";
+    private static final String PHONE_NUM = "+420987654321";
 
     @BeforeMethod
     void setup() {
@@ -46,45 +45,45 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         mockDao = mock(UserDao.class);
         service = new UserServiceImpl(mockDao);
 
-        DEF_USER = getUser("username");
+        defUser = getUser("username");
 
         //No idea why these are not called...
         doAnswer(params -> {
-            DEF_USER.setPhoneNumber(params.getArgument(0));
+            defUser.setPhoneNumber(params.getArgument(0));
             return null;
         }).when(mockDao).addPhone(anyString(), anyLong());
 
         doAnswer(params -> {
-            DEF_USER.setCredits(DEF_USER.getCredits() + params.getArgument(0, Integer.class));
+            defUser.setCredits(defUser.getCredits() + params.getArgument(0, Integer.class));
             return null;
         }).when(mockDao).addCredits(anyInt(), anyLong());
     }
 
     @Test
     void addingPhoneNumber() {
-        assertThat(DEF_USER.getPhoneNumber()).isEqualTo("+420123456789");
+        assertThat(defUser.getPhoneNumber()).isEqualTo("+420123456789");
 
         verifyNoInteractions(mockDao);
-        service.addPhone(PHONE_NUM, DEF_USER.getId());
-        DEF_USER.setPhoneNumber(PHONE_NUM);
+        service.addPhone(PHONE_NUM, defUser.getId());
+        defUser.setPhoneNumber(PHONE_NUM);
 
-        verify(mockDao, times(1)).addPhone(PHONE_NUM, DEF_USER.getId());
+        verify(mockDao, times(1)).addPhone(PHONE_NUM, defUser.getId());
         verifyNoMoreInteractions(mockDao);
 
-        assertThat(DEF_USER.getPhoneNumber()).isEqualTo(PHONE_NUM);
+        assertThat(defUser.getPhoneNumber()).isEqualTo(PHONE_NUM);
     }
 
     @Test
     void addingCredits() {
-        assertThat(DEF_USER.getCredits()).isEqualTo(123);
+        assertThat(defUser.getCredits()).isEqualTo(123);
 
         verifyNoInteractions(mockDao);
-        service.addCredits(1, DEF_USER.getId());
-        DEF_USER.setCredits(DEF_USER.getCredits() + 1);
+        service.addCredits(1, defUser.getId());
+        defUser.setCredits(defUser.getCredits() + 1);
 
-        verify(mockDao, times(1)).addCredits(1, DEF_USER.getId());
+        verify(mockDao, times(1)).addCredits(1, defUser.getId());
         verifyNoMoreInteractions(mockDao);
 
-        assertThat(DEF_USER.getCredits()).isEqualTo(124);
+        assertThat(defUser.getCredits()).isEqualTo(124);
     }
 }

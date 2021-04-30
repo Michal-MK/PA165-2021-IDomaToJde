@@ -27,6 +27,7 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
         this.timetables = timetables;
     }
 
+
     @Override
     public Timetable createTimetable(User user, int year, int week) {
         return timetables.createTimetable(user, year, week);
@@ -56,13 +57,6 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
         timetables.removeEntry(entry);
     }
 
-
-    @Override
-    public void updateEntry(TimetableEntry entry) {
-        timetables.updateEntry(entry);
-    }
-
-
     @Override
     public Timetable getTimetable(User user, int year, int week) {
         return timetables.getTimetable(user, year, week);
@@ -78,6 +72,7 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
         return t;
     }
 
+
     @Override
     public Timetable getTimetableWithEntries(long timetableId) {
         Timetable t = getByIdWithUser(timetableId);
@@ -86,6 +81,7 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
 
         return t;
     }
+
 
     @Override
     public Timetable getByIdWithUser(long timetableId){

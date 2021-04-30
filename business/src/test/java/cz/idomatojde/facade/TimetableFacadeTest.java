@@ -1,7 +1,6 @@
 package cz.idomatojde.facade;
 
 import cz.idomatojde.dto.timetable.AddTimetableDTO;
-import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -13,8 +12,6 @@ import org.testng.annotations.Test;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-
-import java.util.Calendar;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

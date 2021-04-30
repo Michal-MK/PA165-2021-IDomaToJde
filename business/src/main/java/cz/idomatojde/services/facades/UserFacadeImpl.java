@@ -4,6 +4,7 @@ import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
 import cz.idomatojde.entity.User;
+import cz.idomatojde.exceptions.InvalidPhoneNumberException;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.services.UserService;
 import cz.idomatojde.services.base.MappingService;
@@ -63,8 +64,12 @@ public class UserFacadeImpl implements UserFacade {
     public void changePhoneNumber(long userId, String phoneNumber) {
         User u = userService.getById(userId);
 
-        // TODO Phone number verification
+        String phoneNumPattern = "(?:\\+\\d{1,3}|0\\d{1,3}|00\\d{1,2})?(?:\\s?\\(\\d+\\))?(?:[-/\\s.]|\\d)+";
 
-        u.setPhoneNumber(phoneNumber);
+        if (phoneNumber.matches(phoneNumPattern)) {
+            u.setPhoneNumber(phoneNumber);
+        } else {
+            throw new InvalidPhoneNumberException("The phone number: '" + phoneNumber + "' was not recognized!");
+        }
     }
 }
