@@ -5,18 +5,22 @@ import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 
+/**
+ * Custom mapping for DTOs that Dozen package cannot convert
+ *
+ * @author Jiri Vrbka
+ */
 public class CustomMapper {
 
-    public static OfferDTO ToOfferDTO(Offer offer){
+    public static OfferDTO toOfferDTO(Offer offer){
         var dto = new OfferDTO();
         dto.setId(offer.getId());
-        dto.setOwner(ToOfferDTO(offer.getOwner()));
+        dto.setOwner(toUserDTO(offer.getOwner()));
         dto.setTitle(offer.getTitle());
         dto.setDescription(offer.getDescription());
         dto.setPrice(offer.getPrice());
         dto.setCreatedDate(offer.getCreatedDate());
         dto.setExpirationDate(offer.getExpirationDate());
-        //dto.setEvents(offer.getEvents());
         dto.setCategory(offer.getCategory());
         dto.setCapacity(offer.getCapacity());
         dto.setRegistered(offer.getRegistered());
@@ -24,7 +28,7 @@ public class CustomMapper {
         return dto;
     }
 
-    public static UserDTO ToOfferDTO(User user){
+    public static UserDTO toUserDTO(User user){
         var dto = new UserDTO();
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
@@ -35,7 +39,6 @@ public class CustomMapper {
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setCredits(user.getCredits());
         dto.setBonusCredits(user.getBonusCredits());
-       // dto.setOffers(user.getOffers());
         dto.setWantsAdvertisement(user.wantsAdvertisement());
         dto.setAdmin(user.isAdmin());
 

@@ -1,9 +1,9 @@
 package cz.idomatojde.services.facades;
 
+import cz.idomatojde.configuration.CustomMapper;
 import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
-import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.facade.OfferFacade;
 import cz.idomatojde.services.OfferService;
@@ -46,20 +46,7 @@ public class OfferFacadeImpl implements OfferFacade {
     public OfferDTO getOfferWithId(long id) {
         var offer = offerService.getById(id);
         // dozen cannot convert this
-        var dto = new OfferDTO();
-        dto.setId(offer.getId());
-        dto.setOwner(mappingService.mapTo(offer.getOwner(), UserDTO.class));
-        dto.setTitle(offer.getTitle());
-        dto.setDescription(offer.getDescription());
-        dto.setPrice(offer.getPrice());
-        dto.setCreatedDate(offer.getCreatedDate());
-        dto.setExpirationDate(offer.getExpirationDate());
-        //dto.setEvents(offer.getEvents());
-        dto.setCategory(offer.getCategory());
-        dto.setCapacity(offer.getCapacity());
-        dto.setRegistered(offer.getRegistered());
-
-        return dto;//mappingService.mapTo(offer, OfferDTO.class);
+        return CustomMapper.toOfferDTO(offer);
     }
 
     @Override

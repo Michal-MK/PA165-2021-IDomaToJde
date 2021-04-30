@@ -5,7 +5,6 @@ import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
-import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.TimetableFacade;
