@@ -46,7 +46,6 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
     private TimetableChatMessageFacade chatMessageFacade;
 
     @Test
-    @Ignore // Ignoring test because there is a mistake in saving
     public void addTimetableChatMessage() {
         // Setup
         var userDto = getUserDTO();
@@ -68,7 +67,6 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
     }
 
     @Test
-    @Ignore // Ignoring test because there is a mistake in saving
     public void changeText() {
         // Setup
         var msgDto = getTimetableChatMessageDTO();
@@ -118,7 +116,6 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         dto.setYear(2030);
         dto.setWeek(40);
         long id = timetableFacade.addTimetable(dto);
-
         TimetableDTO timetableDTO = timetableFacade.getTimetable(id);
 
         var entryDto = new CreateTimetableEntryDTO();

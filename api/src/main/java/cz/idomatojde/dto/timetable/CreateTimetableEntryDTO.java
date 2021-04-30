@@ -14,7 +14,6 @@ public class CreateTimetableEntryDTO {
     private LocalTime entryStart;
     private Duration length;
 
-
     public TimetableDTO getTimetable() {
         return timetable;
     }

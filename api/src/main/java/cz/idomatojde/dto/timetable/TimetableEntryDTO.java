@@ -1,5 +1,6 @@
 package cz.idomatojde.dto.timetable;
 
+import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.TimetableChatMessage;
@@ -20,9 +21,9 @@ public class TimetableEntryDTO {
 
     private long id;
 
-    private Timetable timetable;
+    private TimetableDTO timetable;
 
-    private Offer offer;
+    private OfferDTO offer;
 
     private int day;
 
@@ -32,7 +33,7 @@ public class TimetableEntryDTO {
 
     private String description;
 
-    private List<TimetableChatMessage> messages = new ArrayList<>();
+    private List<TimetableChatMessageDTO> messages = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -42,19 +43,19 @@ public class TimetableEntryDTO {
         return id;
     }
 
-    public Timetable getTimetable() {
+    public TimetableDTO getTimetable() {
         return timetable;
     }
 
-    public void setTimetable(Timetable timetable) {
+    public void setTimetable(TimetableDTO timetable) {
         this.timetable = timetable;
     }
 
-    public Offer getOffer() {
+    public OfferDTO getOffer() {
         return offer;
     }
 
-    public void setOffer(Offer offer) {
+    public void setOffer(OfferDTO offer) {
         this.offer = offer;
     }
 
@@ -74,11 +75,11 @@ public class TimetableEntryDTO {
         this.length = length;
     }
 
-    public List<TimetableChatMessage> getMessages() {
+    public List<TimetableChatMessageDTO> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<TimetableChatMessage> messages) {
+    public void setMessages(List<TimetableChatMessageDTO> messages) {
         this.messages = messages;
     }
 

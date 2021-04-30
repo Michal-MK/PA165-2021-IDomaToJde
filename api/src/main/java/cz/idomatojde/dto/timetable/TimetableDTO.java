@@ -11,12 +11,20 @@ import java.util.List;
  */
 public class TimetableDTO {
 
+    private long id;
+
     private UserContactInfoDTO userInfo;
 
     private int year;
     private int week;
 
     private List<TimetableEntryDTO> entries;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id){ this.id = id; }
 
     public UserContactInfoDTO getUserInfo() {
         return userInfo;

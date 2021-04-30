@@ -45,7 +45,6 @@ public class OfferFacadeImpl implements OfferFacade {
     @Override
     public OfferDTO getOfferWithId(long id) {
         var offer = offerService.getById(id);
-        // dozen cannot convert this
         return CustomMapper.toOfferDTO(offer);
     }
 
