@@ -7,10 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,6 +60,12 @@ public class User implements IEntity {
 
     @OneToMany
     private List<Offer> offers;
+
+    @ManyToMany
+    @JoinTable(name = "consumed_courses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "offer_id"))
+    private List<Offer> subscribedOffers = new ArrayList<>();
 
     @NotNull
     private boolean wantsAdvertisement;
@@ -140,6 +150,14 @@ public class User implements IEntity {
         this.offers = offers;
     }
 
+    public List<Offer> getSubscribedOffers() {
+        return subscribedOffers;
+    }
+
+    public void setSubscribedOffers(List<Offer> consumes) {
+        this.subscribedOffers = consumes;
+    }
+
     public boolean wantsAdvertisement() {
         return wantsAdvertisement;
     }
@@ -174,7 +192,8 @@ public class User implements IEntity {
                 && Objects.equals(getPhoneNumber(), user.getPhoneNumber())
                 && Objects.equals(getCredits(), user.getCredits())
                 && Objects.equals(getBonusCredits(), user.getBonusCredits())
-                && Objects.equals(getOffers(), user.getOffers()
+                && Objects.equals(getOffers(), user.getOffers())
+                && Objects.equals(getSubscribedOffers(), user.getSubscribedOffers()
         );
     }
 
@@ -190,6 +209,7 @@ public class User implements IEntity {
                 getCredits(),
                 getBonusCredits(),
                 getOffers(),
+                getSubscribedOffers(),
                 wantsAdvertisement(),
                 isAdmin()
         );

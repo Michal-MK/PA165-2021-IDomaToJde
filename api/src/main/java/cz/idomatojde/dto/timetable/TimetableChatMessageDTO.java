@@ -6,21 +6,11 @@ package cz.idomatojde.dto.timetable;
  * @author Michal Hazdra
  */
 public class TimetableChatMessageDTO {
-    private Long id;
-
     private long userId;
 
     private long timetableEntryId;
 
     private String text;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
 
     public long getUserId() {
         return userId;

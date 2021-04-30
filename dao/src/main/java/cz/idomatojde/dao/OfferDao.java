@@ -21,6 +21,14 @@ public interface OfferDao extends BaseDAO<Offer> {
     List<Offer> findByUser(User user);
 
     /**
+     * Finds all offers a {@link User} is subscribed to
+     *
+     * @param user the {@link User}  to filter with
+     * @return {@link Offer}s  subscribed to by a given {@link User}
+     */
+    List<Offer> getSubscribedOffers(User user);
+
+    /**
      * Gets all offers that did not expired yet
      *
      * @return list of not expired offers

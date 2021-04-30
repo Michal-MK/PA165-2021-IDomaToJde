@@ -14,7 +14,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * @author Michal Hrazda
+ * Class providing predefined Entity objects
+ *
+ * @author Michal Hazdra
  */
 public final class TestObjects {
 
