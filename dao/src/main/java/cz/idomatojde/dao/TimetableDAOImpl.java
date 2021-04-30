@@ -66,6 +66,8 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     @Override
     public void removeEntry(TimetableEntry entry) {
         em.remove(entry);
+        em.flush();
+        em.clear();
     }
 
     @Override
