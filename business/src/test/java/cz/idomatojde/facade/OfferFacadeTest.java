@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,10 +55,6 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
 
         // Act
         offerFacade.removeOffer(offerId);
-        //var actual = offerFacade.getOfferWithId(offerId);
-
-        // Validate
-        //assertThat(actual).isNull(); TODO
     }
 
     @Test
