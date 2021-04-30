@@ -18,7 +18,7 @@ public interface UserFacade {
      * @param registrationInfo necessary user creation information
      * @return the ID of the User
      */
-    Long registerUser(RegisterUserDTO registrationInfo);
+    long registerUser(RegisterUserDTO registrationInfo);
 
     /**
      * Retrieve user's full name and contact information
