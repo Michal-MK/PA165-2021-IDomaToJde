@@ -66,6 +66,8 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     @Override
     public void removeEntry(TimetableEntry entry) {
         em.remove(entry);
+        em.flush();
+        em.clear();
     }
 
     @Override
@@ -99,9 +101,16 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
 
     @Override
     public List<TimetableEntry> getAllTimetableEntries(Long timetableId) {
-        return em.createQuery("select t from Timetable t join fetch t.entries where t.id = :id", Timetable.class)
+        return em.createQuery("select t from Timetable t left join fetch t.entries where t.id = :id", Timetable.class)
                 .setParameter("id", timetableId)
                 .getSingleResult()
                 .getEntries();
+    }
+
+    @Override
+    public Timetable getByIdWithUser(long timetableId) {
+        return em.createQuery("select t from Timetable t left join fetch t.user where t.id = :id", Timetable.class)
+                .setParameter("id", timetableId)
+                .getSingleResult();
     }
 }

@@ -30,6 +30,13 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
     }
 
     @Override
+    public List<Offer> getSubscribedOffers(User user) {
+        return em.createQuery("select o from Offer o where :user in o.subscribers", Offer.class)
+                .setParameter("user", user)
+                .getResultList();
+    }
+
+    @Override
     public List<Offer> getActiveOffers() {
         return em
                 .createQuery(

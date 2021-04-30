@@ -1,23 +1,21 @@
-package cz.idomatojde.dao;
+package cz.idomatojde.services;
 
-import cz.idomatojde.dao.common.BaseDAO;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.entity.User;
+import cz.idomatojde.services.base.BaseService;
 
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
 
-
 /**
- * API for {@link Timetable} and {@link TimetableEntry} Entities
+ * Service class for {@link Timetable} and {@link TimetableEntry}
  *
  * @author Michal Hazdra
  */
-public interface TimetableDAO extends BaseDAO<Timetable> {
-
+public interface TimetableService extends BaseService<Timetable> {
 
     /**
      * Creates a {@link Timetable} from the required components
@@ -68,15 +66,6 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
      */
     void removeEntry(TimetableEntry entry);
 
-
-    /**
-     * Updates the {@link TimetableEntry} in the database
-     *
-     * @param entry the entry to update
-     */
-    void updateEntry(TimetableEntry entry);
-
-
     /**
      * Function to obtain the {@link Timetable} for a given {@link User} based on the date
      *
@@ -86,6 +75,33 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
      * @return the found {@link Timetable} object
      */
     Timetable getTimetable(User user, int year, int week);
+
+    /**
+     * Function to obtain the complete {@link Timetable} for a given {@link User} based on the date
+     *
+     * @param user the {@link User} the {@link Timetable} belongs to
+     * @param year the year to search in
+     * @param week the week to search in
+     * @return the found {@link Timetable} object
+     */
+    Timetable getTimetableWithEntries(User user, int year, int week);
+
+    /**
+     * Function to obtain the {@link Timetable} for a given {@link User} using an ID
+     *
+     * @param timetableId the unique ID of the {@link Timetable}
+     * @return the found {@link Timetable} object
+     */
+    Timetable getTimetableWithEntries(long timetableId);
+
+
+    /**
+     * Function to obtain the {@link Timetable} for a given {@link User} using an ID
+     *
+     * @param timetableId the unique ID of the {@link Timetable}
+     * @return the found {@link Timetable} object
+     */
+    Timetable getByIdWithUser(long timetableId);
 
 
     /**
@@ -113,11 +129,4 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
      * @return the list of all {@link TimetableEntry}
      */
     List<TimetableEntry> getAllTimetableEntries(Long timetableId);
-
-    /**
-     * Same as getById but with the {@link User} field populated
-     * @param timetableId the id of the {@link Timetable}
-     * @return the {@link Timetable} object
-     */
-    Timetable getByIdWithUser(long timetableId);
 }

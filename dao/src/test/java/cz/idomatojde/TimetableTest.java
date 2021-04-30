@@ -3,6 +3,7 @@ package cz.idomatojde;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.TimetableDAO;
 import cz.idomatojde.dao.UserDao;
+import cz.idomatojde.entity.TimetableEntry;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -18,9 +19,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
+import java.util.List;
 
 import static cz.idomatojde.TestObjects.getOffer;
 import static cz.idomatojde.TestObjects.getUser;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Jiri Vrbka
@@ -115,20 +118,28 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
     }
 
 
-    @Test(expectedExceptions = javax.persistence.NoResultException.class)
+    @Test
     public void removeEntryTest() {
         // Arrange
         var offer = getOffer("removeEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
+
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
         var origin = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+
+        // Assert
+        List<TimetableEntry> entriesBefore = timetableDAO.getAllTimetableEntries(timetable.getId());
+
+        assertThat(entriesBefore.size()).isEqualTo(1);
 
         // Act
         timetableDAO.removeEntry(origin);
 
         // Assert
-        timetableDAO.getAllTimetableEntries(timetable.getId());
+        List<TimetableEntry> entriesAfter = timetableDAO.getAllTimetableEntries(timetable.getId());
+
+        assertThat(entriesAfter).isEmpty();
     }
 
 
