@@ -21,13 +21,15 @@ public class TimetableChatMessageDAOImpl extends BaseDAOImpl<TimetableChatMessag
     }
 
     @Override
-    public void addMessage(User sender, TimetableEntry entry, String text) {
+    public long addMessage(User sender, TimetableEntry entry, String text) {
         TimetableChatMessage message = new TimetableChatMessage();
         message.setSender(sender);
         message.setTimetableEntry(entry);
         message.setText(text);
 
         em.persist(message);
+
+        return message.getId();
     }
 
     @Override
