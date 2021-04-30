@@ -3,6 +3,7 @@ package cz.idomatojde;
 import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
+import cz.idomatojde.entity.TimetableChatMessage;
 import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.entity.User;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -60,6 +61,17 @@ public final class TestObjects {
 
         return timetableEntry;
     }
+
+    public static TimetableChatMessage getTimetableChatMessage(TimetableEntry entry, User sender, String text) {
+        var message = new TimetableChatMessage();
+
+        message.setTimetableEntry(entry);
+        message.setSender(sender);
+        message.setText(text);
+
+        return message;
+    }
+
 
     public static Offer getOffer(User user, String title) {
         Offer offer = new Offer();

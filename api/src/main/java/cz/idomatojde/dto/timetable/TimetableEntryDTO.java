@@ -1,34 +1,78 @@
 package cz.idomatojde.dto.timetable;
 
+import cz.idomatojde.dto.offer.OfferDTO;
+import cz.idomatojde.entity.Offer;
+import cz.idomatojde.entity.Timetable;
+import cz.idomatojde.entity.TimetableChatMessage;
+
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * DTO Holding the necessary information to populate the rendered timetable entry
  *
- * @author Michal Hazdra
+ * @author Jiri Vrbka
  */
 public class TimetableEntryDTO {
 
-    private long timetableId;
+    private long id;
+
+    private TimetableDTO timetable;
+
+    private OfferDTO offer;
 
     private int day;
 
-    private List<TimetableChatMessageDTO> messages;
+    private LocalTime entryStart;
 
-    public long getTimetableId() {
-        return timetableId;
+    private Duration length;
+
+    private String description;
+
+    private List<TimetableChatMessageDTO> messages = new ArrayList<>();
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setTimetableId(long timetableId) {
-        this.timetableId = timetableId;
+    public Long getId() {
+        return id;
     }
 
-    public int getDay() {
-        return day;
+    public TimetableDTO getTimetable() {
+        return timetable;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setTimetable(TimetableDTO timetable) {
+        this.timetable = timetable;
+    }
+
+    public OfferDTO getOffer() {
+        return offer;
+    }
+
+    public void setOffer(OfferDTO offer) {
+        this.offer = offer;
+    }
+
+    public LocalTime getEntryStart() {
+        return entryStart;
+    }
+
+    public void setEntryStart(LocalTime entryStart) {
+        this.entryStart = entryStart;
+    }
+
+    public Duration getLength() {
+        return length;
+    }
+
+    public void setLength(Duration length) {
+        this.length = length;
     }
 
     public List<TimetableChatMessageDTO> getMessages() {
@@ -37,5 +81,21 @@ public class TimetableEntryDTO {
 
     public void setMessages(List<TimetableChatMessageDTO> messages) {
         this.messages = messages;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 }

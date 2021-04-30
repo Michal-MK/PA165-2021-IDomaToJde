@@ -11,7 +11,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
@@ -56,9 +55,8 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var actual = timetableDAO.getById(origin.getId());
 
         // Assert
-        Assert.assertEquals(origin, actual);
+        assertThat(actual).isEqualTo(origin);
     }
-
 
     @Test
     public void createEntryTest() {
@@ -73,8 +71,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var timetableEntryList = timetableDAO.getAllTimetableEntries(timetable.getId());
 
         // Assert
-        Assert.assertEquals(1, timetableEntryList.size());
-        Assert.assertEquals(origin, timetableEntryList.get(0));
+        assertThat(timetableEntryList).containsExactly(origin);
     }
 
     @Test
@@ -94,8 +91,8 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var updated = timetableDAO.findEntry(origin.getId());
 
         // Assert
-        Assert.assertEquals(updatedTime, updated.getEntryStart());
-        Assert.assertEquals(updatedDuration, updated.getLength());
+        assertThat(updated.getEntryStart()).isEqualTo(updatedTime);
+        assertThat(updated.getLength()).isEqualTo(updatedDuration);
     }
 
     @Test
@@ -114,7 +111,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var updated = timetableDAO.findEntry(origin.getId());
 
         // Assert
-        Assert.assertEquals(updatedTime, updated.getEntryStart());
+        assertThat(updated.getEntryStart()).isEqualTo(updatedTime);
     }
 
 
@@ -165,8 +162,8 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var updatedDesc = updatedEntry.getDescription();
         var updatedDay = updatedEntry.getDay();
 
-        Assert.assertEquals(newDesc, updatedDesc);
-        Assert.assertEquals(newDay, updatedDay);
+        assertThat(updatedDesc).isEqualTo(newDesc);
+        assertThat(updatedDay).isEqualTo(newDay);
     }
 
     @Test
@@ -180,7 +177,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var actual = timetableDAO.getById(origin.getId());
 
         // Assert
-        Assert.assertEquals(origin, actual);
+        assertThat(actual).isEqualTo(origin);
     }
 
     @Test
@@ -200,9 +197,9 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var entryDb3 = timetableDAO.findEntry(entry3.getId());
 
         // Assert
-        Assert.assertEquals(entry1, entryDb1);
-        Assert.assertEquals(entry2, entryDb2);
-        Assert.assertEquals(entry3, entryDb3);
+        assertThat(entryDb1).isEqualTo(entry1);
+        assertThat(entryDb2).isEqualTo(entry2);
+        assertThat(entryDb3).isEqualTo(entry3);
     }
 
     @Test
@@ -223,13 +220,13 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var timetable = timetableDAO.getTimetableForCurrentWeek(offer.getOwner());
 
         // Assert
-        Assert.assertEquals(timetableForCurrent, timetable);
-        Assert.assertNotEquals(timetableWrongWeek, timetable);
-        Assert.assertNotEquals(timetableWrongYear, timetable);
+        assertThat(timetable).isEqualTo(timetableForCurrent);
+        assertThat(timetable).isNotEqualTo(timetableWrongWeek);
+        assertThat(timetable).isNotEqualTo(timetableWrongYear);
 
-        Assert.assertEquals(year, timetable.getYear());
-        Assert.assertEquals(week, timetable.getWeek());
-        Assert.assertEquals(offer.getOwner(), timetable.getUser());
+        assertThat(timetable.getYear()).isEqualTo(year);
+        assertThat(timetable.getWeek()).isEqualTo(week);
+        assertThat(timetable.getUser()).isEqualTo(offer.getOwner());
     }
 
     @Test
@@ -248,10 +245,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var entries = timetableDAO.getAllTimetableEntries(timetable.getId());
 
         // Assert
-        Assert.assertEquals(3, entries.size());
-        Assert.assertTrue(entries.contains(entry1));
-        Assert.assertTrue(entries.contains(entry2));
-        Assert.assertTrue(entries.contains(entry3));
+        assertThat(entries).containsExactly(entry1, entry2, entry3);
     }
 
 
@@ -270,6 +264,6 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         timetable.setUser(newUser);
 
         // Assert
-        Assert.assertEquals(newUser, timetable.getUser());
+        assertThat(timetable.getUser()).isEqualTo(newUser);
     }
 }

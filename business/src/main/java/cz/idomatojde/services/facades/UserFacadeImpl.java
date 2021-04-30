@@ -3,6 +3,7 @@ package cz.idomatojde.services.facades;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
+import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.exceptions.InvalidPhoneNumberException;
 import cz.idomatojde.facade.UserFacade;
@@ -37,6 +38,14 @@ public class UserFacadeImpl implements UserFacade {
         u.setPassword(new Argon2PasswordEncoder().encode(registrationInfo.getPassword()));
 
         return userService.create(u);
+    }
+
+    @Override
+    public UserDTO getById(long id) {
+        var user = userService.getById(id);
+        var dto = mapService.mapTo(user, UserDTO.class);
+        dto.setId(id);
+        return dto;
     }
 
     @Override

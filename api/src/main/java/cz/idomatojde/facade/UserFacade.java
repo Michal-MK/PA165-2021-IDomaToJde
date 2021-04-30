@@ -3,6 +3,7 @@ package cz.idomatojde.facade;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
+import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.exceptions.InvalidPhoneNumberException;
 
 /**
@@ -19,6 +20,13 @@ public interface UserFacade {
      * @return the ID of the User
      */
     long registerUser(RegisterUserDTO registrationInfo);
+
+    /**
+     * Gets a user
+     * @param id unique user specificator
+     * @return DTO for user
+     */
+    UserDTO getById(long id);
 
     /**
      * Retrieve user's full name and contact information

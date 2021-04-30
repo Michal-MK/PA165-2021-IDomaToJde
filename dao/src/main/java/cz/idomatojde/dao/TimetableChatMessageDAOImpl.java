@@ -14,20 +14,22 @@ import java.util.List;
  * @author Michal Hazdra
  */
 @Repository
-public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> implements ChatMessagesDAO {
+public class TimetableChatMessageDAOImpl extends BaseDAOImpl<TimetableChatMessage> implements TimetableChatMessageDAO {
 
-    public ChatMessagesDAOImpl() {
+    public TimetableChatMessageDAOImpl() {
         super(TimetableChatMessage.class);
     }
 
     @Override
-    public void addMessage(User sender, TimetableEntry entry, String text) {
+    public long addMessage(User sender, TimetableEntry entry, String text) {
         TimetableChatMessage message = new TimetableChatMessage();
         message.setSender(sender);
         message.setTimetableEntry(entry);
         message.setText(text);
 
         em.persist(message);
+
+        return message.getId();
     }
 
     @Override
@@ -35,6 +37,14 @@ public class ChatMessagesDAOImpl extends BaseDAOImpl<TimetableChatMessage> imple
         return em.createQuery("select tcm from TimetableChatMessage tcm where tcm.timetableEntry = :entry",
                 TimetableChatMessage.class)
                 .setParameter("entry", entry)
+                .getResultList();
+    }
+
+    @Override
+    public List<TimetableChatMessage> getAllMessagesOfUser(User user) {
+        return em.createQuery("select tcm from TimetableChatMessage tcm where tcm.sender = :user",
+                TimetableChatMessage.class)
+                .setParameter("user", user)
                 .getResultList();
     }
 }
