@@ -64,6 +64,6 @@ public interface TimetableChatMessageFacade {
      * @param entryId unique identifier for TimetableEntry
      * @return all timetable chat messages owned by given TimetableEntry
      */
-    List<TimetableChatMessageDTO> GetAllMessagesOfTimetableEntry(long entryId);
+    List<TimetableChatMessageDTO> getAllMessagesOfTimetableEntry(long entryId);
 
 }

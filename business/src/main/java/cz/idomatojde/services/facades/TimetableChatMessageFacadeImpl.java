@@ -64,7 +64,7 @@ public class TimetableChatMessageFacadeImpl implements TimetableChatMessageFacad
     }
 
     @Override
-    public List<TimetableChatMessageDTO> GetAllMessagesOfTimetableEntry(long entryId) {
+    public List<TimetableChatMessageDTO> getAllMessagesOfTimetableEntry(long entryId) {
         // TODO missing entry service
         // var entry = entryService.getById(entryId);
         // return timetableChatMessageService.getAllMessagesForEntry(entry);
