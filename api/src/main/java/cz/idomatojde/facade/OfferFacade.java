@@ -16,7 +16,7 @@ public interface OfferFacade {
      *
      * @param registerOfferDTO necessary information for offer creation
      */
-    void registerOffer(RegisterOfferDTO registerOfferDTO);
+    long registerOffer(RegisterOfferDTO registerOfferDTO);
 
     /**
      * Get an offer with given id

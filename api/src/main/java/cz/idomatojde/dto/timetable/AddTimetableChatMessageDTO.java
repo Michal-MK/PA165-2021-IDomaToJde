@@ -11,21 +11,11 @@ import java.util.Objects;
  */
 public class AddTimetableChatMessageDTO {
 
-    private Long id;
-
     private UserDTO sender;
 
     private TimetableEntryDTO timetableEntry;
 
     private String text;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public UserDTO getSender() {
         return sender;

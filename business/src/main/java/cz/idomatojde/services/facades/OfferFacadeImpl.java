@@ -26,10 +26,10 @@ public class OfferFacadeImpl implements OfferFacade {
     private OfferService offerService;
 
     @Override
-    public void registerOffer(RegisterOfferDTO registerOfferDTO) {
+    public long registerOffer(RegisterOfferDTO registerOfferDTO) {
         var offer = mappingService.mapTo(registerOfferDTO, Offer.class);
         offerService.create(offer);
-        registerOfferDTO.setId(offer.getId());
+        return offer.getId();
     }
 
     @Override

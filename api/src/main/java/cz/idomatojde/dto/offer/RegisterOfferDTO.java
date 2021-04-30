@@ -16,8 +16,6 @@ import java.util.List;
  */
 public class RegisterOfferDTO {
 
-    private Long id;
-
     private UserDTO owner;
 
     private String title;
@@ -35,14 +33,6 @@ public class RegisterOfferDTO {
     private Category category;
 
     private Integer capacity;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public UserDTO getOwner() {
         return owner;

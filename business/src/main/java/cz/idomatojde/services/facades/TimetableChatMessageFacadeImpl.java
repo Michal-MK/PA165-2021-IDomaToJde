@@ -26,8 +26,9 @@ public class TimetableChatMessageFacadeImpl implements TimetableChatMessageFacad
     private TimetableChatMessageService timetableChatMessageService;
 
     @Override
-    public void addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO) {
+    public long addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO) {
         // TODO missing timetableEntryService and userService
+        return 0;
     }
 
     @Override
