@@ -24,12 +24,9 @@ import static org.mockito.Mockito.when;
  */
 public class OfferPopularityTest {
 
-    private UserDao mockUsers;
-
     private OfferDao mockOffers;
 
     private OfferPopularityService service;
-
 
     private List<Offer> allActiveOffers;
     private User user;
@@ -38,7 +35,7 @@ public class OfferPopularityTest {
     @BeforeMethod
     void setup() {
         //This is used as @Inject and @InjectMock are not compatible with constructor injection...
-        mockUsers = mock(UserDao.class);
+        UserDao mockUsers = mock(UserDao.class);
         mockOffers = mock(OfferDao.class);
         service = new OfferPopularityServiceImpl(mockUsers, mockOffers);
 
@@ -81,6 +78,7 @@ public class OfferPopularityTest {
         arr.addAll(allActiveOffers);
         arr.addAll(userPreferred);
         when(mockOffers.getActiveOffers()).thenReturn(arr);
+        when(mockOffers.getSubscribedOffers(user)).thenReturn(userPreferred);
 
         //- Haskell is full so it is not returned!
         var manual = allActiveOffers.stream().filter(f -> f.getCategory() == Category.EDUCATION)

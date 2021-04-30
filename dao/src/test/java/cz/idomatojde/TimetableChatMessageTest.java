@@ -232,7 +232,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void getAllMessagesOfUser(){
+    public void getAllMessagesOfUser() {
         // Arrange
         var offer = getOffer("get all messages");
         var anotherUser = getUser("another");

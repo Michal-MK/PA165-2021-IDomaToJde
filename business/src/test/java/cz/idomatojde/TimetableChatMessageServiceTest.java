@@ -14,10 +14,18 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cz.idomatojde.TestObjects.*;
-import static org.mockito.Mockito.*;
+import static cz.idomatojde.TestObjects.getTimetable;
+import static cz.idomatojde.TestObjects.getTimetableChatMessage;
+import static cz.idomatojde.TestObjects.getTimetableEntry;
+import static cz.idomatojde.TestObjects.getUser;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class TimetableChatMessageServiceTest {
 

@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Entity for holding entry data for timetables
+/**
+ * Entity for holding entry data for timetables
+ *
  * @author Michal Hazdra
  */
 @Entity

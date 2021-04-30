@@ -23,8 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
 public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
-    @Inject
-    private TimetableFacade timetableFacade;
 
     @Inject
     private UserFacade userFacade;
@@ -104,7 +102,7 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         userDto.setPhoneNumber("+420123456789");
         userDto.setEmail("a@a.cz");
 
-        Long userId = userFacade.registerUser(userDto);
+        long userId = userFacade.registerUser(userDto);
         var dto = userFacade.getById(userId);
         dto.setId(userId);
         return dto;

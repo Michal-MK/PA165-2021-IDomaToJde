@@ -16,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
@@ -106,11 +105,11 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         userDto.setPhoneNumber("+420123456789");
         userDto.setEmail("a@a.cz");
 
-        Long userId = userFacade.registerUser(userDto);
+        long userId = userFacade.registerUser(userDto);
         return userFacade.getById(userId);
     }
 
-    private TimetableEntryDTO getTimetableEntryDTO(UserDTO userDto, OfferDTO offerDTO){
+    private TimetableEntryDTO getTimetableEntryDTO(UserDTO userDto, OfferDTO offerDTO) {
         AddTimetableDTO dto = new AddTimetableDTO();
         dto.setUserId(userDto.getId());
         dto.setYear(2030);
@@ -124,11 +123,11 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         entryDto.setLength(Duration.ofHours(1));
         entryDto.setEntryStart(LocalTime.MIDNIGHT);
 
-        var entryId= timetableFacade.createEntry(entryDto);
+        var entryId = timetableFacade.createEntry(entryDto);
         return timetableFacade.getEntryById(entryId);
     }
 
-    private TimetableChatMessageDTO getTimetableChatMessageDTO(){
+    private TimetableChatMessageDTO getTimetableChatMessageDTO() {
         var userDto = getUserDTO();
         var offerDto = getOfferDTO(userDto);
         var entryDto = getTimetableEntryDTO(userDto, offerDto);
