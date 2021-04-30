@@ -3,8 +3,6 @@ package cz.idomatojde.services.facades;
 import cz.idomatojde.dto.timetable.AddTimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.ChangeTextTimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.TimetableChatMessageDTO;
-import cz.idomatojde.entity.TimetableChatMessage;
-import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.facade.TimetableChatMessageFacade;
 import cz.idomatojde.services.TimetableChatMessageService;
 import cz.idomatojde.services.base.MappingService;

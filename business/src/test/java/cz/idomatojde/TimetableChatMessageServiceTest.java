@@ -84,7 +84,7 @@ public class TimetableChatMessageServiceTest {
 
         // Validate
         verify(mockMessages, times(1)).getAllMessagesOfUser(user);
-        for (var msg: expectedMessages) {
+        for (var msg : expectedMessages) {
             verify(mockMessages, times(1)).delete(msg);
         }
         verifyNoMoreInteractions(mockMessages);

@@ -60,7 +60,7 @@ public final class TestObjects {
         return timetableEntry;
     }
 
-    public static TimetableChatMessage getTimetableChatMessage(TimetableEntry entry, User sender, String text){
+    public static TimetableChatMessage getTimetableChatMessage(TimetableEntry entry, User sender, String text) {
         var message = new TimetableChatMessage();
 
         message.setTimetableEntry(entry);
