@@ -2,6 +2,7 @@ package cz.idomatojde.services.facades;
 
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
+import cz.idomatojde.dto.user.UserCreditsDTO;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.services.UserService;
@@ -27,14 +28,14 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void registerUser(RegisterUserDTO registrationInfo) {
+    public Long registerUser(RegisterUserDTO registrationInfo) {
         User u = mapService.mapTo(registrationInfo, User.class);
 
         u.setCredits(0);
         u.setBonusCredits(0);
         u.setPassword(new Argon2PasswordEncoder().encode(registrationInfo.getPassword()));
 
-        userService.create(u);
+        return userService.create(u);
     }
 
     @Override
@@ -49,6 +50,13 @@ public class UserFacadeImpl implements UserFacade {
         User u = userService.getById(userId);
 
         u.setCredits(credits);
+    }
+
+    @Override
+    public UserCreditsDTO getCredits(long userId) {
+        User u = userService.getById(userId);
+
+        return new UserCreditsDTO(u.getCredits(), u.getBonusCredits());
     }
 
     @Override

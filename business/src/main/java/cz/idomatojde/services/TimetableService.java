@@ -96,12 +96,21 @@ public interface TimetableService extends BaseService<Timetable> {
     Timetable getTimetableWithEntries(User user, int year, int week);
 
     /**
-     * Function to obtain the {@link Timetable} for a given {@link User} based on the date
+     * Function to obtain the {@link Timetable} for a given {@link User} using an ID
      *
      * @param timetableId the unique ID of the {@link Timetable}
      * @return the found {@link Timetable} object
      */
     Timetable getTimetableWithEntries(long timetableId);
+
+
+    /**
+     * Function to obtain the {@link Timetable} for a given {@link User} using an ID
+     *
+     * @param timetableId the unique ID of the {@link Timetable}
+     * @return the found {@link Timetable} object
+     */
+    Timetable getByIdWithUser(long timetableId);
 
 
     /**

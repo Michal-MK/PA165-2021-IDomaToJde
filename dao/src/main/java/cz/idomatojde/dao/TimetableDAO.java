@@ -113,4 +113,11 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
      * @return the list of all {@link TimetableEntry}
      */
     List<TimetableEntry> getAllTimetableEntries(Long timetableId);
+
+    /**
+     * Same as getById but with the {@link User} field populated
+     * @param timetableId the id of the {@link Timetable}
+     * @return the {@link Timetable} object
+     */
+    Timetable getByIdWithUser(long timetableId);
 }

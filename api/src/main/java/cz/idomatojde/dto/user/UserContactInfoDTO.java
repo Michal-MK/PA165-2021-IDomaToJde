@@ -5,33 +5,42 @@ package cz.idomatojde.dto.user;
  *
  * @author Michal Hazdra
  */
-public final class UserContactInfoDTO {
+public class UserContactInfoDTO {
 
-    private final String name;
-    private final String surname;
-    private final String email;
-    private final String phoneNumber;
-
-    public UserContactInfoDTO(String name, String surname, String email, String phoneNumber) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-    }
+    private String name;
+    private String surname;
+    private String email;
+    private String phoneNumber;
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSurname() {
         return surname;
     }
 
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

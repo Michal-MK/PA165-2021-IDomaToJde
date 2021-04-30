@@ -2,6 +2,7 @@ package cz.idomatojde.facade;
 
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
+import cz.idomatojde.dto.user.UserCreditsDTO;
 
 /**
  * Facade responsible for all things concerning users
@@ -14,8 +15,9 @@ public interface UserFacade {
      * Register a new user
      *
      * @param registrationInfo necessary user creation information
+     * @return the ID of the User
      */
-    void registerUser(RegisterUserDTO registrationInfo);
+    Long registerUser(RegisterUserDTO registrationInfo);
 
     /**
      * Retrieve user's full name and contact information
@@ -32,6 +34,14 @@ public interface UserFacade {
      * @param credits the amount of credits to set
      */
     void setCredits(long userId, int credits);
+
+    /**
+     * Set a new amount of credits to a user
+     *
+     * @param userId  the unique user identifier
+     * @return the total available credits for a User
+     */
+    UserCreditsDTO getCredits(long userId);
 
     /**
      * Set a new phone number to a user

@@ -152,6 +152,12 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
 
             return DEF_TIMETABLE;
         });
+
+        when(mockDao.getByIdWithUser(1)).thenAnswer((params) -> {
+            DEF_TIMETABLE.setUser(DEF_USER);
+
+            return DEF_TIMETABLE;
+        });
     }
 
     @Test
@@ -213,6 +219,21 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
         verifyNoMoreInteractions(mockDao);
 
         assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getWeek()).isEqualTo(1);
+        assertThat(result.getYear()).isEqualTo(2020);
+    }
+
+    @Test
+    public void getByIdWithUser() {
+        verifyNoInteractions(mockDao);
+
+        Timetable result = service.getByIdWithUser(1L);
+
+        verify(mockDao, times(1)).getByIdWithUser(1L);
+        verifyNoMoreInteractions(mockDao);
+
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getUser().getUsername()).isEqualTo("username");
         assertThat(result.getWeek()).isEqualTo(1);
         assertThat(result.getYear()).isEqualTo(2020);
     }
