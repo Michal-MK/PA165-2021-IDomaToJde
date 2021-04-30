@@ -29,7 +29,7 @@ import static cz.idomatojde.TestObjects.getOffer;
 @EnableAutoConfiguration
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class ChatMessagesTest extends AbstractTestNGSpringContextTests {
+public class ChatMessageTest extends AbstractTestNGSpringContextTests {
 
 
     @Inject
