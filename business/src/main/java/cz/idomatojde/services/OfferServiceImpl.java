@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author Jiri Vrbka
+ */
 @Service
 public class OfferServiceImpl extends BaseServiceImpl<Offer> implements OfferService {
 
