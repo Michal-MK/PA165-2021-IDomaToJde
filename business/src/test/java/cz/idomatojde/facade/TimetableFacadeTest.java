@@ -37,7 +37,7 @@ public class TimetableFacadeTest extends AbstractTestNGSpringContextTests {
         userDto.setPhoneNumber("+420123456789");
         userDto.setEmail("a@a.cz");
 
-        Long userId = userFacade.registerUser(userDto);
+        long userId = userFacade.registerUser(userDto);
 
         AddTimetableDTO dto = new AddTimetableDTO();
         dto.setUserId(userId);

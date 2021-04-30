@@ -29,7 +29,7 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public Long registerUser(RegisterUserDTO registrationInfo) {
+    public long registerUser(RegisterUserDTO registrationInfo) {
         User u = mapService.mapTo(registrationInfo, User.class);
 
         u.setCredits(0);
