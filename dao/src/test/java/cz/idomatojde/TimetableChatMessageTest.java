@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
@@ -21,6 +20,7 @@ import java.time.LocalTime;
 
 import static cz.idomatojde.TestObjects.getOffer;
 import static cz.idomatojde.TestObjects.getUser;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Jiri Vrbka
@@ -62,12 +62,13 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         // Assert
         var chats = timetableChatMessageDAO.getAllMessagesForEntry(entry);
 
-        Assert.assertEquals(1, chats.size());
+        assertThat(chats.size()).isEqualTo(1);
 
         var chat = chats.get(0);
-        Assert.assertEquals(msg, chat.getText());
-        Assert.assertEquals(offer.getOwner(), chat.getSender());
-        Assert.assertEquals(entry, chat.getTimetableEntry());
+
+        assertThat(chat.getText()).isEqualTo(msg);
+        assertThat(chat.getSender()).isEqualTo(offer.getOwner());
+        assertThat(chat.getTimetableEntry()).isEqualTo(entry);
     }
 
     @Test
@@ -98,9 +99,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         var chats = timetableChatMessageDAO.getAllMessagesForEntry(entry);
 
         // Assert
-        Assert.assertEquals(2, chats.size());
-        Assert.assertTrue(chats.contains(chat1));
-        Assert.assertTrue(chats.contains(chat2));
+        assertThat(chats).containsExactly(chat1, chat2);
     }
 
     @Test
@@ -125,8 +124,8 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         var chatDb = timetableChatMessageDAO.getById(chat.getId());
 
         // Assert
-        Assert.assertEquals(msgUpdated, chatDb.getText());
-        Assert.assertEquals(chat, chatDb);
+        assertThat(chatDb.getText()).isEqualTo(msgUpdated);
+        assertThat(chatDb).isEqualTo(chat);
     }
 
     @Test
@@ -149,7 +148,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         var chatDb = timetableChatMessageDAO.getById(chat.getId());
 
         // Assert
-        Assert.assertEquals(chat, chatDb);
+        assertThat(chatDb).isEqualTo(chat);
     }
 
     @Test
@@ -181,9 +180,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         var chats = timetableChatMessageDAO.findAll();
 
         // Assert
-        Assert.assertEquals(2, chats.size());
-        Assert.assertTrue(chats.contains(chat1));
-        Assert.assertTrue(chats.contains(chat2));
+        assertThat(chats).containsExactly(chat1, chat2);
     }
 
 
@@ -207,7 +204,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         var chatDb = timetableChatMessageDAO.getById(chat.getId());
 
         // Assert
-        Assert.assertEquals(chat, chatDb);
+        assertThat(chatDb).isEqualTo(chat);
     }
 
     @Test(expectedExceptions = javax.persistence.NoResultException.class)
@@ -263,8 +260,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         var messages = timetableChatMessageDAO.getAllMessagesOfUser(offer.getOwner());
 
         // Assert
-        Assert.assertEquals(messages.size(), 1);
-        Assert.assertEquals(messages.get(0), chat);
+        assertThat(messages).containsExactly(chat);
 
     }
 }

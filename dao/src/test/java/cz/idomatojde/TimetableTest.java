@@ -20,7 +20,7 @@ import java.time.temporal.ChronoField;
 
 import static cz.idomatojde.TestObjects.getOffer;
 import static cz.idomatojde.TestObjects.getUser;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Jiri Vrbka
@@ -69,8 +69,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var timetableEntryList = timetableDAO.getAllTimetableEntries(timetable.getId());
 
         // Assert
-        assertThat(timetableEntryList.size()).isEqualTo(1);
-        assertThat(timetableEntryList.get(0)).isEqualTo(origin);
+        assertThat(timetableEntryList).containsExactly(origin);
     }
 
     @Test
@@ -236,10 +235,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var entries = timetableDAO.getAllTimetableEntries(timetable.getId());
 
         // Assert
-        assertThat(entries.size()).isEqualTo(3);
-        assertThat(entries.contains(entry1)).isTrue();
-        assertThat(entries.contains(entry2)).isTrue();
-        assertThat(entries.contains(entry3)).isTrue();
+        assertThat(entries).containsExactly(entry1, entry2, entry3);
     }
 
 
