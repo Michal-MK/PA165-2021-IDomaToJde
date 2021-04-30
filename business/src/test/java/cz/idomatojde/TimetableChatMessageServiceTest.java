@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static cz.idomatojde.TestObjects.*;
@@ -60,6 +61,19 @@ public class TimetableChatMessageServiceTest {
     }
 
     @Test
+    public void getAllMessagesForEntryWithoutMessages() {
+        // Setup
+        getMessages(timetableEntry, user);
+        when(mockMessages.getAllMessagesForEntry(timetableEntry)).thenReturn(new ArrayList<>());
+
+        // Act
+        var actual = service.getAllMessagesForEntry(timetableEntry);
+
+        // Validate
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
     public void getAllMessagesForUser() {
         // Setup
         var expectedMessages = getMessages(timetableEntry, user);
@@ -72,6 +86,19 @@ public class TimetableChatMessageServiceTest {
         assertThat(actual).isEqualTo(expectedMessages);
     }
 
+    @Test
+    public void getAllMessagesForUserWithoutMessages() {
+        // Setup
+        var otherUser = getUser("otherUser");
+        getMessages(timetableEntry, otherUser);
+        when(mockMessages.getAllMessagesOfUser(user)).thenReturn(new ArrayList<>());
+
+        // Act
+        var actual = service.getAllMessagesForUser(user);
+
+        // Validate
+        assertThat(actual).isEmpty();
+    }
 
     @Test
     public void deleteAllMessagesOfUser() {
@@ -87,6 +114,21 @@ public class TimetableChatMessageServiceTest {
         for (var msg : expectedMessages) {
             verify(mockMessages, times(1)).delete(msg);
         }
+        verifyNoMoreInteractions(mockMessages);
+    }
+
+    @Test
+    public void deleteAllMessagesOfUserWithoutMessage() {
+        // Setup
+        var otherUser = getUser("otherUser");
+        getMessages(timetableEntry, otherUser);
+        when(mockMessages.getAllMessagesOfUser(user)).thenReturn(new ArrayList<>());
+
+        // Act
+        service.deleteAllMessagesOfUser(user);
+
+        // Validate
+        verify(mockMessages, times(1)).getAllMessagesOfUser(user);
         verifyNoMoreInteractions(mockMessages);
     }
 

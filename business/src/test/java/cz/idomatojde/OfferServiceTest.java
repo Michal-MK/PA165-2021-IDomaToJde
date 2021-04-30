@@ -8,6 +8,7 @@ import cz.idomatojde.services.OfferServiceImpl;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static cz.idomatojde.TestObjects.getUser;
@@ -51,6 +52,19 @@ public class OfferServiceTest {
     }
 
     @Test
+    public void findByUserWithoutOffers() {
+        // Setup
+        getOffers(user);
+        when(mockOffers.findByUser(user)).thenReturn(new ArrayList<>());
+
+        // Act
+        var userOffers = service.findByUser(user);
+
+        // Validate
+        assertThat(userOffers).isEmpty();
+    }
+
+    @Test
     public void getActiveOffers() {
         // Setup
         var expectedOffers = getOffers(user);
@@ -61,6 +75,19 @@ public class OfferServiceTest {
 
         // Validate
         assertThat(activeOffers).isEqualTo(expectedOffers);
+    }
+
+    @Test
+    public void getActiveOffersNoOffers() {
+        // Setup
+        getOffers(user);
+        when(mockOffers.getActiveOffers()).thenReturn(new ArrayList<>());
+
+        // Act
+        var activeOffers = service.getActiveOffers();
+
+        // Validate
+        assertThat(activeOffers).isEmpty();
     }
 
     private List<Offer> getOffers(User defOwner) {
