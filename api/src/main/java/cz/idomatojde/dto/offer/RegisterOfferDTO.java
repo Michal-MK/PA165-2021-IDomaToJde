@@ -24,10 +24,6 @@ public class RegisterOfferDTO {
 
     private BigDecimal price;
 
-    private LocalDate createdDate;
-
-    private LocalDate expirationDate;
-
     private List<TimetableEntryDTO> events = new ArrayList<>();
 
     private Category category;
@@ -64,22 +60,6 @@ public class RegisterOfferDTO {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public LocalDate getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDate createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDate getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
     }
 
     public List<TimetableEntryDTO> getEvents() {

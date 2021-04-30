@@ -9,6 +9,7 @@ import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.TimetableFacade;
+import cz.idomatojde.services.OfferService;
 import cz.idomatojde.services.TimetableService;
 import cz.idomatojde.services.UserService;
 import cz.idomatojde.services.base.MappingService;
@@ -26,6 +27,9 @@ public class TimetableFacadeImpl implements TimetableFacade {
     private final UserService userService;
 
     private final MappingService mapService;
+
+    @Inject
+    private OfferService offerService;
 
     @Inject
     public TimetableFacadeImpl(TimetableService timetableService, UserService userService, MappingService mapService) {
@@ -55,7 +59,7 @@ public class TimetableFacadeImpl implements TimetableFacade {
     @Override
     public long createEntry(CreateTimetableEntryDTO entryDto) {
         var timetable = mapService.mapTo(entryDto.getTimetable(), Timetable.class);
-        var offer = mapService.mapTo(entryDto.getOffer(), Offer.class);
+        var offer =  offerService.getById(entryDto.getOffer().getId()); //mapService.mapTo(entryDto.getOffer(), Offer.class);
 
         var entry =
                 timetableService.createEntry(timetable, offer, entryDto.getEntryStart(), entryDto.getLength());

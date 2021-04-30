@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -91,8 +90,6 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         offer.setPrice(new BigDecimal(110));
         offer.setDescription("Register");
         offer.setTitle("Title");
-        offer.setCreatedDate(LocalDate.now());
-        offer.setExpirationDate(LocalDate.now().plusDays(10));
         offer.setOwner(userDTO);
 
         var offerId = offerFacade.registerOffer(offer);

@@ -43,7 +43,9 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public UserDTO getById(long id) {
         var user = userService.getById(id);
-        return mapService.mapTo(user, UserDTO.class);
+        var dto = mapService.mapTo(user, UserDTO.class);
+        dto.setId(id);
+        return dto;
     }
 
     @Override
