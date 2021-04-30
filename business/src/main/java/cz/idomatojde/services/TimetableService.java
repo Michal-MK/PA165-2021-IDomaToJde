@@ -66,6 +66,7 @@ public interface TimetableService extends BaseService<Timetable> {
      */
     void removeEntry(TimetableEntry entry);
 
+
     /**
      * Function to obtain the {@link Timetable} for a given {@link User} based on the date
      *
@@ -76,15 +77,6 @@ public interface TimetableService extends BaseService<Timetable> {
      */
     Timetable getTimetable(User user, int year, int week);
 
-    /**
-     * Function to obtain the complete {@link Timetable} for a given {@link User} based on the date
-     *
-     * @param user the {@link User} the {@link Timetable} belongs to
-     * @param year the year to search in
-     * @param week the week to search in
-     * @return the found {@link Timetable} object
-     */
-    Timetable getTimetableWithEntries(User user, int year, int week);
 
     /**
      * Function to obtain the {@link Timetable} for a given {@link User} using an ID

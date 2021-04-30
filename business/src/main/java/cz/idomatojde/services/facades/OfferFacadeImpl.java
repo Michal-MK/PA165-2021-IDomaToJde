@@ -22,14 +22,19 @@ import java.time.LocalDate;
 @Transactional
 public class OfferFacadeImpl implements OfferFacade {
 
-    @Inject
-    private MappingService mappingService;
+    private final MappingService mappingService;
+
+    private final OfferService offerService;
+
+    private final UserService userService;
 
     @Inject
-    private OfferService offerService;
+    public OfferFacadeImpl(MappingService mappingService, OfferService offerService, UserService userService) {
 
-    @Inject
-    private UserService userService;
+        this.mappingService = mappingService;
+        this.offerService = offerService;
+        this.userService = userService;
+    }
 
     @Override
     public long registerOffer(RegisterOfferDTO registerOfferDTO) {

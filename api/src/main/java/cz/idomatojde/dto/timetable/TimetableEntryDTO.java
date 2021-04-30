@@ -1,12 +1,7 @@
 package cz.idomatojde.dto.timetable;
 
 import cz.idomatojde.dto.offer.OfferDTO;
-import cz.idomatojde.entity.Offer;
-import cz.idomatojde.entity.Timetable;
-import cz.idomatojde.entity.TimetableChatMessage;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;

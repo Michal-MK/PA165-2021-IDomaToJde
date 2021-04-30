@@ -28,13 +28,14 @@ public class TimetableFacadeImpl implements TimetableFacade {
 
     private final MappingService mapService;
 
-    @Inject
-    private OfferService offerService;
+    private final OfferService offerService;
 
     @Inject
-    public TimetableFacadeImpl(TimetableService timetableService, UserService userService, MappingService mapService) {
+    public TimetableFacadeImpl(TimetableService timetableService, UserService userService,
+                               OfferService offerService, MappingService mapService) {
         this.timetableService = timetableService;
         this.userService = userService;
+        this.offerService = offerService;
         this.mapService = mapService;
     }
 
@@ -58,8 +59,8 @@ public class TimetableFacadeImpl implements TimetableFacade {
 
     @Override
     public long createEntry(CreateTimetableEntryDTO entryDto) {
-        var timetable = timetableService.getById(entryDto.getTimetable().getId());//mapService.mapTo(entryDto.getTimetable(), Timetable.class);
-        var offer =  offerService.getById(entryDto.getOffer().getId()); //mapService.mapTo(entryDto.getOffer(), Offer.class);
+        var timetable = timetableService.getById(entryDto.getTimetable().getId());
+        var offer = offerService.getById(entryDto.getOffer().getId());
 
         var entry =
                 timetableService.createEntry(timetable, offer, entryDto.getEntryStart(), entryDto.getLength());
@@ -70,6 +71,6 @@ public class TimetableFacadeImpl implements TimetableFacade {
     @Override
     public TimetableEntryDTO getEntryById(long entryId) {
         var entry = timetableService.findEntry(entryId);
-        return CustomMapper.toTimetableEntryDTO(entry);//TODO mapService.mapTo(entry, TimetableEntryDTO.class);
+        return CustomMapper.toTimetableEntryDTO(entry);
     }
 }

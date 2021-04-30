@@ -38,6 +38,7 @@ public interface TimetableFacade {
 
     /**
      * Get entry by id
+     *
      * @param entryId unique identifier
      * @return DTO representing entry
      */

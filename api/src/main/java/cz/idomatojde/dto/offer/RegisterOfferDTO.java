@@ -5,7 +5,6 @@ import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.entity.Category;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

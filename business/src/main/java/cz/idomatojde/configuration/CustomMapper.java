@@ -15,7 +15,7 @@ import cz.idomatojde.entity.User;
 import java.util.stream.Collectors;
 
 /**
- * Custom mapping for DTOs that Dozen package cannot convert
+ * Custom mapping for DTOs that Dozer package cannot convert
  *
  * @author Jiri Vrbka
  */
@@ -25,7 +25,6 @@ public class CustomMapper {
     public static OfferDTO toOfferDTO(Offer offer) {
         return toOfferDTO(offer, true);
     }
-
 
     private static OfferDTO toOfferDTO(Offer offer, boolean withDependencies) {
         var dto = new OfferDTO();
@@ -39,7 +38,7 @@ public class CustomMapper {
         dto.setCapacity(offer.getCapacity());
         dto.setRegistered(offer.getRegistered());
 
-        if(withDependencies){
+        if (withDependencies) {
             dto.setOwner(toUserDTO(offer.getOwner()));
         }
 
@@ -63,7 +62,6 @@ public class CustomMapper {
         return dto;
     }
 
-
     public static TimetableEntryDTO toTimetableEntryDTO(TimetableEntry entry) {
         return toTimetableEntryDTO(entry, true);
     }
@@ -77,7 +75,7 @@ public class CustomMapper {
         dto.setDescription(entry.getDescription());
         dto.setDay(entry.getDay());
 
-        if(withDependencies){
+        if (withDependencies) {
             dto.setTimetable(toTimetableDTO(entry.getTimetable(), false));
             dto.setOffer(toOfferDTO(entry.getOffer(), false));
             dto.setMessages(entry.getMessages().stream().map(CustomMapper::toTimetableChatMessageDTO).collect(Collectors.toList()));
@@ -114,12 +112,10 @@ public class CustomMapper {
         dto.setYear(table.getYear());
         dto.setWeek(table.getWeek());
 
-        if(withDependencies){
+        if (withDependencies) {
             dto.setEntries(table.getEntries().stream().map(CustomMapper::toTimetableEntryDTO).collect(Collectors.toList()));
         }
 
         return dto;
     }
-
-
 }
