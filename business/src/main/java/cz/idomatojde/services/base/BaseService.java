@@ -24,7 +24,7 @@ public interface BaseService<TEntity extends IEntity> {
     /**
      * <b>Retrieve</b> operation for obtaining a single entity by its ID
      */
-    TEntity getById(Long id);
+    TEntity getById(long id);
 
     /**
      * <b>Delete</b> operation for removing the entity from the repository

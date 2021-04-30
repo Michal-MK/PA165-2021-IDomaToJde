@@ -47,27 +47,25 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
         defUser = getUser("username");
 
-        //No idea why these are not called...
         doAnswer(params -> {
-            defUser.setPhoneNumber(params.getArgument(0));
+            defUser.setPhoneNumber(params.getArgument(1));
             return null;
-        }).when(mockDao).addPhone(anyString(), anyLong());
+        }).when(mockDao).addPhone(anyLong(), anyString());
 
         doAnswer(params -> {
-            defUser.setCredits(defUser.getCredits() + params.getArgument(0, Integer.class));
+            defUser.setCredits(defUser.getCredits() + params.getArgument(1, Integer.class));
             return null;
-        }).when(mockDao).addCredits(anyInt(), anyLong());
+        }).when(mockDao).addCredits(anyLong(), anyInt());
     }
 
     @Test
     void addingPhoneNumber() {
         assertThat(defUser.getPhoneNumber()).isEqualTo("+420123456789");
-
+        long userId = 1;
         verifyNoInteractions(mockDao);
-        service.addPhone(PHONE_NUM, defUser.getId());
-        defUser.setPhoneNumber(PHONE_NUM);
+        service.addPhone(userId, PHONE_NUM);
 
-        verify(mockDao, times(1)).addPhone(PHONE_NUM, defUser.getId());
+        verify(mockDao, times(1)).addPhone(userId, PHONE_NUM);
         verifyNoMoreInteractions(mockDao);
 
         assertThat(defUser.getPhoneNumber()).isEqualTo(PHONE_NUM);
@@ -76,12 +74,12 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     void addingCredits() {
         assertThat(defUser.getCredits()).isEqualTo(123);
+        long userId = 1;
 
         verifyNoInteractions(mockDao);
-        service.addCredits(1, defUser.getId());
-        defUser.setCredits(defUser.getCredits() + 1);
+        service.addCredits(userId, 1);
 
-        verify(mockDao, times(1)).addCredits(1, defUser.getId());
+        verify(mockDao, times(1)).addCredits(userId, 1);
         verifyNoMoreInteractions(mockDao);
 
         assertThat(defUser.getCredits()).isEqualTo(124);

@@ -66,7 +66,7 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         assertThat(dao.getById(1L).getCredits()).isEqualTo(123);
 
         //Act
-        dao.addCredits(1, user.getId());
+        dao.addCredits(user.getId(), 1);
 
         //Validate
         assertThat(user.getCredits()).isEqualTo(124);
@@ -85,7 +85,7 @@ public class UserTests extends AbstractTestNGSpringContextTests {
         assertThat(dao.getById(1L).getPhoneNumber()).isEqualTo("+420123456789");
 
         //Act
-        dao.addPhone(phone, user.getId());
+        dao.addPhone(user.getId(), phone);
 
         //Validate
         assertThat(user.getPhoneNumber()).isEqualTo(phone);

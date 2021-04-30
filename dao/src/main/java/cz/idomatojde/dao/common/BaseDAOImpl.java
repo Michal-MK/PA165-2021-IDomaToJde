@@ -39,7 +39,7 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
     }
 
 
-    public TEntity getById(Long id) {
+    public TEntity getById(long id) {
         return em.createQuery("select a from " + cls.getName() + " a where a.id = :id", cls)
                 .setParameter("id", id)
                 .getSingleResult();

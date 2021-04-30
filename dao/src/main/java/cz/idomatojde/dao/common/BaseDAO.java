@@ -36,7 +36,7 @@ public interface BaseDAO<TEntity extends IEntity> {
      * @param id the entity identifier
      * @return the entity
      */
-    TEntity getById(Long id);
+    TEntity getById(long id);
 
     /**
      * Common functionality to delete an entity from the database

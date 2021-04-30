@@ -94,7 +94,7 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
      * @param entryId the id to search for
      * @return the {@link TimetableEntry} object
      */
-    TimetableEntry findEntry(Long entryId);
+    TimetableEntry findEntry(long entryId);
 
 
     /**
@@ -112,7 +112,7 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
      * @param timetableId the id of the {@link Timetable}
      * @return the list of all {@link TimetableEntry}
      */
-    List<TimetableEntry> getAllTimetableEntries(Long timetableId);
+    List<TimetableEntry> getAllTimetableEntries(long timetableId);
 
     /**
      * Same as getById but with the {@link User} field populated
