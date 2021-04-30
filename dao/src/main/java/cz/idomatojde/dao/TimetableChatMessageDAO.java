@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Michal Hazdra
  */
-public interface ChatMessagesDAO extends BaseDAO<TimetableChatMessage> {
+public interface TimetableChatMessageDAO extends BaseDAO<TimetableChatMessage> {
 
     /**
      * Function to add a new message to a {@link TimetableEntry}
@@ -31,4 +31,12 @@ public interface ChatMessagesDAO extends BaseDAO<TimetableChatMessage> {
      * @return a list of messages
      */
     List<TimetableChatMessage> getAllMessagesForEntry(TimetableEntry entry);
+
+    /**
+     * Function to obtain all TimetableChatMessages of a given {@link User}
+     *
+     * @param user the user to get messages from
+     * @return a list of messages
+     */
+    List<TimetableChatMessage> getAllMessagesOfUser(User user);
 }

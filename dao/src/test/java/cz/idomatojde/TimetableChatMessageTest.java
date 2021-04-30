@@ -1,6 +1,6 @@
 package cz.idomatojde;
 
-import cz.idomatojde.dao.ChatMessagesDAO;
+import cz.idomatojde.dao.TimetableChatMessageDAO;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.TimetableDAO;
 import cz.idomatojde.dao.UserDao;
@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 import static cz.idomatojde.TestObjects.getOffer;
+import static cz.idomatojde.TestObjects.getUser;
 
 /**
  * @author Jiri Vrbka
@@ -29,11 +30,11 @@ import static cz.idomatojde.TestObjects.getOffer;
 @EnableAutoConfiguration
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class ChatMessageTest extends AbstractTestNGSpringContextTests {
+public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
 
 
     @Inject
-    private ChatMessagesDAO chatMessagesDAO;
+    private TimetableChatMessageDAO timetableChatMessageDAO;
 
     @Inject
     private TimetableDAO timetableDAO;
@@ -56,10 +57,10 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         var msg = "my message";
 
         // Act
-        chatMessagesDAO.addMessage(offer.getOwner(), entry, msg);
+        timetableChatMessageDAO.addMessage(offer.getOwner(), entry, msg);
 
         // Assert
-        var chats = chatMessagesDAO.getAllMessagesForEntry(entry);
+        var chats = timetableChatMessageDAO.getAllMessagesForEntry(entry);
 
         Assert.assertEquals(1, chats.size());
 
@@ -83,7 +84,7 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         chat1.setSender(offer.getOwner());
         chat1.setTimetableEntry(entry);
 
-        chatMessagesDAO.create(chat1);
+        timetableChatMessageDAO.create(chat1);
 
 
         var chat2 = new TimetableChatMessage();
@@ -91,10 +92,10 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         chat2.setSender(offer.getOwner());
         chat2.setTimetableEntry(entry);
 
-        chatMessagesDAO.create(chat2);
+        timetableChatMessageDAO.create(chat2);
 
         // Act
-        var chats = chatMessagesDAO.getAllMessagesForEntry(entry);
+        var chats = timetableChatMessageDAO.getAllMessagesForEntry(entry);
 
         // Assert
         Assert.assertEquals(2, chats.size());
@@ -117,11 +118,11 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         chat.setSender(offer.getOwner());
         chat.setTimetableEntry(entry);
 
-        chatMessagesDAO.create(chat);
+        timetableChatMessageDAO.create(chat);
 
         // Act
         chat.setText(msgUpdated);
-        var chatDb = chatMessagesDAO.getById(chat.getId());
+        var chatDb = timetableChatMessageDAO.getById(chat.getId());
 
         // Assert
         Assert.assertEquals(msgUpdated, chatDb.getText());
@@ -144,8 +145,8 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         chat.setSender(offer.getOwner());
         chat.setTimetableEntry(entry);
 
-        chatMessagesDAO.create(chat);
-        var chatDb = chatMessagesDAO.getById(chat.getId());
+        timetableChatMessageDAO.create(chat);
+        var chatDb = timetableChatMessageDAO.getById(chat.getId());
 
         // Assert
         Assert.assertEquals(chat, chatDb);
@@ -167,7 +168,7 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         chat1.setSender(offer.getOwner());
         chat1.setTimetableEntry(entry);
 
-        chatMessagesDAO.create(chat1);
+        timetableChatMessageDAO.create(chat1);
 
 
         var chat2 = new TimetableChatMessage();
@@ -175,9 +176,9 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         chat2.setSender(offer.getOwner());
         chat2.setTimetableEntry(entry);
 
-        chatMessagesDAO.create(chat2);
+        timetableChatMessageDAO.create(chat2);
 
-        var chats = chatMessagesDAO.findAll();
+        var chats = timetableChatMessageDAO.findAll();
 
         // Assert
         Assert.assertEquals(2, chats.size());
@@ -202,8 +203,8 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         chat.setSender(offer.getOwner());
         chat.setTimetableEntry(entry);
 
-        chatMessagesDAO.create(chat);
-        var chatDb = chatMessagesDAO.getById(chat.getId());
+        timetableChatMessageDAO.create(chat);
+        var chatDb = timetableChatMessageDAO.getById(chat.getId());
 
         // Assert
         Assert.assertEquals(chat, chatDb);
@@ -211,7 +212,6 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
 
     @Test(expectedExceptions = javax.persistence.NoResultException.class)
     public void deleteTest() {
-
         // Arrange
         var offer = getOffer("deleteTest");
         userDao.create(offer.getOwner());
@@ -225,12 +225,46 @@ public class ChatMessageTest extends AbstractTestNGSpringContextTests {
         chat.setSender(offer.getOwner());
         chat.setTimetableEntry(entry);
 
-        chatMessagesDAO.create(chat);
+        timetableChatMessageDAO.create(chat);
 
         // Act
-        chatMessagesDAO.delete(chat);
+        timetableChatMessageDAO.delete(chat);
 
         // Assert
-        chatMessagesDAO.getById(chat.getId());
+        timetableChatMessageDAO.getById(chat.getId());
+    }
+
+    @Test
+    public void getAllMessagesOfUser(){
+        // Arrange
+        var offer = getOffer("get all messages");
+        var anotherUser = getUser("another");
+        userDao.create(offer.getOwner());
+        userDao.create(anotherUser);
+        offerDao.create(offer);
+        var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
+        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var msg = "my message";
+
+        var chat = new TimetableChatMessage();
+        chat.setText(msg);
+        chat.setSender(offer.getOwner());
+        chat.setTimetableEntry(entry);
+
+        var anotherChat = new TimetableChatMessage();
+        anotherChat.setText("text");
+        anotherChat.setSender(anotherUser);
+        anotherChat.setTimetableEntry(entry);
+
+        timetableChatMessageDAO.create(chat);
+        timetableChatMessageDAO.create(anotherChat);
+
+        // Act
+        var messages = timetableChatMessageDAO.getAllMessagesOfUser(offer.getOwner());
+
+        // Assert
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertEquals(messages.get(0), chat);
+
     }
 }
