@@ -1,8 +1,11 @@
 package cz.idomatojde.services.facades;
 
 import cz.idomatojde.dto.timetable.AddTimetableDTO;
+import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
+import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
+import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.TimetableFacade;
@@ -47,5 +50,22 @@ public class TimetableFacadeImpl implements TimetableFacade {
         ret.setUserInfo(mapService.mapTo(t.getUser(), UserContactInfoDTO.class));
 
         return ret;
+    }
+
+    @Override
+    public long createEntry(CreateTimetableEntryDTO entryDto) {
+        var timetable = mapService.mapTo(entryDto.getTimetable(), Timetable.class);
+        var offer = mapService.mapTo(entryDto.getOffer(), Offer.class);
+
+        var entry =
+                timetableService.createEntry(timetable, offer, entryDto.getEntryStart(), entryDto.getLength());
+
+        return entry.getId();
+    }
+
+    @Override
+    public TimetableEntryDTO getEntryById(long entryId) {
+        var entry = timetableService.findEntry(entryId);
+        return mapService.mapTo(entry, TimetableEntryDTO.class);
     }
 }

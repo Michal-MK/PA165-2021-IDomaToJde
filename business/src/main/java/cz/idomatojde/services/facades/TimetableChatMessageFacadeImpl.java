@@ -36,11 +36,11 @@ public class TimetableChatMessageFacadeImpl implements TimetableChatMessageFacad
     private TimetableChatMessageService timetableChatMessageService;
 
     @Override
-    public void addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO) {
+    public long addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO) {
         var user = mappingService.mapTo(timetableChatMessageDTO.getSender(), User.class);
         var entry = mappingService.mapTo(timetableChatMessageDTO.getTimetableEntry(), TimetableEntry.class);;
         var text = timetableChatMessageDTO.getText();
-        timetableChatMessageService.addMessage(user, entry, text);
+        return timetableChatMessageService.addMessage(user, entry, text);
     }
 
     @Override

@@ -25,8 +25,8 @@ public class TimetableChatMessageServiceImpl extends BaseServiceImpl<TimetableCh
     }
 
     @Override
-    public void addMessage(User sender, TimetableEntry entry, String text) {
-        chatMessages.addMessage(sender, entry, text);
+    public long addMessage(User sender, TimetableEntry entry, String text) {
+        return chatMessages.addMessage(sender, entry, text);
     }
 
     @Override

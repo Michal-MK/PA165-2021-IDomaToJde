@@ -19,8 +19,9 @@ public interface TimetableChatMessageService extends BaseService<TimetableChatMe
      * @param sender the User who sent the message
      * @param entry  the {@link TimetableEntry} to hold the message
      * @param text   the content of the message
+     * @return id of created message
      */
-    void addMessage(User sender, TimetableEntry entry, String text);
+    long addMessage(User sender, TimetableEntry entry, String text);
 
 
     /**
