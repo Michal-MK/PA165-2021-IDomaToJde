@@ -19,7 +19,7 @@ public interface TimetableChatMessageFacade {
      *
      * @param timetableChatMessageDTO DTO with necessary information about chat message
      */
-    long addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO);
+    void addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO);
 
     /**
      * Gets timetable chat message by given id

@@ -3,8 +3,12 @@ package cz.idomatojde.services.facades;
 import cz.idomatojde.dto.timetable.AddTimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.ChangeTextTimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.TimetableChatMessageDTO;
+import cz.idomatojde.entity.TimetableEntry;
+import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.TimetableChatMessageFacade;
 import cz.idomatojde.services.TimetableChatMessageService;
+import cz.idomatojde.services.TimetableService;
+import cz.idomatojde.services.UserService;
 import cz.idomatojde.services.base.MappingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +27,20 @@ public class TimetableChatMessageFacadeImpl implements TimetableChatMessageFacad
     private MappingService mappingService;
 
     @Inject
+    private UserService userService;
+
+    @Inject
+    private TimetableService timetableService;
+
+    @Inject
     private TimetableChatMessageService timetableChatMessageService;
 
     @Override
-    public long addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO) {
-        // TODO missing timetableEntryService and userService
-        return 0;
+    public void addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO) {
+        var user = mappingService.mapTo(timetableChatMessageDTO.getSender(), User.class);
+        var entry = mappingService.mapTo(timetableChatMessageDTO.getTimetableEntry(), TimetableEntry.class);;
+        var text = timetableChatMessageDTO.getText();
+        timetableChatMessageService.addMessage(user, entry, text);
     }
 
     @Override
@@ -45,17 +57,15 @@ public class TimetableChatMessageFacadeImpl implements TimetableChatMessageFacad
 
     @Override
     public void deleteAllMessagesOfUser(long userId) {
-        // TODO missing user service
-        // var user = userService.getById(userId);
-        // timetableChatMessageService.deleteAllMessagesOfUser(user);
+         var user = userService.getById(userId);
+         timetableChatMessageService.deleteAllMessagesOfUser(user);
     }
 
     @Override
     public List<TimetableChatMessageDTO> getAllMessagesOfUser(long userId) {
-        // TODO missing user service
-        // var user = userService.getById(userId);
-        // return timetableChatMessageService.getAllMessagesForUser(user)
-        return null;
+        var user = userService.getById(userId);
+        var messages = timetableChatMessageService.getAllMessagesForUser(user);
+        return mappingService.mapTo(messages, TimetableChatMessageDTO.class);
     }
 
     @Override
@@ -66,9 +76,8 @@ public class TimetableChatMessageFacadeImpl implements TimetableChatMessageFacad
 
     @Override
     public List<TimetableChatMessageDTO> getAllMessagesOfTimetableEntry(long entryId) {
-        // TODO missing entry service
-        // var entry = entryService.getById(entryId);
-        // return timetableChatMessageService.getAllMessagesForEntry(entry);
-        return null;
+         var entry = timetableService.findEntry(entryId);
+         var messages = timetableChatMessageService.getAllMessagesForEntry(entry);
+        return mappingService.mapTo(messages, TimetableChatMessageDTO.class);
     }
 }
