@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * DTO representing whole {@link cz.idomatojde.entity.Offer}
+ * DTO representing the whole offer
  *
  * @author Jiri Vrbka
  */

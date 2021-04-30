@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * DTO Holding the whole information about {@link cz.idomatojde.entity.User}
+ * DTO Holding the whole information about user
  *
  * @author Jiri Vrbka
  */
