@@ -9,6 +9,21 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class TestObjects {
+
+    /**
+     * Creates a new {@link User} entity
+     * <p>Name = "Name"</p>
+     * <p>Surname = "Surname"</p>
+     * <p>Phone = "+420123456789"</p>
+     * <p>Email = "$Name@mail.com"</p>
+     * <p>Credits = 123</p>
+     * <p>Wants Ads = false</p>
+     * <p>Is Admin = false</p>
+     *
+     * @param username the username of the {@link User} used as an email as well
+     * @param password the raw password string
+     * @return new {@link User} object
+     */
     public static User getUser(String username, String password) {
 
         Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
@@ -27,12 +42,30 @@ public class TestObjects {
         return user;
     }
 
+    /**
+     * Creates a new {@link User} with predefined password "password" using the default function:
+     * <p>{@link #getUser(String, String)}</p>
+     *
+     * @param username the username of the {@link User} used as an email as well
+     * @return new {@link User} object
+     */
     public static User getUser(String username) {
         return getUser(username, "password");
     }
 
+    /** Creates a new {@link Offer} entity
+     * <p>Title = title</p>
+     * <p>Owner = {@link #getUser(String,String)} with parameters: "Mr. $title", "12345"</p>
+     * <p>Description = "description"</p>
+     * <p>Capacity = 10</p>
+     * <p>Registered = 5</p>
+     * <p>Price = 1</p>
+     * <p>Created At = 2021.04.1</p>
+     * <p>Expires At = $tomorrow</p>
 
-
+     * @param title the title of this {@link Offer}
+     * @return new {@link Offer} object
+     */
     public static Offer getOffer(String title) {
         Offer offer = new Offer();
         offer.setTitle(title);

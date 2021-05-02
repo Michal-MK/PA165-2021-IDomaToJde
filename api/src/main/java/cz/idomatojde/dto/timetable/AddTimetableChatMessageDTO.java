@@ -5,7 +5,7 @@ import cz.idomatojde.dto.user.UserDTO;
 import java.util.Objects;
 
 /**
- * DTO representing timetable chat message for creation
+ * DTO Responsible for new timetable chat message creation
  *
  * @author Jiri Vrbka
  */

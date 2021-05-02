@@ -6,6 +6,8 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 /**
+ * DTO Responsible for new timetable entry creation
+ *
  * @author Jiri Vrbka
  */
 public class CreateTimetableEntryDTO {

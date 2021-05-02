@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DTO for offer creation
+ * DTO Responsible for new offer creation
  *
  * @author Jiri Vrbka
  */
