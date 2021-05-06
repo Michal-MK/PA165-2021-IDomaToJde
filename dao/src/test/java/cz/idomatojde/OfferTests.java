@@ -1,5 +1,6 @@
 package cz.idomatojde;
 
+import cz.idomatojde.dao.CategoryDao;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.UserDao;
 import cz.idomatojde.entity.Category;
@@ -12,14 +13,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static cz.idomatojde.TestObjects.getOffer;
+import static cz.idomatojde.TestObjects.getUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
@@ -40,11 +45,24 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
     @Inject
     public UserDao userDao;
 
+    @Inject
+    public CategoryDao catDao;
+
+    private Category category;
+
+    @BeforeMethod
+    void setup() {
+        category = new Category();
+        category.setName("Category");
+        catDao.create(category);
+    }
+
     @Test
     public void offerCreation() {
         //Setup
         final String name = "Java";
-        Offer offer = getOffer(name);
+
+        Offer offer = getOffer(category, name);
 
         //Act
         userDao.create(offer.getOwner());
@@ -55,7 +73,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         assertThat(offerDao.getById(1L).getTitle()).isEqualTo(name);
         assertThat(offerDao.getById(1L).getOwner()).isEqualTo(offer.getOwner());
         assertThat(offerDao.getById(1L).getDescription()).isEqualTo("description");
-        assertThat(offerDao.getById(1L).getCategory()).isEqualTo(Category.EDUCATION);
+        assertThat(offerDao.getById(1L).getCategory()).isEqualTo(category);
         assertThat(offerDao.getById(1L).getCapacity()).isEqualTo(10);
         assertThat(offerDao.getById(1L).getRegistered()).isEqualTo(5);
         assertThat(offerDao.getById(1L).getPrice()).isEqualTo(BigDecimal.ONE);
@@ -67,7 +85,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
     public void offerFindByUserEmpty() {
         //Setup
         final String title = "Offer";
-        Offer offer = getOffer(title);
+        Offer offer = getOffer(category, title);
         User user = offer.getOwner();
 
         //Act
@@ -82,7 +100,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
     public void offerFindByUser() {
         //Setup
         final String title = "Offer";
-        Offer offer = getOffer(title);
+        Offer offer = getOffer(category, title);
         User user = offer.getOwner();
 
         //Act
@@ -107,7 +125,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
     public void someOffers() {
         //Setup
         final String title = "Offer";
-        Offer offer = getOffer(title);
+        Offer offer = getOffer(category, title);
 
         //Act
         userDao.create(offer.getOwner());
@@ -123,7 +141,7 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
     public void offerUpdate() {
         //Setup
         final String title = "Offer";
-        Offer offer = getOffer(title);
+        Offer offer = getOffer(category, title);
         LocalDate newDate = LocalDate.of(2022, 1, 1);
         //Act
         userDao.create(offer.getOwner());
@@ -140,5 +158,66 @@ public class OfferTests extends AbstractTestNGSpringContextTests {
         assertThat(updated.getPrice()).isEqualTo(BigDecimal.TEN);
         assertThat(updated.getCapacity()).isEqualTo(666);
         assertThat(updated.getExpirationDate()).isEqualTo(newDate);
+    }
+
+    @Test
+    public void getOffersByCategory() {
+        //Setup
+        final String title = "Offer";
+        Offer offer = getOffer(category, title);
+        userDao.create(offer.getOwner());
+        offerDao.create(offer);
+
+        //Act
+        List<Offer> retrieved = offerDao.getAllByCategory(category);
+        Offer only = retrieved.get(0);
+
+        //Validate
+        assertThat(only.getTitle()).isEqualTo(title);
+        assertThat(only.getCategory().getName()).isEqualTo("Category");
+    }
+
+
+    @Test
+    public void getSubscribedOffersEmpty() {
+        //Setup
+        final String title = "Offer";
+        Offer offer = getOffer(category, title);
+        User other = getUser("otherUser");
+
+        //Act
+        userDao.create(offer.getOwner());
+        userDao.create(other);
+        offerDao.create(offer);
+
+        List<Offer> retrieved = offerDao.getSubscribedOffers(other);
+
+        //Validate
+        assertThat(retrieved.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void getSubscribedOffers() {
+        //Setup
+        Offer offer = getOffer(category, "Offer");
+        Offer offer2 = getOffer(category, "otherOffer");
+        User other = getUser("otherUser");
+        User incomingUser = getUser("otherUser");
+        userDao.create(offer.getOwner());
+        userDao.create(offer2.getOwner());
+        userDao.create(other);
+        offerDao.create(offer);
+        offerDao.create(offer2);
+
+        incomingUser.setId(other.getId());
+
+        //Act
+        other.setSubscribedOffers(List.of(offer2));
+
+        List<Offer> retrieved = offerDao.getSubscribedOffers(incomingUser);
+
+        //Validate
+        assertThat(retrieved.size()).isEqualTo(1);
+        assertThat(retrieved.get(0)).isEqualTo(offer2);
     }
 }

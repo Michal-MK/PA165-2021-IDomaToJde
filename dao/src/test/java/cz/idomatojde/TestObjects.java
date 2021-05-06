@@ -53,25 +53,26 @@ public class TestObjects {
         return getUser(username, "password");
     }
 
-    /** Creates a new {@link Offer} entity
+    /**
+     * Creates a new {@link Offer} entity
      * <p>Title = title</p>
-     * <p>Owner = {@link #getUser(String,String)} with parameters: "Mr. $title", "12345"</p>
+     * <p>Owner = {@link #getUser(String, String)} with parameters: "Mr. $title", "12345"</p>
      * <p>Description = "description"</p>
      * <p>Capacity = 10</p>
      * <p>Registered = 5</p>
      * <p>Price = 1</p>
      * <p>Created At = 2021.04.1</p>
      * <p>Expires At = $tomorrow</p>
-
+     *
      * @param title the title of this {@link Offer}
      * @return new {@link Offer} object
      */
-    public static Offer getOffer(String title) {
+    public static Offer getOffer(Category cat, String title) {
         Offer offer = new Offer();
         offer.setTitle(title);
         offer.setOwner(getUser("Mr. " + title, "12345"));
         offer.setDescription("description");
-        offer.setCategory(Category.EDUCATION);
+        offer.setCategory(cat);
         offer.setCapacity(10);
         offer.setRegistered(5);
         offer.setPrice(BigDecimal.ONE);
@@ -79,5 +80,19 @@ public class TestObjects {
         offer.setExpirationDate(LocalDate.now().plusDays(1));
 
         return offer;
+    }
+
+    /**
+     * Creates a new {@link Category} entity
+     * <p>Name = string</p>
+     *
+     * @param name the name of this {@link Category}
+     * @return new {@link Category} object
+     */
+    public Category getCategory(String name) {
+        Category catE = new Category();
+        catE.setName(name);
+
+        return catE;
     }
 }

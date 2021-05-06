@@ -143,13 +143,13 @@ public final class TestObjects {
      * @param title the title of this {@link Offer}
      * @return new {@link Offer} object
      */
-    public static Offer getOffer(User user, String title) {
+    public static Offer getOffer(User user, Category cat, String title) {
         Offer offer = new Offer();
 
         offer.setTitle(title);
         offer.setOwner(user);
         offer.setDescription("description");
-        offer.setCategory(Category.EDUCATION);
+        offer.setCategory(cat);
         offer.setCapacity(10);
         offer.setRegistered(5);
         offer.setPrice(BigDecimal.ONE);

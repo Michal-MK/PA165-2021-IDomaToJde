@@ -1,6 +1,7 @@
 package cz.idomatojde;
 
 import cz.idomatojde.dao.TimetableDAO;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.TimetableEntry;
@@ -65,8 +66,10 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
         mockDao = mock(TimetableDAO.class);
         service = new TimetableServiceImpl(mockDao);
 
+        Category cat = new Category();
+        cat.setName("Sport");
         defUser = getUser("username");
-        defOffer = getOffer(defUser, "Yoga");
+        defOffer = getOffer(defUser, cat, "Yoga");
         defTimetable = getTimetable(defUser, 2020, 1);
         defEntry = getTimetableEntry(defTimetable, 20, TIME_4PM, DUR_2H);
 
@@ -88,7 +91,7 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
             return defTimetable;
         });
 
-        when(mockDao.create(any(Timetable.class))).thenAnswer((params) ->{
+        when(mockDao.create(any(Timetable.class))).thenAnswer((params) -> {
             params.getArgument(0, Timetable.class).setId(timetableId.get());
             timetableId.getAndSet(timetableId.get() + 1);
             return timetableId.get();

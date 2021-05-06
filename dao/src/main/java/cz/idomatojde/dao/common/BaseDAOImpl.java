@@ -19,7 +19,6 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
     @PersistenceContext
     protected EntityManager em;
 
-
     /**
      * Constructs the base type with the necessary information
      *
@@ -29,22 +28,30 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
         this.cls = cls;
     }
 
+    @Override
     public long create(TEntity entity) {
         em.persist(entity);
         return entity.getId();
     }
 
+    @Override
     public List<TEntity> findAll() {
         return em.createQuery("select a from " + cls.getName() + " a", cls).getResultList();
     }
 
-
+    @Override
     public TEntity getById(long id) {
         return em.createQuery("select a from " + cls.getName() + " a where a.id = :id", cls)
                 .setParameter("id", id)
                 .getSingleResult();
     }
 
+    @Override
+    public TEntity merge(TEntity entity) {
+        return em.merge(entity);
+    }
+
+    @Override
     public void delete(TEntity entity) {
         em.remove(entity);
     }

@@ -75,6 +75,9 @@ public class User implements IEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

@@ -2,7 +2,6 @@ package cz.idomatojde.entity;
 
 import cz.idomatojde.entity.base.IEntity;
 
-import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -19,13 +18,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * An Entity representing an offer for online lesson
+ * An Entity representing a service offer
  *
  * @author Jiri Vrbka
  */
 @Entity
-@SuppressWarnings("JpaDataSourceORMInspection")
-@Table(name = "\"Offer\"")
 public class Offer implements IEntity {
 
     @Id
@@ -57,7 +54,7 @@ public class Offer implements IEntity {
     @ManyToMany(mappedBy = "subscribedOffers")
     private List<User> subscribers = new ArrayList<>();
 
-    @Enumerated
+    @ManyToOne
     private Category category;
 
     private Integer capacity;

@@ -1,7 +1,9 @@
 package cz.idomatojde;
 
+import cz.idomatojde.dao.CategoryDao;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.UserDao;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -11,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
@@ -35,10 +38,22 @@ import static cz.idomatojde.TestObjects.getOffer;
 public class UserOfferTest extends AbstractTestNGSpringContextTests {
 
     @Inject
-    UserDao userDao;
+    private UserDao userDao;
 
     @Inject
-    OfferDao offerDao;
+    private OfferDao offerDao;
+
+    @Inject
+    private CategoryDao catDao;
+
+    private Category category;
+
+    @BeforeMethod
+    public void setUp() {
+        category = new Category();
+        category.setName("Category");
+        catDao.create(category);
+    }
 
     @Test
     public void userSubscribedOffers() {
@@ -46,7 +61,7 @@ public class UserOfferTest extends AbstractTestNGSpringContextTests {
         User user = getUser("Pepe");
         userDao.create(user);
 
-        Offer offer = getOffer("Java");
+        Offer offer = getOffer(category, "Java");
         offer.setOwner(user);
 
         offerDao.create(offer);
@@ -73,7 +88,7 @@ public class UserOfferTest extends AbstractTestNGSpringContextTests {
         User u2 = getUser("John");
         userDao.create(u2);
 
-        Offer offer = getOffer("Offer");
+        Offer offer = getOffer(category, "Offer");
         offer.setOwner(u);
         offer.getSubscribers().add(u2);
 

@@ -1,11 +1,13 @@
 package cz.idomatojde.configuration;
 
+import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.timetable.TimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserDTO;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.TimetableChatMessage;
@@ -34,13 +36,20 @@ public class CustomMapper {
         dto.setPrice(offer.getPrice());
         dto.setCreatedDate(offer.getCreatedDate());
         dto.setExpirationDate(offer.getExpirationDate());
-        dto.setCategory(offer.getCategory());
+        dto.setCategory(toCategoryDTO(offer.getCategory()));
         dto.setCapacity(offer.getCapacity());
         dto.setRegistered(offer.getRegistered());
 
         if (withDependencies) {
             dto.setOwner(toUserDTO(offer.getOwner()));
         }
+
+        return dto;
+    }
+
+    private static CategoryDTO toCategoryDTO(Category category) {
+        var dto = new CategoryDTO();
+        dto.setName(category.getName());
 
         return dto;
     }
