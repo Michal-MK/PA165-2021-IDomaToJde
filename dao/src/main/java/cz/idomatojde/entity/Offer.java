@@ -170,11 +170,8 @@ public class Offer implements IEntity {
                 && Objects.equals(getPrice(), offer.getPrice())
                 && Objects.equals(getCreatedDate(), offer.getCreatedDate())
                 && Objects.equals(getExpirationDate(), offer.getExpirationDate())
-                && Objects.equals(getEvents(), offer.getEvents())
-                && Objects.equals(getSubscribers(), offer.getSubscribers())
                 && getCategory() == offer.getCategory()
-                && Objects.equals(getCapacity(), offer.getCapacity())
-                && Objects.equals(getRegistered(), offer.getRegistered()
+                && Objects.equals(getCapacity(), offer.getCapacity()
         );
     }
 
@@ -182,15 +179,11 @@ public class Offer implements IEntity {
     public int hashCode() {
         return Objects.hash(
                 getTitle(),
-                getDescription(),
                 getPrice(),
                 getCreatedDate(),
                 getExpirationDate(),
-                getEvents(),
-                getSubscribers(),
                 getCategory(),
-                getCapacity(),
-                getRegistered()
+                getCapacity()
         );
     }
 }
