@@ -17,7 +17,7 @@ public interface UserFacade {
      * Register a new user
      *
      * @param registrationInfo necessary user creation information
-     * @return the ID of the User
+     * @return the ID of the newly created entity
      */
     long registerUser(RegisterUserDTO registrationInfo);
 

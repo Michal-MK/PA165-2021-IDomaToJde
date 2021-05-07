@@ -1,5 +1,6 @@
 package cz.idomatojde.facade;
 
+import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.timetable.AddTimetableChatMessageDTO;
@@ -40,6 +41,9 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
 
     @Inject
     private OfferFacade offerFacade;
+
+    @Inject
+    private CategoryFacade categoryFacade;
 
     @Inject
     private TimetableChatMessageFacade chatMessageFacade;
@@ -83,6 +87,9 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
     }
 
     private OfferDTO getOfferDTO(UserDTO userDTO) {
+        var category = new CategoryDTO();
+        category.setName("Category");
+
         var offer = new RegisterOfferDTO();
 
         offer.setCapacity(10);
@@ -91,7 +98,10 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         offer.setDescription("Register");
         offer.setTitle("Title");
         offer.setOwner(userDTO);
+        offer.setCategory(category);
 
+        var catId = categoryFacade.registerCategory(category);
+        category.setId(catId);
         var offerId = offerFacade.registerOffer(offer);
         return offerFacade.getOfferWithId(offerId);
     }

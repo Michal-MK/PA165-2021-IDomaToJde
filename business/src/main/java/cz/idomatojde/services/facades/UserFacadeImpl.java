@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+/**
+ * @author Michal Hazdra
+ */
 @Service
 @Transactional
 public class UserFacadeImpl implements UserFacade {

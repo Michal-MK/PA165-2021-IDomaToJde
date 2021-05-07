@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
+/**
+ * @author Michal Hazdra
+ */
 @Service
 @Transactional
 public class TimetableFacadeImpl implements TimetableFacade {

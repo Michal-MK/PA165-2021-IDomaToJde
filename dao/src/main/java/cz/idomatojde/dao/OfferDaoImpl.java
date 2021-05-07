@@ -41,7 +41,7 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
     public List<Offer> getActiveOffers() {
         return em
                 .createQuery(
-                        "SELECT o FROM Offer o WHERE o.expirationDate >= :today",
+                        "select o from Offer o where o.expirationDate >= :today",
                         Offer.class)
                 .setParameter("today", LocalDate.now())
                 .getResultList();
