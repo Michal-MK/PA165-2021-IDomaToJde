@@ -6,6 +6,7 @@ import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.facade.OfferFacade;
+import cz.idomatojde.services.CategoryService;
 import cz.idomatojde.services.OfferService;
 import cz.idomatojde.services.UserService;
 import cz.idomatojde.services.base.MappingService;
@@ -28,19 +29,24 @@ public class OfferFacadeImpl implements OfferFacade {
 
     private final UserService userService;
 
-    @Inject
-    public OfferFacadeImpl(MappingService mappingService, OfferService offerService, UserService userService) {
+    private final CategoryService categoryService;
 
+    @Inject
+    public OfferFacadeImpl(MappingService mappingService, OfferService offerService,
+                           UserService userService, CategoryService categoryService) {
         this.mappingService = mappingService;
         this.offerService = offerService;
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @Override
     public long registerOffer(RegisterOfferDTO registerOfferDTO) {
         var offer = mappingService.mapTo(registerOfferDTO, Offer.class);
         var user = userService.getById(registerOfferDTO.getOwner().getId());
+        var cat = categoryService.getById(registerOfferDTO.getCategory().getId());
         offer.setOwner(user);
+        offer.setCategory(cat);
         offer.setCreatedDate(LocalDate.now());
         offer.setExpirationDate(LocalDate.now().plusDays(10));
         offerService.create(offer);

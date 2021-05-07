@@ -47,7 +47,7 @@ public class CustomMapper {
         return dto;
     }
 
-    private static CategoryDTO toCategoryDTO(Category category) {
+    public static CategoryDTO toCategoryDTO(Category category) {
         var dto = new CategoryDTO();
         dto.setName(category.getName());
 

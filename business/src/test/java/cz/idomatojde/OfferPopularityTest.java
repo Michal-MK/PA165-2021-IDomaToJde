@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cz.idomatojde.TestObjects.getOffer;
 import static cz.idomatojde.TestObjects.getUser;
@@ -78,7 +79,7 @@ public class OfferPopularityTest {
         //Setup
         var arr = new ArrayList<Offer>();
         arr.addAll(allActiveOffers);
-        arr.addAll(userPreferred);
+        arr.addAll(userPreferred.stream().skip(3).collect(Collectors.toList()));
         when(mockOffers.getActiveOffers()).thenReturn(arr);
         when(mockOffers.getSubscribedOffers(user)).thenReturn(userPreferred);
 

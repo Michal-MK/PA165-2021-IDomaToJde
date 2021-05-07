@@ -2,8 +2,8 @@ package cz.idomatojde.entity;
 
 import cz.idomatojde.entity.base.IEntity;
 
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.persistence.GenerationType;
 import javax.persistence.Entity;
@@ -54,7 +54,7 @@ public class Offer implements IEntity {
     @ManyToMany(mappedBy = "subscribedOffers")
     private List<User> subscribers = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
     private Integer capacity;

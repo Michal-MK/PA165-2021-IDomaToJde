@@ -57,7 +57,7 @@ public class OfferPopularityServiceImpl implements OfferPopularityService {
         List<Offer> activeOffers = offers.getActiveOffers();
 
         return activeOffers.stream()
-                .filter(f -> f.getCategory() == category)
+                .filter(f -> f.getCategory().equals(category))
                 .filter(f -> f.getCapacity() - f.getRegistered() > 0)
                 .sorted(Comparator.comparingInt(Offer::getCapacity).reversed())
                 .collect(Collectors.toList());
