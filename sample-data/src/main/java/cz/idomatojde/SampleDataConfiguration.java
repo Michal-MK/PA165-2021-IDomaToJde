@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 /**
- * Configuration class for the rest layer
+ * Configuration class for Sample data module
  *
  * @author Michal Hazdra
  */

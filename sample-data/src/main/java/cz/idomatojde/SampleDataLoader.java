@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Random;
 
 /**
- * Component class for preloading the database with sample data.
+ * Component class for pre-loading the database with sample data.
  *
  * @author Michal Hazdra
  */
@@ -32,9 +32,7 @@ import java.util.Random;
 public class SampleDataLoader {
 
     private static final Random RND = new Random();
-
     private static final Faker F = new Faker();
-
 
     private final UserService users;
     private final OfferService offers;
