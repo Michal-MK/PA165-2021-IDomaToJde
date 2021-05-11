@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
+import cz.idomatojde.services.CategoryService;
 import cz.idomatojde.services.OfferService;
 import cz.idomatojde.services.TimetableChatMessageService;
 import cz.idomatojde.services.TimetableService;
@@ -38,19 +39,31 @@ public class SampleDataLoader {
     private final OfferService offers;
     private final TimetableService timetables;
     private final TimetableChatMessageService chatMessages;
+    private final CategoryService categories;
 
     private final List<User> usersList = new ArrayList<>();
+    private final List<Category> categoriesList = new ArrayList<>();
 
     @Inject
     public SampleDataLoader(UserService users, OfferService offers,
-                            TimetableService timetables, TimetableChatMessageService chatMessages) {
+                            TimetableService timetables, TimetableChatMessageService chatMessages,
+                            CategoryService categories) {
         this.users = users;
         this.offers = offers;
         this.timetables = timetables;
         this.chatMessages = chatMessages;
+        this.categories = categories;
     }
 
     public void loadData() {
+
+
+        createCategory("IT");
+        createCategory("Sport");
+        createCategory("Education");
+        createCategory("Leisure");
+        createCategory("Just Chatting");
+
         for (int i = 0; i < 2; i++) {
             String firstN = F.name().firstName();
             String lastN = F.name().lastName();
@@ -83,7 +96,7 @@ public class SampleDataLoader {
                     toDate(fromDate(start).plusDays(randInt(50, 120))));
 
             Offer o = TestObjects.getOffer(usersList.get(RND.nextInt(usersList.size())), F.book().title(),
-                    F.lorem().characters(50, 250), Category.values()[RND.nextInt(Category.values().length)],
+                    F.lorem().characters(50, 250), categoriesList.get(RND.nextInt(categoriesList.size())),
                     RND.nextInt(40), RND.nextInt(40),
                     BigDecimal.valueOf(F.number().randomNumber(2, true)),
                     fromDate(start), fromDate(end));
@@ -101,5 +114,12 @@ public class SampleDataLoader {
 
     private int randInt(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    private void createCategory(String name) {
+        Category c = new Category();
+        c.setName(name);
+        categories.create(c);
+        categoriesList.add(c);
     }
 }
