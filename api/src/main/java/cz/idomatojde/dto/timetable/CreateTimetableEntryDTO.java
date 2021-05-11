@@ -1,9 +1,8 @@
 package cz.idomatojde.dto.timetable;
 
+import cz.idomatojde.dto.base.DurationDTO;
+import cz.idomatojde.dto.base.LocalTimeDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
-
-import java.time.Duration;
-import java.time.LocalTime;
 
 /**
  * DTO Responsible for new timetable entry creation
@@ -13,8 +12,8 @@ import java.time.LocalTime;
 public class CreateTimetableEntryDTO {
     private TimetableDTO timetable;
     private OfferDTO offer;
-    private LocalTime entryStart;
-    private Duration length;
+    private LocalTimeDTO entryStart;
+    private DurationDTO length;
 
     public TimetableDTO getTimetable() {
         return timetable;
@@ -32,20 +31,19 @@ public class CreateTimetableEntryDTO {
         this.offer = offer;
     }
 
-    public LocalTime getEntryStart() {
+    public LocalTimeDTO getEntryStart() {
         return entryStart;
     }
 
-    public void setEntryStart(LocalTime entryStart) {
+    public void setEntryStart(LocalTimeDTO entryStart) {
         this.entryStart = entryStart;
     }
 
-    public Duration getLength() {
+    public DurationDTO getLength() {
         return length;
     }
 
-    public void setLength(Duration length) {
+    public void setLength(DurationDTO length) {
         this.length = length;
     }
-
 }

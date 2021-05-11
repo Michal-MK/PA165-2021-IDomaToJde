@@ -1,5 +1,7 @@
 package cz.idomatojde.configuration;
 
+import cz.idomatojde.dto.base.DurationDTO;
+import cz.idomatojde.dto.base.LocalTimeDTO;
 import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.timetable.TimetableChatMessageDTO;
@@ -14,6 +16,8 @@ import cz.idomatojde.entity.TimetableChatMessage;
 import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.entity.User;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.stream.Collectors;
 
 /**
@@ -79,8 +83,8 @@ public class CustomMapper {
         var dto = new TimetableEntryDTO();
 
         dto.setId(entry.getId());
-        dto.setEntryStart(entry.getEntryStart());
-        dto.setLength(entry.getLength());
+        dto.setEntryStart(toLocalTimeDTO(entry.getEntryStart()));
+        dto.setLength(toDurationDTO(entry.getLength()));
         dto.setDescription(entry.getDescription());
         dto.setDay(entry.getDay());
 
@@ -126,5 +130,31 @@ public class CustomMapper {
         }
 
         return dto;
+    }
+
+    public static LocalTimeDTO toLocalTimeDTO(LocalTime time) {
+        LocalTimeDTO dto = new LocalTimeDTO();
+
+        dto.setHour(time.getHour());
+        dto.setMinute(time.getMinute());
+        dto.setSecond(time.getSecond());
+
+        return dto;
+    }
+
+    public static LocalTime fromLocalTimeDTO(LocalTimeDTO time) {
+        return LocalTime.of(time.getHour(), time.getMinute(), time.getSecond());
+    }
+
+    public static DurationDTO toDurationDTO(Duration duration) {
+        DurationDTO dto = new DurationDTO();
+
+        dto.setMinutes(duration.toMinutes());
+
+        return dto;
+    }
+
+    public static Duration fromDurationDTO(DurationDTO time) {
+        return Duration.ofMinutes(time.getMinutes());
     }
 }

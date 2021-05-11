@@ -26,6 +26,8 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import static cz.idomatojde.configuration.CustomMapper.toDurationDTO;
+import static cz.idomatojde.configuration.CustomMapper.toLocalTimeDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration("classpath:applicationConfig.xml")
@@ -130,8 +132,8 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         var entryDto = new CreateTimetableEntryDTO();
         entryDto.setOffer(offerDTO);
         entryDto.setTimetable(timetableDTO);
-        entryDto.setLength(Duration.ofHours(1));
-        entryDto.setEntryStart(LocalTime.MIDNIGHT);
+        entryDto.setLength(toDurationDTO(Duration.ofHours(1)));
+        entryDto.setEntryStart(toLocalTimeDTO(LocalTime.MIDNIGHT));
 
         var entryId = timetableFacade.createEntry(entryDto);
         return timetableFacade.getEntryById(entryId);

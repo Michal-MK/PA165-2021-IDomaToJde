@@ -57,7 +57,6 @@ public class SampleDataLoader {
 
     public void loadData() {
 
-
         createCategory("IT");
         createCategory("Sport");
         createCategory("Education");
