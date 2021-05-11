@@ -42,5 +42,8 @@
         <module>dao</module>
         <module>business</module>
         <module>api</module>
+        <module>rest</module>
+        <module>ui</module>
+        <module>sample-data</module>
     </modules>
 </project>
