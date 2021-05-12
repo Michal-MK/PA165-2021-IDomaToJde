@@ -1,8 +1,11 @@
 package cz.idomatojde;
 
+import cz.idomatojde.dao.CategoryDao;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.TimetableDAO;
 import cz.idomatojde.dao.UserDao;
+import cz.idomatojde.entity.Category;
+import cz.idomatojde.entity.Timetable;
 import cz.idomatojde.entity.TimetableEntry;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
@@ -43,6 +47,19 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
     @Inject
     private UserDao userDao;
 
+    @Inject
+    private CategoryDao catDao;
+
+    private Category category;
+
+
+    @BeforeMethod
+    public void setup() {
+        category = new Category();
+        category.setName("Category");
+        catDao.create(category);
+    }
+
     @Test
     public void createTimetableTest() {
 
@@ -61,7 +78,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
     @Test
     public void createEntryTest() {
         // Arrange
-        var offer = getOffer("createEntryTest");
+        var offer = getOffer(category, "createEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -80,7 +97,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var updatedTime = LocalTime.now().minusHours(1);
         var updatedDuration = Duration.ofMinutes(10);
 
-        var offer = getOffer("moveEntryTest");
+        var offer = getOffer(category, "moveEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -100,7 +117,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         // Arrange
         var updatedTime = LocalTime.now().minusHours(1);
 
-        var offer = getOffer("moveEntryTest");
+        var offer = getOffer(category, "moveEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -118,7 +135,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
     @Test
     public void removeEntryTest() {
         // Arrange
-        var offer = getOffer("removeEntryTest");
+        var offer = getOffer(category, "removeEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
 
@@ -146,7 +163,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         final String newDesc = "myDesc";
         final int newDay = 21;
 
-        var offer = getOffer("updateEntryTest");
+        var offer = getOffer(category, "updateEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -183,7 +200,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findEntryTest() {
         // Arrange
-        var offer = getOffer("findEntryTest");
+        var offer = getOffer(category, "findEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -208,7 +225,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         int week = LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
         int year = LocalDate.now().getYear();
 
-        var offer = getOffer("getTimetableForCurrentWeekTest");
+        var offer = getOffer(category, "getTimetableForCurrentWeekTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
 
@@ -232,7 +249,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
     @Test
     public void getAllTimetableEntriesTest() {
         // Arrange
-        var offer = getOffer("getAllTimetableEntriesTest");
+        var offer = getOffer(category, "getAllTimetableEntriesTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -255,7 +272,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var newUser = getUser("newUserForUpdating");
         userDao.create(newUser);
 
-        var offer = getOffer("updateTest");
+        var offer = getOffer(category, "updateTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -265,5 +282,21 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
 
         // Assert
         assertThat(timetable.getUser()).isEqualTo(newUser);
+    }
+
+    @Test
+    public void getByIdWithUser() {
+        // Arrange
+        var offer = getOffer(category, "getAllTimetableEntriesTest");
+        userDao.create(offer.getOwner());
+        offerDao.create(offer);
+        Timetable timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
+
+        // Act
+        Timetable retrieved = timetableDAO.getByIdWithUser(timetable.getId());
+
+        // Assert
+        assertThat(timetable.getUser()).isNotNull();
+        assertThat(timetable.getUser().getUsername()).isEqualTo(timetable.getUser().getUsername());
     }
 }

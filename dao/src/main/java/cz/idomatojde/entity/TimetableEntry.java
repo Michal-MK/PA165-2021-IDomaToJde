@@ -117,13 +117,12 @@ public class TimetableEntry implements IEntity {
                 Objects.equals(getEntryStart(), that.getEntryStart()) &&
                 Objects.equals(getLength(), that.getLength()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getDay(), that.getDay()) &&
-                Objects.equals(getMessages(), that.getMessages());
+                Objects.equals(getDay(), that.getDay());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getTimetable(), getOffer(), getEntryStart(),
-                getLength(), getDescription(), getDay(), getMessages());
+                getLength(), getDescription(), getDay());
     }
 }

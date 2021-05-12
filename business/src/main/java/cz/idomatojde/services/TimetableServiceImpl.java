@@ -80,7 +80,7 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
 
 
     @Override
-    public TimetableEntry findEntry(Long entryId) {
+    public TimetableEntry findEntry(long entryId) {
         return timetables.findEntry(entryId);
     }
 
@@ -92,7 +92,7 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
 
 
     @Override
-    public List<TimetableEntry> getAllTimetableEntries(Long timetableId) {
+    public List<TimetableEntry> getAllTimetableEntries(long timetableId) {
         return timetables.getAllTimetableEntries(timetableId);
     }
 }

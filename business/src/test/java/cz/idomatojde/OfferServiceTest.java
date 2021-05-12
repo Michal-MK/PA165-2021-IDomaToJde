@@ -1,6 +1,7 @@
 package cz.idomatojde;
 
 import cz.idomatojde.dao.OfferDao;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.services.OfferService;
@@ -91,11 +92,12 @@ public class OfferServiceTest {
     }
 
     private List<Offer> getOffers(User defOwner) {
-
-        Offer o0 = getOffer(defOwner, "C#");
-        Offer o1 = getOffer(defOwner, "Java");
-        Offer o2 = getOffer(defOwner, "Python");
-        Offer o3 = getOffer(defOwner, "Haskell");
+        Category cat = new Category();
+        cat.setName("Education");
+        Offer o0 = getOffer(defOwner, cat, "C#");
+        Offer o1 = getOffer(defOwner, cat, "Java");
+        Offer o2 = getOffer(defOwner, cat, "Python");
+        Offer o3 = getOffer(defOwner, cat, "Haskell");
 
         return List.of(o0, o1, o2, o3);
     }

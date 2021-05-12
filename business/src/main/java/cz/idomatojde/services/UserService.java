@@ -15,7 +15,7 @@ public interface UserService extends BaseService<User> {
      * @param phoneNumber the phone number to assign
      * @param userId      the ID of the {@link User}
      */
-    void addPhone(String phoneNumber, Long userId);
+    void addPhone(long userId, String phoneNumber);
 
     /**
      * Sets a new credit balance for a {@link User} identified the their ID
@@ -23,5 +23,5 @@ public interface UserService extends BaseService<User> {
      * @param credits the new amount of credits
      * @param userId  the ID of the {@link User}
      */
-    void addCredits(Integer credits, Long userId);
+    void addCredits(long userId, int credits);
 }

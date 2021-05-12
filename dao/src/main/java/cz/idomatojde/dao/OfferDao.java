@@ -1,6 +1,7 @@
 package cz.idomatojde.dao;
 
 import cz.idomatojde.dao.common.BaseDAO;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 
@@ -24,7 +25,7 @@ public interface OfferDao extends BaseDAO<Offer> {
      * Finds all offers a {@link User} is subscribed to
      *
      * @param user the {@link User}  to filter with
-     * @return {@link Offer}s  subscribed to by a given {@link User}
+     * @return {@link Offer}s subscribed to by a given {@link User}
      */
     List<Offer> getSubscribedOffers(User user);
 
@@ -34,4 +35,12 @@ public interface OfferDao extends BaseDAO<Offer> {
      * @return list of not expired offers
      */
     List<Offer> getActiveOffers();
+
+    /**
+     * Gets all offers part of a specific category
+     *
+     * @param category the category name to filter by
+     * @return list of all {@link Offer}s that are part of the category
+     */
+    List<Offer> getAllByCategory(Category category);
 }

@@ -36,7 +36,15 @@ public interface BaseDAO<TEntity extends IEntity> {
      * @param id the entity identifier
      * @return the entity
      */
-    TEntity getById(Long id);
+    TEntity getById(long id);
+
+    /**
+     * Common functionality to merge an entity with the database equivalent
+     *
+     * @param entity the entity to merge
+     * @return the merged entity instance
+     */
+    TEntity merge(TEntity entity);
 
     /**
      * Common functionality to delete an entity from the database

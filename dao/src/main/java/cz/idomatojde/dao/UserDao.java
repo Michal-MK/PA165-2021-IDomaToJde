@@ -15,7 +15,7 @@ public interface UserDao extends BaseDAO<User> {
      * @param phoneNumber number to be added
      * @param userId      user id to be added number into
      */
-    void addPhone(String phoneNumber, Long userId);
+    void addPhone(long userId, String phoneNumber);
 
     /**
      * Adds credits to a user
@@ -23,7 +23,7 @@ public interface UserDao extends BaseDAO<User> {
      * @param credits Number of credits to be added
      * @param userId  user id to be added credits to
      */
-    void addCredits(Integer credits, Long userId);
+    void addCredits(long userId, int credits);
 
     /**
      * Gets a user by email fields

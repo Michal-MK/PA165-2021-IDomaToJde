@@ -1,8 +1,8 @@
 package cz.idomatojde.dto.offer;
 
+import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.dto.user.UserDTO;
-import cz.idomatojde.entity.Category;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,7 +33,7 @@ public class OfferDTO {
 
     private List<TimetableEntryDTO> events = new ArrayList<>();
 
-    private Category category;
+    private CategoryDTO category;
 
     private Integer capacity;
 
@@ -44,7 +44,9 @@ public class OfferDTO {
         return id;
     }
 
-    public void setId(long id){ this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public UserDTO getOwner() {
         return owner;
@@ -102,11 +104,11 @@ public class OfferDTO {
         this.events = events;
     }
 
-    public Category getCategory() {
+    public CategoryDTO getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryDTO category) {
         this.category = category;
     }
 

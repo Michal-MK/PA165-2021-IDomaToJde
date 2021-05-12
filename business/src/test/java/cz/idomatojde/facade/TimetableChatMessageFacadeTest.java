@@ -1,5 +1,6 @@
 package cz.idomatojde.facade;
 
+import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.timetable.AddTimetableChatMessageDTO;
@@ -25,6 +26,8 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import static cz.idomatojde.configuration.CustomMapper.toDurationDTO;
+import static cz.idomatojde.configuration.CustomMapper.toLocalTimeDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration("classpath:applicationConfig.xml")
@@ -40,6 +43,9 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
 
     @Inject
     private OfferFacade offerFacade;
+
+    @Inject
+    private CategoryFacade categoryFacade;
 
     @Inject
     private TimetableChatMessageFacade chatMessageFacade;
@@ -83,6 +89,9 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
     }
 
     private OfferDTO getOfferDTO(UserDTO userDTO) {
+        var category = new CategoryDTO();
+        category.setName("Category");
+
         var offer = new RegisterOfferDTO();
 
         offer.setCapacity(10);
@@ -91,7 +100,10 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         offer.setDescription("Register");
         offer.setTitle("Title");
         offer.setOwner(userDTO);
+        offer.setCategory(category);
 
+        var catId = categoryFacade.registerCategory(category);
+        category.setId(catId);
         var offerId = offerFacade.registerOffer(offer);
         return offerFacade.getOfferWithId(offerId);
     }
@@ -120,8 +132,8 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         var entryDto = new CreateTimetableEntryDTO();
         entryDto.setOffer(offerDTO);
         entryDto.setTimetable(timetableDTO);
-        entryDto.setLength(Duration.ofHours(1));
-        entryDto.setEntryStart(LocalTime.MIDNIGHT);
+        entryDto.setLength(toDurationDTO(Duration.ofHours(1)));
+        entryDto.setEntryStart(toLocalTimeDTO(LocalTime.MIDNIGHT));
 
         var entryId = timetableFacade.createEntry(entryDto);
         return timetableFacade.getEntryById(entryId);

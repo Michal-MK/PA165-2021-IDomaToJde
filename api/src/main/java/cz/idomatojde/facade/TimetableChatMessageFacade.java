@@ -18,6 +18,7 @@ public interface TimetableChatMessageFacade {
      * Register a new timetable chat message
      *
      * @param timetableChatMessageDTO DTO with necessary information about chat message
+     * @return the ID of the newly created entity
      */
     long addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO);
 

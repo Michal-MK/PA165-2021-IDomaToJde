@@ -2,9 +2,8 @@ package cz.idomatojde.entity;
 
 import cz.idomatojde.entity.base.IEntity;
 
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.persistence.GenerationType;
 import javax.persistence.Entity;
@@ -19,13 +18,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * An Entity representing an offer for online lesson
+ * An Entity representing a service offer
  *
  * @author Jiri Vrbka
  */
 @Entity
-@SuppressWarnings("JpaDataSourceORMInspection")
-@Table(name = "\"Offer\"")
 public class Offer implements IEntity {
 
     @Id
@@ -57,7 +54,7 @@ public class Offer implements IEntity {
     @ManyToMany(mappedBy = "subscribedOffers")
     private List<User> subscribers = new ArrayList<>();
 
-    @Enumerated
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
     private Integer capacity;
@@ -170,11 +167,8 @@ public class Offer implements IEntity {
                 && Objects.equals(getPrice(), offer.getPrice())
                 && Objects.equals(getCreatedDate(), offer.getCreatedDate())
                 && Objects.equals(getExpirationDate(), offer.getExpirationDate())
-                && Objects.equals(getEvents(), offer.getEvents())
-                && Objects.equals(getSubscribers(), offer.getSubscribers())
                 && getCategory() == offer.getCategory()
-                && Objects.equals(getCapacity(), offer.getCapacity())
-                && Objects.equals(getRegistered(), offer.getRegistered()
+                && Objects.equals(getCapacity(), offer.getCapacity()
         );
     }
 
@@ -182,15 +176,11 @@ public class Offer implements IEntity {
     public int hashCode() {
         return Objects.hash(
                 getTitle(),
-                getDescription(),
                 getPrice(),
                 getCreatedDate(),
                 getExpirationDate(),
-                getEvents(),
-                getSubscribers(),
                 getCategory(),
-                getCapacity(),
-                getRegistered()
+                getCapacity()
         );
     }
 }

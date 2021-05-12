@@ -6,12 +6,14 @@ import java.util.List;
 
 /**
  * Base service interface containing CRUD functionality
+ *
  * @param <TEntity> the backing Entity class this instance services
  */
 public interface BaseService<TEntity extends IEntity> {
 
     /**
      * <b>Create</b> operation for storing a new entity
+     *
      * @param entity the entity to create at the repository layer
      */
     long create(TEntity entity);
@@ -24,7 +26,7 @@ public interface BaseService<TEntity extends IEntity> {
     /**
      * <b>Retrieve</b> operation for obtaining a single entity by its ID
      */
-    TEntity getById(Long id);
+    TEntity getById(long id);
 
     /**
      * <b>Delete</b> operation for removing the entity from the repository

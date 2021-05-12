@@ -1,9 +1,9 @@
 package cz.idomatojde.dto.timetable;
 
+import cz.idomatojde.dto.base.DurationDTO;
+import cz.idomatojde.dto.base.LocalTimeDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +22,9 @@ public class TimetableEntryDTO {
 
     private int day;
 
-    private LocalTime entryStart;
+    private LocalTimeDTO entryStart;
 
-    private Duration length;
+    private DurationDTO length;
 
     private String description;
 
@@ -54,19 +54,19 @@ public class TimetableEntryDTO {
         this.offer = offer;
     }
 
-    public LocalTime getEntryStart() {
+    public LocalTimeDTO getEntryStart() {
         return entryStart;
     }
 
-    public void setEntryStart(LocalTime entryStart) {
+    public void setEntryStart(LocalTimeDTO entryStart) {
         this.entryStart = entryStart;
     }
 
-    public Duration getLength() {
+    public DurationDTO getLength() {
         return length;
     }
 
-    public void setLength(Duration length) {
+    public void setLength(DurationDTO length) {
         this.length = length;
     }
 

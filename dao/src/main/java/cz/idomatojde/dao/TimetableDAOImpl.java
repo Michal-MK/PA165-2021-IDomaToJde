@@ -87,7 +87,7 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    public TimetableEntry findEntry(Long entryId) {
+    public TimetableEntry findEntry(long entryId) {
         return em.createQuery("select a from TimetableEntry a where a.id = :id", TimetableEntry.class)
                 .setParameter("id", entryId)
                 .getSingleResult();
@@ -100,7 +100,7 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    public List<TimetableEntry> getAllTimetableEntries(Long timetableId) {
+    public List<TimetableEntry> getAllTimetableEntries(long timetableId) {
         return em.createQuery("select t from Timetable t left join fetch t.entries where t.id = :id", Timetable.class)
                 .setParameter("id", timetableId)
                 .getSingleResult()

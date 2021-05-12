@@ -15,6 +15,7 @@ public interface OfferFacade {
      * Register a new offer
      *
      * @param registerOfferDTO necessary information for offer creation
+     * @return the ID of the newly created entity
      */
     long registerOffer(RegisterOfferDTO registerOfferDTO);
 

@@ -18,6 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
+import static cz.idomatojde.configuration.CustomMapper.fromDurationDTO;
+import static cz.idomatojde.configuration.CustomMapper.fromLocalTimeDTO;
+
+/**
+ * @author Michal Hazdra
+ */
 @Service
 @Transactional
 public class TimetableFacadeImpl implements TimetableFacade {
@@ -62,8 +68,8 @@ public class TimetableFacadeImpl implements TimetableFacade {
         var timetable = timetableService.getById(entryDto.getTimetable().getId());
         var offer = offerService.getById(entryDto.getOffer().getId());
 
-        var entry =
-                timetableService.createEntry(timetable, offer, entryDto.getEntryStart(), entryDto.getLength());
+        var entry = timetableService.createEntry(timetable, offer,
+                fromLocalTimeDTO(entryDto.getEntryStart()), fromDurationDTO(entryDto.getLength()));
 
         return entry.getId();
     }

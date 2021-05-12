@@ -75,6 +75,9 @@ public class User implements IEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -180,18 +183,11 @@ public class User implements IEntity {
         if (!(o instanceof User)) return false;
 
         User user = (User) o;
-        return wantsAdvertisement() == user.wantsAdvertisement()
-                && isAdmin() == user.isAdmin()
+        return isAdmin() == user.isAdmin()
                 && Objects.equals(getUsername(), user.getUsername())
-                && Objects.equals(getPassword(), user.getPassword())
                 && Objects.equals(getEmail(), user.getEmail())
                 && Objects.equals(getName(), user.getName())
-                && Objects.equals(getSurname(), user.getSurname())
-                && Objects.equals(getPhoneNumber(), user.getPhoneNumber())
-                && Objects.equals(getCredits(), user.getCredits())
-                && Objects.equals(getBonusCredits(), user.getBonusCredits())
-                && Objects.equals(getOffers(), user.getOffers())
-                && Objects.equals(getSubscribedOffers(), user.getSubscribedOffers()
+                && Objects.equals(getSurname(), user.getSurname()
         );
     }
 
@@ -199,16 +195,9 @@ public class User implements IEntity {
     public int hashCode() {
         return Objects.hash(
                 getUsername(),
-                getPassword(),
                 getEmail(),
                 getName(),
                 getSurname(),
-                getPhoneNumber(),
-                getCredits(),
-                getBonusCredits(),
-                getOffers(),
-                getSubscribedOffers(),
-                wantsAdvertisement(),
                 isAdmin()
         );
     }

@@ -19,13 +19,13 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
     }
 
     @Override
-    public void addPhone(String phoneNumber, Long userId) {
+    public void addPhone(long userId, String phoneNumber) {
         var user = this.getById(userId);
         user.setPhoneNumber(phoneNumber);
     }
 
     @Override
-    public void addCredits(Integer credits, Long userId) {
+    public void addCredits(long userId, int credits) {
         var user = this.getById(userId);
         user.setCredits(user.getCredits() + credits);
     }

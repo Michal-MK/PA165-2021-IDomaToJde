@@ -27,7 +27,7 @@ public abstract class BaseServiceImpl<TEntity extends IEntity> implements BaseSe
     }
 
     @Override
-    public TEntity getById(Long id) {
+    public TEntity getById(long id) {
         return base.getById(id);
     }
 

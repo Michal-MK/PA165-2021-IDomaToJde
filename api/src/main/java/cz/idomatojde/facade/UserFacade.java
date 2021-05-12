@@ -17,13 +17,14 @@ public interface UserFacade {
      * Register a new user
      *
      * @param registrationInfo necessary user creation information
-     * @return the ID of the User
+     * @return the ID of the newly created entity
      */
     long registerUser(RegisterUserDTO registrationInfo);
 
     /**
      * Gets a user
-     * @param id unique user specificator
+     *
+     * @param id the unique user identifier
      * @return DTO for user
      */
     UserDTO getById(long id);
@@ -47,7 +48,7 @@ public interface UserFacade {
     /**
      * Set a new amount of credits to a user
      *
-     * @param userId  the unique user identifier
+     * @param userId the unique user identifier
      * @return the total available credits for a User
      */
     UserCreditsDTO getCredits(long userId);

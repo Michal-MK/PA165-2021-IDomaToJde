@@ -22,12 +22,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
-    public void addPhone(String phoneNumber, Long userId) {
-        userDao.addPhone(phoneNumber, userId);
+    public void addPhone(long userId, String phoneNumber) {
+        userDao.addPhone(userId, phoneNumber);
     }
 
     @Override
-    public void addCredits(Integer credits, Long userId) {
-        userDao.addCredits(credits, userId);
+    public void addCredits(long userId, int credits) {
+        userDao.addCredits(userId, credits);
     }
 }

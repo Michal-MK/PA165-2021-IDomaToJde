@@ -1,5 +1,6 @@
 package cz.idomatojde.facade;
 
+import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
@@ -30,11 +31,16 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
     @Inject
     private OfferFacade offerFacade;
 
+    @Inject
+    private CategoryFacade categoryFacade;
+
     @Test
-    public void registerOfferAndGetOfferWithId(){
+    public void registerOfferAndGetOfferWithId() {
         // Setup
         var userDto = getUserDTO();
         var registerDto = getRegisterOffer(userDto);
+        long id = categoryFacade.registerCategory(registerDto.getCategory());
+        registerDto.getCategory().setId(id);
 
         // Act
         var offerId = offerFacade.registerOffer(registerDto);
@@ -45,10 +51,13 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void removeOffer(){
+    public void removeOffer() {
         // Setup
         var userDto = getUserDTO();
         var registerDto = getRegisterOffer(userDto);
+        categoryFacade.registerCategory(registerDto.getCategory());
+        long catId = categoryFacade.registerCategory(registerDto.getCategory());
+        registerDto.getCategory().setId(catId);
         var offerId = offerFacade.registerOffer(registerDto);
 
         // Act
@@ -56,13 +65,15 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void changeDescription(){
+    public void changeDescription() {
         // Setup
         var newDesc = "changed";
         var newTitle = "Changed";
 
         var userDto = getUserDTO();
         var registerDto = getRegisterOffer(userDto);
+        long id = categoryFacade.registerCategory(registerDto.getCategory());
+        registerDto.getCategory().setId(id);
         var offerId = offerFacade.registerOffer(registerDto);
 
         var descDto = new ChangeDescriptionOfferDTO();
@@ -80,7 +91,7 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         assertThat(actual.getTitle()).isEqualTo(newTitle);
     }
 
-    private RegisterOfferDTO getRegisterOffer(UserDTO userDTO){
+    private RegisterOfferDTO getRegisterOffer(UserDTO userDTO) {
         var offer = new RegisterOfferDTO();
 
         offer.setCapacity(10);
@@ -90,10 +101,14 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         offer.setTitle("Title");
         offer.setOwner(userDTO);
 
+        var category = new CategoryDTO();
+        category.setName("Category");
+        offer.setCategory(category);
+
         return offer;
     }
 
-    private UserDTO getUserDTO(){
+    private UserDTO getUserDTO() {
         RegisterUserDTO userDto = new RegisterUserDTO();
         userDto.setUsername("testUser");
         userDto.setPassword("Argon2");

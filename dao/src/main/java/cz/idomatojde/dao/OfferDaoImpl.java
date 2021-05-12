@@ -1,6 +1,7 @@
 package cz.idomatojde.dao;
 
 import cz.idomatojde.dao.common.BaseDAOImpl;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
@@ -31,7 +32,7 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
 
     @Override
     public List<Offer> getSubscribedOffers(User user) {
-        return em.createQuery("select o from Offer o where :user in o.subscribers", Offer.class)
+        return em.createQuery("select o from Offer o where :user member of o.subscribers", Offer.class)
                 .setParameter("user", user)
                 .getResultList();
     }
@@ -40,9 +41,17 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
     public List<Offer> getActiveOffers() {
         return em
                 .createQuery(
-                        "SELECT o FROM Offer o WHERE o.expirationDate >= :today",
+                        "select o from Offer o where o.expirationDate >= :today",
                         Offer.class)
                 .setParameter("today", LocalDate.now())
                 .getResultList();
+    }
+
+    @Override
+    public List<Offer> getAllByCategory(Category category) {
+        return em.createQuery("select o from Offer o where o.category = :cat", Offer.class)
+                .setParameter("cat", category)
+                .getResultList();
+
     }
 }

@@ -1,9 +1,11 @@
 package cz.idomatojde;
 
+import cz.idomatojde.dao.CategoryDao;
 import cz.idomatojde.dao.TimetableChatMessageDAO;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.TimetableDAO;
 import cz.idomatojde.dao.UserDao;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.TimetableChatMessage;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
@@ -32,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
 
-
     @Inject
     private TimetableChatMessageDAO timetableChatMessageDAO;
 
@@ -43,13 +45,24 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     private OfferDao offerDao;
 
     @Inject
+    private CategoryDao catDao;
+
+    @Inject
     private UserDao userDao;
 
+    private Category category;
+
+    @BeforeMethod
+    public void setup() {
+        category = new Category();
+        category.setName("Category");
+        catDao.create(category);
+    }
 
     @Test
     public void addMessageTest() {
         // Arrange
-        var offer = getOffer("updateTest");
+        var offer = getOffer(category, "updateTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -74,7 +87,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     @Test
     public void getAllMessagesForEntryTest() {
         // Arrange
-        var offer = getOffer("getAllMessagesForEntryTest");
+        var offer = getOffer(category, "getAllMessagesForEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -105,7 +118,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     @Test
     public void updateTest() {
         // Arrange
-        var offer = getOffer("updateTest");
+        var offer = getOffer(category, "updateTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -131,7 +144,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     @Test
     public void createTest() {
         // Arrange
-        var offer = getOffer("createEntryTest");
+        var offer = getOffer(category, "createEntryTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -154,7 +167,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     @Test
     public void findAllTest() {
         // Arrange
-        var offer = getOffer("findAllTest");
+        var offer = getOffer(category, "findAllTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -187,7 +200,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     @Test
     public void getByIdTest() {
         // Arrange
-        var offer = getOffer("getByIdTest");
+        var offer = getOffer(category, "getByIdTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -210,7 +223,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     @Test(expectedExceptions = javax.persistence.NoResultException.class)
     public void deleteTest() {
         // Arrange
-        var offer = getOffer("deleteTest");
+        var offer = getOffer(category, "deleteTest");
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
@@ -234,7 +247,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
     @Test
     public void getAllMessagesOfUser() {
         // Arrange
-        var offer = getOffer("get all messages");
+        var offer = getOffer(category, "get all messages");
         var anotherUser = getUser("another");
         userDao.create(offer.getOwner());
         userDao.create(anotherUser);

@@ -1,5 +1,6 @@
 package cz.idomatojde.services;
 
+import cz.idomatojde.dao.CategoryDao;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.UserDao;
 import cz.idomatojde.entity.Category;
@@ -21,11 +22,14 @@ public class OfferPopularityServiceImpl implements OfferPopularityService {
 
     private final UserDao users;
 
+    private final CategoryDao categories;
+
     private final OfferDao offers;
 
     @Inject
-    public OfferPopularityServiceImpl(UserDao users, OfferDao offers) {
+    public OfferPopularityServiceImpl(UserDao users, CategoryDao categories, OfferDao offers) {
         this.users = users;
+        this.categories = categories;
         this.offers = offers;
     }
 
@@ -34,16 +38,14 @@ public class OfferPopularityServiceImpl implements OfferPopularityService {
         Map<Category, List<Offer>> offersByCategory = offers.getSubscribedOffers(user).stream()
                 .collect(Collectors.groupingBy(Offer::getCategory));
 
-        Category mostPopular = Category.EDUCATION;
+        Category mostPopular = null;
         int highest = 0;
 
-        for (Category c : Category.values()) {
-            if (offersByCategory.containsKey(c)) {
-                int curSize = offersByCategory.get(c).size();
-                if (curSize > highest) {
-                    mostPopular = c;
-                    highest = curSize;
-                }
+        for (Category c : offersByCategory.keySet()) {
+            int curSize = offersByCategory.get(c).size();
+            if (curSize > highest) {
+                mostPopular = c;
+                highest = curSize;
             }
         }
 
@@ -55,7 +57,7 @@ public class OfferPopularityServiceImpl implements OfferPopularityService {
         List<Offer> activeOffers = offers.getActiveOffers();
 
         return activeOffers.stream()
-                .filter(f -> f.getCategory() == category)
+                .filter(f -> f.getCategory().equals(category))
                 .filter(f -> f.getCapacity() - f.getRegistered() > 0)
                 .sorted(Comparator.comparingInt(Offer::getCapacity).reversed())
                 .collect(Collectors.toList());

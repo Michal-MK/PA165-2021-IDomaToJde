@@ -1,15 +1,15 @@
 package cz.idomatojde.dto.offer;
 
+import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.dto.user.UserDTO;
-import cz.idomatojde.entity.Category;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DTO for offer creation
+ * DTO Responsible for new offer creation
  *
  * @author Jiri Vrbka
  */
@@ -25,7 +25,7 @@ public class RegisterOfferDTO {
 
     private List<TimetableEntryDTO> events = new ArrayList<>();
 
-    private Category category;
+    private CategoryDTO category;
 
     private Integer capacity;
 
@@ -69,11 +69,11 @@ public class RegisterOfferDTO {
         this.events = events;
     }
 
-    public Category getCategory() {
+    public CategoryDTO getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryDTO category) {
         this.category = category;
     }
 
