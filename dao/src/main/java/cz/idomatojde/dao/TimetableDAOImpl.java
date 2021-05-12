@@ -77,8 +77,7 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
 
     @Override
     public Timetable getTimetable(User user, int year, int week) {
-        return em.createQuery("select t from Timetable t where" +
-                        " t.user = :user and t.year = :y and t.week = :w",
+        return em.createQuery("select t from Timetable t where t.user = :user and t.year = :y and t.week = :w",
                 Timetable.class)
                 .setParameter("user", user)
                 .setParameter("y", year)
@@ -101,7 +100,8 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
 
     @Override
     public List<TimetableEntry> getAllTimetableEntries(long timetableId) {
-        return em.createQuery("select t from Timetable t left join fetch t.entries where t.id = :id", Timetable.class)
+        return em.createQuery("select t from Timetable t left join fetch t.entries where t.id = :id",
+                Timetable.class)
                 .setParameter("id", timetableId)
                 .getSingleResult()
                 .getEntries();
@@ -109,7 +109,8 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
 
     @Override
     public Timetable getByIdWithUser(long timetableId) {
-        return em.createQuery("select t from Timetable t left join fetch t.user where t.id = :id", Timetable.class)
+        return em.createQuery("select t from Timetable t left join fetch t.user where t.id = :id",
+                Timetable.class)
                 .setParameter("id", timetableId)
                 .getSingleResult();
     }

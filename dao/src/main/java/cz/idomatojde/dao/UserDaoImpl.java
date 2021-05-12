@@ -32,14 +32,11 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
 
     @Override
     public User getByEmail(String email) {
-        if (email == null || email.isEmpty())
+        if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Cannot search for null e-mail");
-
+        }
         try {
-            return em
-                    .createQuery(
-                            "Select u From User u Where u.email = :email",
-                            User.class)
+            return em.createQuery("select u from User u where u.email = :email", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
         } catch (NoResultException ex) {

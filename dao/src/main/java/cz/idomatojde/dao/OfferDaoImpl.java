@@ -23,9 +23,7 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
 
     @Override
     public List<Offer> findByUser(User user) {
-        return em.createQuery(
-                "Select o from Offer o where o.owner = :userid",
-                Offer.class)
+        return em.createQuery("select o from Offer o where o.owner = :userid", Offer.class)
                 .setParameter("userid", user)
                 .getResultList();
     }
@@ -39,10 +37,7 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
 
     @Override
     public List<Offer> getActiveOffers() {
-        return em
-                .createQuery(
-                        "select o from Offer o where o.expirationDate >= :today",
-                        Offer.class)
+        return em.createQuery("select o from Offer o where o.expirationDate >= :today", Offer.class)
                 .setParameter("today", LocalDate.now())
                 .getResultList();
     }
@@ -52,6 +47,5 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
         return em.createQuery("select o from Offer o where o.category = :cat", Offer.class)
                 .setParameter("cat", category)
                 .getResultList();
-
     }
 }
