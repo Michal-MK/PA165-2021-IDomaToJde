@@ -9,7 +9,7 @@ import cz.idomatojde.exceptions.InvalidPhoneNumberException;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.services.UserService;
 import cz.idomatojde.services.base.MappingService;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import cz.idomatojde.services.facades.base.BaseFacadeImpl;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -20,33 +20,31 @@ import javax.transaction.Transactional;
  */
 @Service
 @Transactional
-public class UserFacadeImpl implements UserFacade {
+public class UserFacadeImpl extends BaseFacadeImpl<RegisterUserDTO, UserDTO, User> implements UserFacade {
 
     private final UserService userService;
 
-    private final MappingService mapService;
-
     @Inject
     public UserFacadeImpl(UserService userService, MappingService mapService) {
+        super(userService, mapService, UserDTO.class, User.class);
         this.userService = userService;
-        this.mapService = mapService;
     }
 
-    @Override
-    public long registerUser(RegisterUserDTO registrationInfo) {
-        User u = mapService.mapTo(registrationInfo, User.class);
-
-        u.setCredits(0);
-        u.setBonusCredits(0);
-        u.setPassword(new Argon2PasswordEncoder().encode(registrationInfo.getPassword()));
-
-        return userService.create(u);
-    }
+//    @Override
+//    public long registerUser(RegisterUserDTO registrationInfo) {
+//        User u = mapService.mapTo(registrationInfo, User.class);
+//
+//        u.setCredits(0);
+//        u.setBonusCredits(0);
+//        u.setPassword(new Argon2PasswordEncoder().encode(registrationInfo.getPassword()));
+//
+//        return userService.create(u);
+//    }
 
     @Override
     public UserDTO getById(long id) {
         var user = userService.getById(id);
-        var dto = mapService.mapTo(user, UserDTO.class);
+        var dto = mapService.toUserDTO(user);
         dto.setId(id);
         return dto;
     }
@@ -55,7 +53,7 @@ public class UserFacadeImpl implements UserFacade {
     public UserContactInfoDTO getUserContactInfo(long userId) {
         User u = userService.getById(userId);
 
-        return mapService.mapTo(u, UserContactInfoDTO.class);
+        return mapService.toUserContactInfoDTO(u);
     }
 
     @Override

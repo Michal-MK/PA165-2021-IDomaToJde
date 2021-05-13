@@ -37,16 +37,16 @@ public class TimetableFacadeTest extends AbstractTestNGSpringContextTests {
         userDto.setPhoneNumber("+420123456789");
         userDto.setEmail("a@a.cz");
 
-        long userId = userFacade.registerUser(userDto);
+        long userId = userFacade.register(userDto);
 
         AddTimetableDTO dto = new AddTimetableDTO();
         dto.setUserId(userId);
         dto.setYear(2030);
         dto.setWeek(40);
 
-        long id = timetableFacade.addTimetable(dto);
+        long id = timetableFacade.register(dto);
 
-        TimetableDTO timetableDTO = timetableFacade.getTimetable(id);
+        TimetableDTO timetableDTO = timetableFacade.getById(id);
 
         assertThat(timetableDTO.getYear()).isEqualTo(2030);
         assertThat(timetableDTO.getUserInfo().getEmail()).isEqualTo("a@a.cz");

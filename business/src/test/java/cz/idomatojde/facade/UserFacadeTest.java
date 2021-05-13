@@ -35,7 +35,7 @@ public class UserFacadeTest extends AbstractTestNGSpringContextTests {
         userDto.setPhoneNumber("+420123456789");
         userDto.setEmail("a@a.cz");
 
-        long userId = userFacade.registerUser(userDto);
+        long userId = userFacade.register(userDto);
 
         UserContactInfoDTO contact = userFacade.getUserContactInfo(userId);
         assertThat(contact.getName()).isEqualTo("John");

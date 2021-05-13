@@ -51,10 +51,9 @@ public class User implements IEntity {
     @NotNull
     private String phoneNumber;
 
-    @NotNull
-    private Integer credits;
+    private int credits;
 
-    private Integer bonusCredits;
+    private int bonusCredits;
 
     @OneToMany
     private List<Offer> offers;
@@ -127,19 +126,19 @@ public class User implements IEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public Integer getCredits() {
+    public int getCredits() {
         return credits;
     }
 
-    public void setCredits(Integer credits) {
+    public void setCredits(int credits) {
         this.credits = credits;
     }
 
-    public Integer getBonusCredits() {
+    public int getBonusCredits() {
         return bonusCredits;
     }
 
-    public void setBonusCredits(Integer bonusCredits) {
+    public void setBonusCredits(int bonusCredits) {
         this.bonusCredits = bonusCredits;
     }
 

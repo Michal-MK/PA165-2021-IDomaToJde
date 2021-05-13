@@ -55,4 +55,11 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
     public void delete(TEntity entity) {
         em.remove(entity);
     }
+
+    @Override
+    public void delete(long id) {
+        em.createQuery("delete from " + cls.getName() + " a where a.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
 }

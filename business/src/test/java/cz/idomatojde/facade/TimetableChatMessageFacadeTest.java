@@ -12,6 +12,7 @@ import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserDTO;
+import cz.idomatojde.services.base.MappingService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -26,8 +27,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import static cz.idomatojde.configuration.CustomMapper.toDurationDTO;
-import static cz.idomatojde.configuration.CustomMapper.toLocalTimeDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration("classpath:applicationConfig.xml")
@@ -50,6 +49,9 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
     @Inject
     private TimetableChatMessageFacade chatMessageFacade;
 
+    @Inject
+    private MappingService mappingService;
+
     @Test
     public void addTimetableChatMessage() {
         // Setup
@@ -63,10 +65,10 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         dto.setTimetableEntry(entryDto);
 
         // Act
-        var msgId = chatMessageFacade.addTimetableChatMessage(dto);
+        var msgId = chatMessageFacade.register(dto);
 
         // Validate
-        var actual = chatMessageFacade.getTimetableChatMessageWithId(msgId);
+        var actual = chatMessageFacade.getById(msgId);
 
         assertThat(actual).isNotNull();
     }
@@ -83,7 +85,7 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         chatMessageFacade.changeText(change);
 
         // Validate
-        var actual = chatMessageFacade.getTimetableChatMessageWithId(msgDto.getId());
+        var actual = chatMessageFacade.getById(msgDto.getId());
 
         assertThat(actual.getText()).isEqualTo(change.getText());
     }
@@ -102,10 +104,10 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         offer.setOwner(userDTO);
         offer.setCategory(category);
 
-        var catId = categoryFacade.registerCategory(category);
+        var catId = categoryFacade.register(category);
         category.setId(catId);
-        var offerId = offerFacade.registerOffer(offer);
-        return offerFacade.getOfferWithId(offerId);
+        var offerId = offerFacade.register(offer);
+        return offerFacade.getById(offerId);
     }
 
     private UserDTO getUserDTO() {
@@ -117,7 +119,7 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         userDto.setPhoneNumber("+420123456789");
         userDto.setEmail("a@a.cz");
 
-        long userId = userFacade.registerUser(userDto);
+        long userId = userFacade.register(userDto);
         return userFacade.getById(userId);
     }
 
@@ -126,16 +128,16 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         dto.setUserId(userDto.getId());
         dto.setYear(2030);
         dto.setWeek(40);
-        long id = timetableFacade.addTimetable(dto);
-        TimetableDTO timetableDTO = timetableFacade.getTimetable(id);
+        long id = timetableFacade.register(dto);
+        TimetableDTO timetableDTO = timetableFacade.getById(id);
 
         var entryDto = new CreateTimetableEntryDTO();
         entryDto.setOffer(offerDTO);
         entryDto.setTimetable(timetableDTO);
-        entryDto.setLength(toDurationDTO(Duration.ofHours(1)));
-        entryDto.setEntryStart(toLocalTimeDTO(LocalTime.MIDNIGHT));
+        entryDto.setLength(mappingService.toDurationDTO(Duration.ofHours(1)));
+        entryDto.setEntryStart(mappingService.toLocalTimeDTO(LocalTime.MIDNIGHT));
 
-        var entryId = timetableFacade.createEntry(entryDto);
+        var entryId = timetableFacade.registerEntry(entryDto);
         return timetableFacade.getEntryById(entryId);
     }
 
@@ -149,8 +151,8 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         dto.setSender(userDto);
         dto.setTimetableEntry(entryDto);
 
-        var msgId = chatMessageFacade.addTimetableChatMessage(dto);
+        var msgId = chatMessageFacade.register(dto);
 
-        return chatMessageFacade.getTimetableChatMessageWithId(msgId);
+        return chatMessageFacade.getById(msgId);
     }
 }

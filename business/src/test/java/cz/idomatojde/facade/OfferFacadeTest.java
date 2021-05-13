@@ -39,12 +39,12 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         // Setup
         var userDto = getUserDTO();
         var registerDto = getRegisterOffer(userDto);
-        long id = categoryFacade.registerCategory(registerDto.getCategory());
+        long id = categoryFacade.register(registerDto.getCategory());
         registerDto.getCategory().setId(id);
 
         // Act
-        var offerId = offerFacade.registerOffer(registerDto);
-        var actual = offerFacade.getOfferWithId(offerId);
+        var offerId = offerFacade.register(registerDto);
+        var actual = offerFacade.getById(offerId);
 
         // Validate
         assertThat(actual).isNotNull();
@@ -55,13 +55,13 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         // Setup
         var userDto = getUserDTO();
         var registerDto = getRegisterOffer(userDto);
-        categoryFacade.registerCategory(registerDto.getCategory());
-        long catId = categoryFacade.registerCategory(registerDto.getCategory());
+        categoryFacade.register(registerDto.getCategory());
+        long catId = categoryFacade.register(registerDto.getCategory());
         registerDto.getCategory().setId(catId);
-        var offerId = offerFacade.registerOffer(registerDto);
+        var offerId = offerFacade.register(registerDto);
 
         // Act
-        offerFacade.removeOffer(offerId);
+        offerFacade.delete(offerId);
     }
 
     @Test
@@ -72,9 +72,11 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
 
         var userDto = getUserDTO();
         var registerDto = getRegisterOffer(userDto);
-        long id = categoryFacade.registerCategory(registerDto.getCategory());
+
+        long id = categoryFacade.register(registerDto.getCategory());
         registerDto.getCategory().setId(id);
-        var offerId = offerFacade.registerOffer(registerDto);
+
+        var offerId = offerFacade.register(registerDto);
 
         var descDto = new ChangeDescriptionOfferDTO();
         descDto.setDescription(newDesc);
@@ -85,7 +87,7 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         offerFacade.changeDescription(descDto);
 
         // Validate
-        var actual = offerFacade.getOfferWithId(offerId);
+        var actual = offerFacade.getById(offerId);
 
         assertThat(actual.getDescription()).isEqualTo(newDesc);
         assertThat(actual.getTitle()).isEqualTo(newTitle);
@@ -117,7 +119,7 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         userDto.setPhoneNumber("+420123456789");
         userDto.setEmail("a@a.cz");
 
-        long userId = userFacade.registerUser(userDto);
+        long userId = userFacade.register(userDto);
         var dto = userFacade.getById(userId);
         dto.setId(userId);
         return dto;

@@ -52,4 +52,12 @@ public interface BaseDAO<TEntity extends IEntity> {
      * @param entity the entity to delete
      */
     void delete(TEntity entity);
+
+
+    /**
+     * Common functionality to delete an entity from the database
+     *
+     * @param entityId the entity ID to delete
+     */
+    void delete(long entityId);
 }

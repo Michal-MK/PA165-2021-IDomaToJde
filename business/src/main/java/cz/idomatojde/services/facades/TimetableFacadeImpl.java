@@ -1,75 +1,68 @@
 package cz.idomatojde.services.facades;
 
-import cz.idomatojde.configuration.CustomMapper;
 import cz.idomatojde.dto.timetable.AddTimetableDTO;
 import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
-import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.entity.Timetable;
-import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.TimetableFacade;
 import cz.idomatojde.services.OfferService;
 import cz.idomatojde.services.TimetableService;
 import cz.idomatojde.services.UserService;
 import cz.idomatojde.services.base.MappingService;
+import cz.idomatojde.services.facades.base.BaseFacadeImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-
-import static cz.idomatojde.configuration.CustomMapper.fromDurationDTO;
-import static cz.idomatojde.configuration.CustomMapper.fromLocalTimeDTO;
 
 /**
  * @author Michal Hazdra
  */
 @Service
 @Transactional
-public class TimetableFacadeImpl implements TimetableFacade {
+public class TimetableFacadeImpl extends BaseFacadeImpl<AddTimetableDTO, TimetableDTO, Timetable> implements TimetableFacade {
 
     private final TimetableService timetableService;
 
     private final UserService userService;
-
-    private final MappingService mapService;
 
     private final OfferService offerService;
 
     @Inject
     public TimetableFacadeImpl(TimetableService timetableService, UserService userService,
                                OfferService offerService, MappingService mapService) {
+        super(timetableService, mapService, TimetableDTO.class, Timetable.class);
         this.timetableService = timetableService;
         this.userService = userService;
         this.offerService = offerService;
-        this.mapService = mapService;
     }
 
+//    @Override
+//    public long addTimetable(AddTimetableDTO timetableDTO) {
+//        User u = userService.getById(timetableDTO.getUserId());
+//
+//        Timetable t = timetableService.createTimetable(u, timetableDTO.getYear(), timetableDTO.getWeek());
+//        return t.getId();
+//    }
+//
+//    @Override
+//    public TimetableDTO getTimetable(long timetableId) {
+//        Timetable t = timetableService.getTimetableWithEntries(timetableId);
+//
+//        TimetableDTO ret = mapService.mapTo(t, TimetableDTO.class);
+//        ret.setUserInfo(mapService.mapTo(t.getUser(), UserContactInfoDTO.class));
+//        ret.setId(timetableId);
+//        return ret;
+//    }
+
     @Override
-    public long addTimetable(AddTimetableDTO timetableDTO) {
-        User u = userService.getById(timetableDTO.getUserId());
-
-        Timetable t = timetableService.createTimetable(u, timetableDTO.getYear(), timetableDTO.getWeek());
-        return t.getId();
-    }
-
-    @Override
-    public TimetableDTO getTimetable(long timetableId) {
-        Timetable t = timetableService.getTimetableWithEntries(timetableId);
-
-        TimetableDTO ret = mapService.mapTo(t, TimetableDTO.class);
-        ret.setUserInfo(mapService.mapTo(t.getUser(), UserContactInfoDTO.class));
-        ret.setId(timetableId);
-        return ret;
-    }
-
-    @Override
-    public long createEntry(CreateTimetableEntryDTO entryDto) {
+    public long registerEntry(CreateTimetableEntryDTO entryDto) {
         var timetable = timetableService.getById(entryDto.getTimetable().getId());
         var offer = offerService.getById(entryDto.getOffer().getId());
 
         var entry = timetableService.createEntry(timetable, offer,
-                fromLocalTimeDTO(entryDto.getEntryStart()), fromDurationDTO(entryDto.getLength()));
+                mapService.fromLocalTimeDTO(entryDto.getEntryStart()), mapService.fromDurationDTO(entryDto.getLength()));
 
         return entry.getId();
     }
@@ -77,6 +70,6 @@ public class TimetableFacadeImpl implements TimetableFacade {
     @Override
     public TimetableEntryDTO getEntryById(long entryId) {
         var entry = timetableService.findEntry(entryId);
-        return CustomMapper.toTimetableEntryDTO(entry);
+        return mapService.toTimetableEntryDTO(entry);
     }
 }
