@@ -57,6 +57,8 @@ public interface MappingService {
 
     User fromUserDto(UserDTO dto);
 
+    User fromUserContactDto(UserContactInfoDTO dto);
+
     User fromRegisterUserDto(RegisterUserDTO dto);
 
     Category fromCategoryDto(CategoryDTO dto);
@@ -79,8 +81,9 @@ public interface MappingService {
 
     /**
      * A shortcut for mapping based on the {@link Class<TEntity>} to obtain the specific {@link IEntity} implementation
-     * @param dto the DTO object
-     * @param cls the class type to map to
+     *
+     * @param dto       the DTO object
+     * @param cls       the class type to map to
      * @param <TEntity> generic type specifying all entity classes
      * @return the mapped entity implementation
      */
@@ -88,8 +91,9 @@ public interface MappingService {
 
     /**
      * A shortcut for mapping based on the {@link Class<TDto>} to obtain the specific DTO implementation
+     *
      * @param entity the entity object
-     * @param cls the class type to map to
+     * @param cls    the class type to map to
      * @param <TDto> generic type specifying all DTO classes
      * @return the mapped DTO implementation
      */

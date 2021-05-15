@@ -67,7 +67,7 @@ public class MappingServiceImpl implements MappingService {
         dto.setCategory(toCategoryDTO(offer.getCategory()));
         dto.setCapacity(offer.getCapacity());
         dto.setRegistered(offer.getRegistered());
-        dto.setOwner(toUserDTO(offer.getOwner()));
+        dto.setOwner(toUserContactInfoDTO(offer.getOwner()));
 
         return dto;
     }
@@ -228,6 +228,11 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
+    public User fromUserContactDto(UserContactInfoDTO dto) {
+        return users.getById(dto.getId());
+    }
+
+    @Override
     public User fromRegisterUserDto(RegisterUserDTO dto) {
         User u = new User();
 
@@ -348,7 +353,7 @@ public class MappingServiceImpl implements MappingService {
         o.setCategory(fromCategoryDto(dto.getCategory()));
         o.setCapacity(dto.getCapacity());
         o.setRegistered(dto.getRegistered());
-        o.setOwner(fromUserDto(dto.getOwner()));
+        o.setOwner(fromUserContactDto(dto.getOwner()));
 
         return o;
     }

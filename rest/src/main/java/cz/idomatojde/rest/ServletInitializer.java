@@ -9,6 +9,8 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.regex.Matcher;
+
 /**
  * Bean configuration class for the facade layer
  *
@@ -28,9 +30,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths((s) -> {
-                    return s.contains("user");
-                })
+                .paths((s) -> !s.contains("error"))
                 .build();
     }
 }
