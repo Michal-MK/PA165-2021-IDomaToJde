@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -42,20 +41,6 @@ public class TimetableChatMessageFacadeImpl
         this.timetableChatMessageService = chatMessageService;
     }
 
-//    @Override
-//    public long addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO) {
-//        var user = userService.getById(timetableChatMessageDTO.getSender().getId());
-//        var entry = timetableService.findEntry(timetableChatMessageDTO.getTimetableEntry().getId());
-//        var text = timetableChatMessageDTO.getText();
-//        return timetableChatMessageService.addMessage(user, entry, text);
-//    }
-//
-//    @Override
-//    public TimetableChatMessageDTO getTimetableChatMessageWithId(long id) {
-//        var msg = timetableChatMessageService.getById(id);
-//        return mappingService.mapTo(msg, TimetableChatMessageDTO.class);
-//    }
-
     @Override
     public void changeText(ChangeTextTimetableChatMessageDTO changeTextTimetableChatMessageDTO) {
         var msg = timetableChatMessageService.getById(changeTextTimetableChatMessageDTO.getId());
@@ -75,12 +60,6 @@ public class TimetableChatMessageFacadeImpl
         return timetableChatMessageService.getAllMessagesForUser(user).stream()
                 .map(mapService::toTimetableChatMessageDTO).collect(Collectors.toList());
     }
-
-//    @Override
-//    public void deleteTimetableChatMessage(long id) {
-//        var msg = timetableChatMessageService.getById(id);
-//        timetableChatMessageService.delete(msg);
-//    }
 
     @Override
     public List<TimetableChatMessageDTO> getAllMessagesOfTimetableEntry(long entryId) {

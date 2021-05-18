@@ -38,24 +38,6 @@ public class TimetableFacadeImpl extends BaseFacadeImpl<AddTimetableDTO, Timetab
         this.offerService = offerService;
     }
 
-//    @Override
-//    public long addTimetable(AddTimetableDTO timetableDTO) {
-//        User u = userService.getById(timetableDTO.getUserId());
-//
-//        Timetable t = timetableService.createTimetable(u, timetableDTO.getYear(), timetableDTO.getWeek());
-//        return t.getId();
-//    }
-//
-//    @Override
-//    public TimetableDTO getTimetable(long timetableId) {
-//        Timetable t = timetableService.getTimetableWithEntries(timetableId);
-//
-//        TimetableDTO ret = mapService.mapTo(t, TimetableDTO.class);
-//        ret.setUserInfo(mapService.mapTo(t.getUser(), UserContactInfoDTO.class));
-//        ret.setId(timetableId);
-//        return ret;
-//    }
-
     @Override
     public long registerEntry(CreateTimetableEntryDTO entryDto) {
         var timetable = timetableService.getById(entryDto.getTimetable().getId());

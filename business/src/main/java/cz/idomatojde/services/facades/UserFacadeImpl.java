@@ -30,17 +30,6 @@ public class UserFacadeImpl extends BaseFacadeImpl<RegisterUserDTO, UserDTO, Use
         this.userService = userService;
     }
 
-//    @Override
-//    public long registerUser(RegisterUserDTO registrationInfo) {
-//        User u = mapService.mapTo(registrationInfo, User.class);
-//
-//        u.setCredits(0);
-//        u.setBonusCredits(0);
-//        u.setPassword(new Argon2PasswordEncoder().encode(registrationInfo.getPassword()));
-//
-//        return userService.create(u);
-//    }
-
     @Override
     public UserDTO getById(long id) {
         var user = userService.getById(id);

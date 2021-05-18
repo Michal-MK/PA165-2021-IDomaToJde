@@ -37,31 +37,6 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
         this.categoryService = categoryService;
     }
 
-//    @Override
-//    public long registerOffer(RegisterOfferDTO registerOfferDTO) {
-//        var offer = mappingService.mapTo(registerOfferDTO, Offer.class);
-//        var user = userService.getById(registerOfferDTO.getOwner().getId());
-//        var cat = categoryService.getById(registerOfferDTO.getCategory().getId());
-//        offer.setOwner(user);
-//        offer.setCategory(cat);
-//        offer.setCreatedDate(LocalDate.now());
-//        offer.setExpirationDate(LocalDate.now().plusDays(10));
-//        offerService.create(offer);
-//        return offer.getId();
-//    }
-//
-//    @Override
-//    public OfferDTO getOfferWithId(long id) {
-//        var offer = offerService.getById(id);
-//        return CustomMapper.toOfferDTO(offer);
-//    }
-//
-//    @Override
-//    public void removeOffer(long id) {
-//        var offer = offerService.getById(id);
-//        offerService.delete(offer);
-//    }
-
     @Override
     public void changeDescription(ChangeDescriptionOfferDTO changeDescriptionOfferDTO) {
         var offer = offerService.getById(changeDescriptionOfferDTO.getId());

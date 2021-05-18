@@ -1,7 +1,6 @@
 package cz.idomatojde.services.facades;
 
 import cz.idomatojde.services.base.MappingService;
-import cz.idomatojde.services.base.MappingServiceImpl;
 import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.entity.Category;
 import cz.idomatojde.facade.CategoryFacade;
@@ -26,11 +25,6 @@ public class CategoryFacadeImpl extends BaseFacadeImpl<CategoryDTO, CategoryDTO,
         super(categoryService, map, CategoryDTO.class, Category.class);
         this.categoryService = categoryService;
     }
-
-//    @Override
-//    public long registerCategory(CategoryDTO categoryDTO) {
-//        return categoryService.registerCategory(categoryDTO.getName());
-//    }
 
     @Override
     public CategoryDTO getByName(String name) {
