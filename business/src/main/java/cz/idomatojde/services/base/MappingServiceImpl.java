@@ -88,10 +88,7 @@ public class MappingServiceImpl implements MappingService {
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setPassword(user.getPassword());
-        dto.setEmail(user.getEmail());
-        dto.setName(user.getName());
-        dto.setSurname(user.getSurname());
-        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setContactInfo(toUserContactInfoDTO(user));
         dto.setCredits(user.getCredits());
         dto.setBonusCredits(user.getBonusCredits());
         dto.setWantsAdvertisement(user.wantsAdvertisement());
@@ -215,10 +212,10 @@ public class MappingServiceImpl implements MappingService {
         u.setId(dto.getId());
         u.setUsername(dto.getUsername());
         u.setPassword(dto.getPassword());
-        u.setEmail(dto.getEmail());
-        u.setName(dto.getName());
-        u.setSurname(dto.getSurname());
-        u.setPhoneNumber(dto.getPhoneNumber());
+        u.setEmail(dto.getContactInfo().getEmail());
+        u.setName(dto.getContactInfo().getName());
+        u.setSurname(dto.getContactInfo().getSurname());
+        u.setPhoneNumber(dto.getContactInfo().getPhoneNumber());
         u.setCredits(dto.getCredits());
         u.setBonusCredits(dto.getBonusCredits());
         u.setWantsAdvertisement(dto.wantsAdvertisement());

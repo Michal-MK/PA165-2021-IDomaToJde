@@ -18,13 +18,7 @@ public class UserDTO {
 
     private String password;
 
-    private String email;
-
-    private String name;
-
-    private String surname;
-
-    private String phoneNumber;
+    private UserContactInfoDTO contactInfo;
 
     private Integer credits;
 
@@ -60,36 +54,12 @@ public class UserDTO {
         this.password = passHash;
     }
 
-    public String getEmail() {
-        return email;
+    public UserContactInfoDTO getContactInfo() {
+        return contactInfo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setContactInfo(UserContactInfoDTO contactInfoDTO) {
+        this.contactInfo = contactInfoDTO;
     }
 
     public Integer getCredits() {
@@ -144,10 +114,7 @@ public class UserDTO {
                 && isAdmin() == user.isAdmin()
                 && Objects.equals(getUsername(), user.getUsername())
                 && Objects.equals(getPassword(), user.getPassword())
-                && Objects.equals(getEmail(), user.getEmail())
-                && Objects.equals(getName(), user.getName())
-                && Objects.equals(getSurname(), user.getSurname())
-                && Objects.equals(getPhoneNumber(), user.getPhoneNumber())
+                && Objects.equals(getContactInfo(), user.getContactInfo())
                 && Objects.equals(getCredits(), user.getCredits())
                 && Objects.equals(getBonusCredits(), user.getBonusCredits())
                 && Objects.equals(getOffers(), user.getOffers()
@@ -159,10 +126,7 @@ public class UserDTO {
         return Objects.hash(
                 getUsername(),
                 getPassword(),
-                getEmail(),
-                getName(),
-                getSurname(),
-                getPhoneNumber(),
+                getContactInfo(),
                 getCredits(),
                 getBonusCredits(),
                 getOffers(),
