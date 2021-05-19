@@ -29,6 +29,9 @@ import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * @author Jiri Vrbka
+ */
 @ContextConfiguration("classpath:applicationConfig.xml")
 @EnableAutoConfiguration
 @TestExecutionListeners(TransactionalTestExecutionListener.class)

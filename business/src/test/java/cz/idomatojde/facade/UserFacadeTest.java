@@ -16,6 +16,9 @@ import javax.transaction.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+/**
+ * @author Michal Hazdra
+ */
 @ContextConfiguration("classpath:applicationConfig.xml")
 @EnableAutoConfiguration
 @TestExecutionListeners(TransactionalTestExecutionListener.class)

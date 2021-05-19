@@ -54,4 +54,10 @@ public class TimetableFacadeImpl extends BaseFacadeImpl<AddTimetableDTO, Timetab
         var entry = timetableService.findEntry(entryId);
         return mapService.toTimetableEntryDTO(entry);
     }
+
+    @Override
+    public TimetableDTO getWithEntries(long timetableId) {
+        var table = timetableService.getTimetableWithEntries(timetableId);
+        return mapService.toTimetableDTO(table);
+    }
 }

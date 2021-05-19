@@ -7,6 +7,7 @@ import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.timetable.AddTimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.AddTimetableDTO;
+import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
@@ -72,6 +73,8 @@ public interface MappingService {
     Timetable fromRegisterTimetableDto(AddTimetableDTO dto);
 
     TimetableEntry fromTimetableEntryDto(TimetableEntryDTO dto);
+
+    TimetableEntry fromRegisterTimetableEntryDto(CreateTimetableEntryDTO dto);
 
     TimetableEntry fromTimetableEntryNoTimetableDto(TimetableEntryDTO dto);
 

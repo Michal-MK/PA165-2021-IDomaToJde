@@ -7,6 +7,7 @@ import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.timetable.AddTimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.AddTimetableDTO;
+import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
@@ -74,6 +75,8 @@ public class MappingServiceImpl implements MappingService {
 
     @Override
     public CategoryDTO toCategoryDTO(Category category) {
+        if (category == null) return null;
+
         var dto = new CategoryDTO();
         dto.setId(category.getId());
         dto.setName(category.getName());
@@ -321,6 +324,20 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
+    public TimetableEntry fromRegisterTimetableEntryDto(CreateTimetableEntryDTO dto) {
+        var te = new TimetableEntry();
+
+        te.setEntryStart(fromLocalTimeDTO(dto.getEntryStart()));
+        te.setLength(fromDurationDTO(dto.getLength()));
+        te.setDescription(dto.getDescription());
+        te.setDay(dto.getDay());
+        te.setTimetable(fromTimetableDto(dto.getTimetable()));
+        te.setOffer(fromOfferDto(dto.getOffer()));
+
+        return te;
+    }
+
+    @Override
     public TimetableEntry fromTimetableEntryNoTimetableDto(TimetableEntryDTO dto) {
         var te = new TimetableEntry();
 
@@ -396,7 +413,12 @@ public class MappingServiceImpl implements MappingService {
             }
         }
         if (cls == TimetableEntry.class) {
-            return (TEntity) fromTimetableEntryDto((TimetableEntryDTO) dto);
+            if(dto instanceof  CreateTimetableEntryDTO){
+                return (TEntity) fromRegisterTimetableEntryDto((CreateTimetableEntryDTO) dto);
+            }
+            else {
+                return (TEntity) fromTimetableEntryDto((TimetableEntryDTO) dto);
+            }
         }
         if (cls == TimetableChatMessage.class) {
             if (dto instanceof AddTimetableChatMessageDTO) {

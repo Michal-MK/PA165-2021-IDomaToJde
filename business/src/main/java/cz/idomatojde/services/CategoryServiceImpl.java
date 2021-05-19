@@ -22,13 +22,6 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category> implements Ca
     }
 
     @Override
-    public long registerCategory(String name) {
-        var cat = new Category();
-        cat.setName(name);
-        return categories.create(cat);
-    }
-
-    @Override
     public Category getByName(String name) {
         return categories.getByName(name);
     }

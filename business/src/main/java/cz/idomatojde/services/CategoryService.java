@@ -11,13 +11,6 @@ import cz.idomatojde.services.base.BaseService;
 public interface CategoryService extends BaseService<Category> {
 
     /**
-     * Creates a new Category
-     * @param name the unique name of the category
-     * @return the ID of the newly created entity
-     */
-    long registerCategory(String name);
-
-    /**
      * Function to obtain the {@link Category} given its name
      * @param name the name of the {@link Category}
      * @return the found {@link Category}

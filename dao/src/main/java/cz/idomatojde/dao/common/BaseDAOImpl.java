@@ -53,7 +53,8 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
 
     @Override
     public void delete(TEntity entity) {
-        em.remove(entity);
+        TEntity merged = merge(entity);
+        em.remove(merged);
     }
 
     @Override

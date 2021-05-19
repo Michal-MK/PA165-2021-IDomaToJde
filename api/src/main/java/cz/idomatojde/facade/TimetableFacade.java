@@ -24,8 +24,16 @@ public interface TimetableFacade extends BaseFacade<AddTimetableDTO, TimetableDT
     /**
      * Get entry by id
      *
-     * @param entryId unique identifier
+     * @param entryId unique identifier of the entry
      * @return DTO representing entry
      */
     TimetableEntryDTO getEntryById(long entryId);
+
+    /**
+     * Get entry by id
+     *
+     * @param timetableId unique identifier of the timetable
+     * @return DTO representing the timetable
+     */
+    TimetableDTO getWithEntries(long timetableId);
 }

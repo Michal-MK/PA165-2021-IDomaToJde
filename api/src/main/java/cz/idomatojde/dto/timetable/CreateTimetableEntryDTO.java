@@ -14,6 +14,8 @@ public class CreateTimetableEntryDTO {
     private OfferDTO offer;
     private LocalTimeDTO entryStart;
     private DurationDTO length;
+    private String description;
+    private int day;
 
     public TimetableDTO getTimetable() {
         return timetable;
@@ -45,5 +47,21 @@ public class CreateTimetableEntryDTO {
 
     public void setLength(DurationDTO length) {
         this.length = length;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 }

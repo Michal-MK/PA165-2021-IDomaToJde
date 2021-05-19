@@ -25,7 +25,7 @@ import static cz.idomatojde.TestObjects.getOffer;
 import static cz.idomatojde.TestObjects.getUser;
 import static cz.idomatojde.TestObjects.getTimetable;
 import static cz.idomatojde.TestObjects.getTimetableEntry;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -353,5 +353,18 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
         assertThat(entries.get(0).getId()).isEqualTo(2L);
         assertThat(entries.get(1).getId()).isEqualTo(3L);
         assertThat(entries.get(2).getId()).isEqualTo(4L);
+    }
+
+    @Test
+    public void getFullTimetable() {
+        verifyNoInteractions(mockDao);
+
+        Timetable full = service.getTimetableWithEntries(defTimetable.getId());
+
+        assertThat(full.getEntries()).containsExactly(
+                getTimetableEntry(defTimetable, 19, TIME_4PM, DUR_2H),
+                defEntry,
+                getTimetableEntry(defTimetable, 21, TIME_4PM, Duration.ofHours(4L))
+        );
     }
 }
