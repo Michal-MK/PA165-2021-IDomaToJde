@@ -48,7 +48,7 @@ public class Offer implements IEntity {
     @NotNull
     private LocalDate expirationDate;
 
-    @OneToMany
+    @OneToMany(mappedBy = "offer")
     private List<TimetableEntry> events = new ArrayList<>();
 
     @ManyToMany(mappedBy = "subscribedOffers")
@@ -61,6 +61,10 @@ public class Offer implements IEntity {
 
     private Integer registered;
 
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;

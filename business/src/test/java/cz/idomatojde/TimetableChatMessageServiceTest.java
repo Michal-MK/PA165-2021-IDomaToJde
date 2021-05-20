@@ -26,7 +26,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+/**
+ * @author Jiri Vrbka
+ */
 public class TimetableChatMessageServiceTest {
 
     private TimetableChatMessageDAO mockMessages;

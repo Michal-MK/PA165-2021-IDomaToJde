@@ -3,36 +3,14 @@ package cz.idomatojde.facade;
 import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
+import cz.idomatojde.facade.base.BaseFacade;
 
 /**
  * Facade responsible for all things concerning offers
  *
  * @author Jiri Vrbka
  */
-public interface OfferFacade {
-
-    /**
-     * Register a new offer
-     *
-     * @param registerOfferDTO necessary information for offer creation
-     * @return the ID of the newly created entity
-     */
-    long registerOffer(RegisterOfferDTO registerOfferDTO);
-
-    /**
-     * Get an offer with given id
-     *
-     * @param id unique offer identifier
-     * @return DTO with offer information
-     */
-    OfferDTO getOfferWithId(long id);
-
-    /**
-     * Removes offer
-     *
-     * @param id unique offer identifier
-     */
-    void removeOffer(long id);
+public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
 
     /**
      * Changes description and title of offer

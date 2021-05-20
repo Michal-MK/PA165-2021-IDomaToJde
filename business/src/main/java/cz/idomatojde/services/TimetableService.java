@@ -79,7 +79,7 @@ public interface TimetableService extends BaseService<Timetable> {
 
 
     /**
-     * Function to obtain the {@link Timetable} for a given {@link User} using an ID
+     * Function to obtain the {@link Timetable} with all {@link TimetableEntry} entries using an ID
      *
      * @param timetableId the unique ID of the {@link Timetable}
      * @return the found {@link Timetable} object

@@ -1,9 +1,11 @@
 package cz.idomatojde.services.facades;
 
-import cz.idomatojde.configuration.CustomMapper;
+import cz.idomatojde.services.base.MappingService;
 import cz.idomatojde.dto.category.CategoryDTO;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.facade.CategoryFacade;
 import cz.idomatojde.services.CategoryService;
+import cz.idomatojde.services.facades.base.BaseFacadeImpl;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -14,22 +16,18 @@ import javax.transaction.Transactional;
  */
 @Service
 @Transactional
-public class CategoryFacadeImpl implements CategoryFacade {
+public class CategoryFacadeImpl extends BaseFacadeImpl<CategoryDTO, CategoryDTO, Category> implements CategoryFacade {
 
     private final CategoryService categoryService;
 
     @Inject
-    public CategoryFacadeImpl(CategoryService categoryService) {
+    public CategoryFacadeImpl(CategoryService categoryService, MappingService map) {
+        super(categoryService, map, CategoryDTO.class, Category.class);
         this.categoryService = categoryService;
     }
 
     @Override
-    public long registerCategory(CategoryDTO categoryDTO) {
-        return categoryService.registerCategory(categoryDTO.getName());
-    }
-
-    @Override
     public CategoryDTO getByName(String name) {
-        return CustomMapper.toCategoryDTO(categoryService.getByName(name));
+        return mapService.toCategoryDTO(categoryService.getByName(name));
     }
 }

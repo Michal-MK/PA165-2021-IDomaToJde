@@ -28,9 +28,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths((s) -> {
-                    return s.contains("user");
-                })
+                .paths((s) -> !s.contains("error"))
                 .build();
     }
 }

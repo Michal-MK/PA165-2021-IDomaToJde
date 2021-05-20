@@ -3,6 +3,7 @@ package cz.idomatojde.facade;
 import cz.idomatojde.dto.timetable.AddTimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.ChangeTextTimetableChatMessageDTO;
 import cz.idomatojde.dto.timetable.TimetableChatMessageDTO;
+import cz.idomatojde.facade.base.BaseFacade;
 
 import java.util.List;
 
@@ -11,24 +12,7 @@ import java.util.List;
  *
  * @author Jiri Vrbka
  */
-public interface TimetableChatMessageFacade {
-
-
-    /**
-     * Register a new timetable chat message
-     *
-     * @param timetableChatMessageDTO DTO with necessary information about chat message
-     * @return the ID of the newly created entity
-     */
-    long addTimetableChatMessage(AddTimetableChatMessageDTO timetableChatMessageDTO);
-
-    /**
-     * Gets timetable chat message by given id
-     *
-     * @param id unique identifier
-     * @return DTO with information about timetable chat message
-     */
-    TimetableChatMessageDTO getTimetableChatMessageWithId(long id);
+public interface TimetableChatMessageFacade extends BaseFacade<AddTimetableChatMessageDTO, TimetableChatMessageDTO> {
 
     /**
      * Changes text of given timetable chat message
@@ -51,13 +35,6 @@ public interface TimetableChatMessageFacade {
      * @return all timetable chat message owner by user
      */
     List<TimetableChatMessageDTO> getAllMessagesOfUser(long userId);
-
-    /**
-     * Deletes timetable chat message defined by given id
-     *
-     * @param id unique identifier for a timetable chat message
-     */
-    void deleteTimetableChatMessage(long id);
 
     /**
      * Gets all timetable chat messages belonging to entry with given id

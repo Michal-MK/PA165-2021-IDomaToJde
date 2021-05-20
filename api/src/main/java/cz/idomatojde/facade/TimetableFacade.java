@@ -4,29 +4,14 @@ import cz.idomatojde.dto.timetable.AddTimetableDTO;
 import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
+import cz.idomatojde.facade.base.BaseFacade;
 
 /**
  * Facade responsible for all things concerning timetables
  *
  * @author Michal Hazdra
  */
-public interface TimetableFacade {
-
-    /**
-     * Create a new timetable
-     *
-     * @param timetableDTO necessary timetable creation information
-     * @return the ID of the newly created entity
-     */
-    long addTimetable(AddTimetableDTO timetableDTO);
-
-    /**
-     * Retrieve all information related to a specific timetable
-     *
-     * @param timetableId the unique timetable identifier
-     * @return timetable with all entries
-     */
-    TimetableDTO getTimetable(long timetableId);
+public interface TimetableFacade extends BaseFacade<AddTimetableDTO, TimetableDTO> {
 
     /**
      * Creates entry
@@ -34,13 +19,21 @@ public interface TimetableFacade {
      * @param entryDto dto for creation
      * @return timetable with all entries
      */
-    long createEntry(CreateTimetableEntryDTO entryDto);
+    long registerEntry(CreateTimetableEntryDTO entryDto);
 
     /**
      * Get entry by id
      *
-     * @param entryId unique identifier
+     * @param entryId unique identifier of the entry
      * @return DTO representing entry
      */
     TimetableEntryDTO getEntryById(long entryId);
+
+    /**
+     * Get entry by id
+     *
+     * @param timetableId unique identifier of the timetable
+     * @return DTO representing the timetable
+     */
+    TimetableDTO getWithEntries(long timetableId);
 }

@@ -2,7 +2,7 @@ package cz.idomatojde.dto.offer;
 
 import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
-import cz.idomatojde.dto.user.UserDTO;
+import cz.idomatojde.dto.user.UserContactInfoDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public class OfferDTO {
 
     private Long id;
 
-    private UserDTO owner;
+    private UserContactInfoDTO owner;
 
     private String title;
 
@@ -48,11 +48,11 @@ public class OfferDTO {
         this.id = id;
     }
 
-    public UserDTO getOwner() {
+    public UserContactInfoDTO getOwner() {
         return owner;
     }
 
-    public void setOwner(UserDTO owner) {
+    public void setOwner(UserContactInfoDTO owner) {
         this.owner = owner;
     }
 

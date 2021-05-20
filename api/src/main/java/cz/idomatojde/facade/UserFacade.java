@@ -5,29 +5,14 @@ import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
 import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.exceptions.InvalidPhoneNumberException;
+import cz.idomatojde.facade.base.BaseFacade;
 
 /**
  * Facade responsible for all things concerning users
  *
  * @author Michal Hazdra
  */
-public interface UserFacade {
-
-    /**
-     * Register a new user
-     *
-     * @param registrationInfo necessary user creation information
-     * @return the ID of the newly created entity
-     */
-    long registerUser(RegisterUserDTO registrationInfo);
-
-    /**
-     * Gets a user
-     *
-     * @param id the unique user identifier
-     * @return DTO for user
-     */
-    UserDTO getById(long id);
+public interface UserFacade extends BaseFacade<RegisterUserDTO, UserDTO> {
 
     /**
      * Retrieve user's full name and contact information
