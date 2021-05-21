@@ -83,10 +83,10 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
     }
 
     protected ResponseEntity<Void> forbidden() {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     protected <T> ResponseEntity<T> forbidden(T object) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(object);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(object);
     }
 }
