@@ -43,21 +43,21 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
 
     @GetMapping("find/{id}")
     protected ResponseEntity<TDto> getById(@RequestHeader(value = "token") String token, @PathVariable Long id) {
-        if (!allowUnauthenticatedGet && notAuthenticated(token)) return forbidden(null);
+        if (!allowUnauthenticatedGet && notAuthenticated(token)) return unauthorized(null);
 
         return ok(facade.getById(id));
     }
 
     @PutMapping(value = "register")
     protected ResponseEntity<Long> register(@RequestHeader(value = "token") String token, TRegDto regDto) {
-        if (notAuthenticated(token)) return forbidden(-1L);
+        if (notAuthenticated(token)) return unauthorized(-1L);
 
         return ok(facade.register(regDto));
     }
 
     @DeleteMapping(value = "delete")
     protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, TDto dto) {
-        if (notAuthenticated(token)) return forbidden();
+        if (notAuthenticated(token)) return unauthorized();
 
         facade.delete(dto);
         return ok().build();
@@ -65,7 +65,7 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
 
     @DeleteMapping(value = "deleteId/{id}")
     protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, @PathVariable Long id) {
-        if (notAuthenticated(token)) return forbidden();
+        if (notAuthenticated(token)) return unauthorized();
 
         facade.delete(id);
         return ok().build();
@@ -82,11 +82,11 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
         return isAuthenticated(token) == null;
     }
 
-    protected ResponseEntity<Void> forbidden() {
+    protected ResponseEntity<Void> unauthorized() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    protected <T> ResponseEntity<T> forbidden(T object) {
+    protected <T> ResponseEntity<T> unauthorized(T object) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(object);
     }
 }

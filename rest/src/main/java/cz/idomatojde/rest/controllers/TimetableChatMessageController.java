@@ -37,21 +37,21 @@ public class TimetableChatMessageController extends
 
     @GetMapping("allMessagesOfUser?userId={userId}")
     ResponseEntity<List<TimetableChatMessageDTO>> getMessagesByUserId(@RequestHeader(value = "token") String token, @PathVariable long userId) {
-        if (notAuthenticated(token)) return forbidden(null);
+        if (notAuthenticated(token)) return unauthorized(null);
 
         return ok(facade.getAllMessagesOfUser(userId));
     }
 
     @GetMapping("allMessagesOfTimetableEntry?entryId={entryId}")
     ResponseEntity<List<TimetableChatMessageDTO>> getAllMessagesOfTimetableEntry(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
-        if (notAuthenticated(token)) return forbidden(null);
+        if (notAuthenticated(token)) return unauthorized(null);
 
         return ok(facade.getAllMessagesOfTimetableEntry(entryId));
     }
 
     @PostMapping("changeMessage")
     ResponseEntity<Void> changeMessage(@RequestHeader(value = "token") String token, ChangeTextTimetableChatMessageDTO dto) {
-        if (notAuthenticated(token)) return forbidden();
+        if (notAuthenticated(token)) return unauthorized();
 
         facade.changeText(dto);
         return ok().build();
@@ -59,7 +59,7 @@ public class TimetableChatMessageController extends
 
     @PostMapping("deleteAllMessages?userId={userId}")
     ResponseEntity<Void> deleteMessagesByUserId(@RequestHeader(value = "token") String token, @PathVariable long userId) {
-        if (notAuthenticated(token)) return forbidden();
+        if (notAuthenticated(token)) return unauthorized();
 
         facade.deleteAllMessagesOfUser(userId);
         return ok().build();

@@ -35,7 +35,7 @@ public class OfferController extends
 
     @PostMapping("changeDescription")
     ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, ChangeDescriptionOfferDTO dto) {
-        if (notAuthenticated(token)) return forbidden();
+        if (notAuthenticated(token)) return unauthorized();
 
         facade.changeDescription(dto);
         return ok().build();

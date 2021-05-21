@@ -4,6 +4,7 @@ import cz.idomatojde.dto.timetable.AddTimetableDTO;
 import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
+import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.TimetableFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
@@ -37,14 +38,14 @@ public class TimetableController extends
 
     @GetMapping("entry/{entryId}")
     ResponseEntity<TimetableEntryDTO> getEntryById(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
-        if (notAuthenticated(token)) return forbidden(null);
+        if (notAuthenticated(token)) return unauthorized(null);
 
         return ok(facade.getEntryById(entryId));
     }
 
     @PutMapping("registerEntry")
     ResponseEntity<Void> registerEntry(@RequestHeader(value = "token") String token, CreateTimetableEntryDTO dto) {
-        if (notAuthenticated(token)) return forbidden();
+        if (notAuthenticated(token)) return unauthorized();
 
         facade.registerEntry(dto);
         return ok().build();
