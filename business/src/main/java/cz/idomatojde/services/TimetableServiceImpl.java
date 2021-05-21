@@ -35,14 +35,19 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
 
 
     @Override
-    public TimetableEntry createEntry(Timetable timetable, Offer offer, LocalTime start, Duration duration) {
-        return timetables.createEntry(timetable, offer, start, duration);
+    public TimetableEntry createEntry(Timetable timetable, int day, Offer offer, LocalTime start, Duration duration) {
+        return timetables.createEntry(timetable, day, offer, start, duration);
+    }
+
+    @Override
+    public long createEntry(TimetableEntry entry) {
+        return timetables.createEntry(entry);
     }
 
 
     @Override
-    public void moveEntry(TimetableEntry entry, LocalTime newStart, Duration newDuration) {
-        timetables.moveEntry(entry, newStart, newDuration);
+    public void moveEntry(TimetableEntry entry, int day, LocalTime newStart, Duration newDuration) {
+        timetables.moveEntry(entry, day, newStart, newDuration);
     }
 
 
@@ -74,7 +79,7 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
 
 
     @Override
-    public Timetable getByIdWithUser(long timetableId){
+    public Timetable getByIdWithUser(long timetableId) {
         return timetables.getByIdWithUser(timetableId);
     }
 

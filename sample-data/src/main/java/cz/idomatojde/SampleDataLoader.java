@@ -3,6 +3,9 @@ package cz.idomatojde;
 import com.github.javafaker.Faker;
 import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
+import cz.idomatojde.entity.Timetable;
+import cz.idomatojde.entity.TimetableChatMessage;
+import cz.idomatojde.entity.TimetableEntry;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.services.CategoryService;
 import cz.idomatojde.services.OfferService;
@@ -14,9 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.ZoneId;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +49,11 @@ public class SampleDataLoader {
 
     private final List<User> usersList = new ArrayList<>();
     private final List<Category> categoriesList = new ArrayList<>();
+    private final List<Offer> offerList = new ArrayList<>();
+    private final List<Timetable> timetableList = new ArrayList<>();
+    private final List<TimetableEntry> entryList = new ArrayList<>();
+    private final List<TimetableChatMessage> chatMessageList = new ArrayList<>();
+
 
     @Inject
     public SampleDataLoader(UserService users, OfferService offers,
@@ -96,7 +107,7 @@ public class SampleDataLoader {
 
 
         for (int i = 0; i < 30; i++) {
-            LocalDate startLd = LocalDate.of(2020, Month.JANUARY, randInt(1, 28));
+            LocalDate startLd = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, randInt(1, 28));
             Date start = F.date().between(toDate(startLd), toDate(startLd.plusDays(randInt(0, 120))));
             Date end = F.date().between(toDate(fromDate(start).plusDays(randInt(0, 50))),
                     toDate(fromDate(start).plusDays(randInt(50, 120))));
@@ -107,6 +118,39 @@ public class SampleDataLoader {
                     BigDecimal.valueOf(F.number().randomNumber(2, true)),
                     fromDate(start), fromDate(end));
             offers.create(o);
+            offerList.add(o);
+        }
+
+        for (User u : usersList) {
+            for (int j = 0; j < 3; j++) {
+                Timetable t = new Timetable();
+                t.setUser(u);
+                t.setYear(LocalDate.now().getYear());
+                t.setWeek(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR) - (1 - j));
+                timetables.create(t);
+                timetableList.add(t);
+            }
+        }
+
+        for (Offer o : offerList) {
+            TimetableEntry e = new TimetableEntry();
+            e.setOffer(o);
+            e.setTimetable(timetableList.get(RND.nextInt(timetableList.size())));
+            e.setDescription(F.harryPotter().book());
+            e.setEntryStart(LocalTime.of(F.number().numberBetween(8, 20), F.number().numberBetween(0, 59), 0));
+            e.setLength(Duration.ofMinutes(F.number().numberBetween(20, 60 * 4)));
+            e.setDay(F.number().numberBetween(0, 7));
+            timetables.createEntry(e);
+            entryList.add(e);
+        }
+
+        for (TimetableEntry e : entryList) {
+            TimetableChatMessage cm = new TimetableChatMessage();
+            cm.setSender(usersList.get(RND.nextInt(usersList.size())));
+            cm.setText(F.lorem().characters(10,200));
+            cm.setTimetableEntry(e);
+            chatMessages.create(cm);
+            chatMessageList.add(cm);
         }
     }
 

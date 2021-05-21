@@ -38,7 +38,7 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    public TimetableEntry createEntry(Timetable timetable, Offer offer, LocalTime start, Duration duration) {
+    public TimetableEntry createEntry(Timetable timetable, int day, Offer offer, LocalTime start, Duration duration) {
         TimetableEntry entry = new TimetableEntry();
         entry.setEntryStart(start);
         entry.setTimetable(timetable);
@@ -52,15 +52,23 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
-    public void moveEntry(TimetableEntry entry, LocalTime newStart, Duration newDuration) {
+    public long createEntry(TimetableEntry entry) {
+        em.persist(entry);
+
+        return entry.getId();
+    }
+
+    @Override
+    public void moveEntry(TimetableEntry entry, int day, LocalTime newStart, Duration newDuration) {
         entry.setEntryStart(newStart);
         entry.setLength(newDuration);
+        entry.setDay(day);
         updateEntry(entry);
     }
 
     @Override
     public void moveEntry(TimetableEntry entry, LocalTime newStart) {
-        moveEntry(entry, newStart, entry.getLength());
+        moveEntry(entry, entry.getDay(), newStart, entry.getLength());
     }
 
     @Override

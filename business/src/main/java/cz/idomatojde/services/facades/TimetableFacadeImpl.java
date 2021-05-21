@@ -2,6 +2,7 @@ package cz.idomatojde.services.facades;
 
 import cz.idomatojde.dto.timetable.AddTimetableDTO;
 import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
+import cz.idomatojde.dto.timetable.MoveTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.entity.Timetable;
@@ -43,7 +44,7 @@ public class TimetableFacadeImpl extends BaseFacadeImpl<AddTimetableDTO, Timetab
         var timetable = timetableService.getById(entryDto.getTimetable().getId());
         var offer = offerService.getById(entryDto.getOffer().getId());
 
-        var entry = timetableService.createEntry(timetable, offer,
+        var entry = timetableService.createEntry(timetable, entryDto.getDay(), offer,
                 mapService.fromLocalTimeDTO(entryDto.getEntryStart()), mapService.fromDurationDTO(entryDto.getLength()));
 
         return entry.getId();
@@ -59,5 +60,22 @@ public class TimetableFacadeImpl extends BaseFacadeImpl<AddTimetableDTO, Timetab
     public TimetableDTO getWithEntries(long timetableId) {
         var table = timetableService.getTimetableWithEntries(timetableId);
         return mapService.toTimetableDTO(table);
+    }
+
+    @Override
+    public TimetableDTO getTimetableForCurrentWeek(long userId) {
+        return mapService.toTimetableDTO(timetableService.getTimetableForCurrentWeek(userService.getById(userId)));
+    }
+
+    @Override
+    public TimetableDTO getTimetableForDate(long userId, int year, int week) {
+        return mapService.toTimetableDTO(timetableService.getTimetable(userService.getById(userId), year, week));
+    }
+
+    @Override
+    public void moveTimetableEntry(MoveTimetableEntryDTO moveEntryDTO) {
+        timetableService.moveEntry(timetableService.findEntry(moveEntryDTO.getTimetableEntryId()),
+                moveEntryDTO.getDay(), mapService.fromLocalTimeDTO(moveEntryDTO.getTime()),
+                mapService.fromDurationDTO(moveEntryDTO.getDuration()));
     }
 }
