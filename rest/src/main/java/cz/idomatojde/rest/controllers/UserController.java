@@ -7,6 +7,7 @@ import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import io.swagger.annotations.Api;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Controller responsible for all things concerning Users
@@ -32,22 +35,24 @@ public class UserController extends
     }
 
     @GetMapping("contactInfo/{userId}")
-    UserContactInfoDTO getUserContactInfo(@RequestHeader(value = "token") String token, @PathVariable long userId) {
-        return facade.getUserContactInfo(userId);
+    ResponseEntity<UserContactInfoDTO> getUserContactInfo(@RequestHeader(value = "token") String token, @PathVariable long userId) {
+        return ok(facade.getUserContactInfo(userId));
     }
 
     @GetMapping("credits/{userId}")
-    UserCreditsDTO getUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId) {
-        return facade.getCredits(userId);
+    ResponseEntity<UserCreditsDTO> getUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId) {
+        return ok(facade.getCredits(userId));
     }
 
     @PostMapping("setContactInfo/{userId}?phoneNum={phoneNum}")
-    void changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable String phoneNum) {
+    ResponseEntity<Void> changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable String phoneNum) {
         facade.changePhoneNumber(userId, phoneNum);
+        return ok().build();
     }
 
     @PostMapping("setCredits/{userId}?credits={credits}")
-    void setUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable int credits) {
+    ResponseEntity<Void> setUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable int credits) {
         facade.setCredits(userId, credits);
+        return ok().build();
     }
 }

@@ -28,7 +28,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("login")
-    AuthDTO login(@RequestHeader(value = "username") String username, @RequestHeader(value = "pass")String pass) {
+    AuthDTO login(@RequestHeader(value = "username") String username, @RequestHeader(value = "pass") String pass) {
         AuthDTO response = users.authenticate(username, pass);
 
         if (response.isSuccessful()) {

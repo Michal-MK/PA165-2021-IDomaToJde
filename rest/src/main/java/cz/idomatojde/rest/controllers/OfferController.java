@@ -7,12 +7,15 @@ import cz.idomatojde.facade.OfferFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import io.swagger.annotations.Api;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Controller responsible for all things concerning Offers
@@ -31,7 +34,8 @@ public class OfferController extends
     }
 
     @PostMapping("changeDescription")
-    void changeDescription(@RequestHeader(value = "token") String token, ChangeDescriptionOfferDTO dto) {
+    ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, ChangeDescriptionOfferDTO dto) {
         facade.changeDescription(dto);
+        return ok().build();
     }
 }

@@ -8,6 +8,7 @@ import cz.idomatojde.facade.TimetableFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import io.swagger.annotations.Api;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Controller responsible for all things concerning Timetables
@@ -33,12 +36,13 @@ public class TimetableController extends
     }
 
     @GetMapping("entry/{entryId}")
-    TimetableEntryDTO getEntryById(@RequestHeader(value = "token") String token, @PathVariable long entryId){
-        return facade.getEntryById(entryId);
+    ResponseEntity<TimetableEntryDTO> getEntryById(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
+        return ok(facade.getEntryById(entryId));
     }
 
     @PutMapping("registerEntry")
-    void registerEntry(@RequestHeader(value = "token") String token, CreateTimetableEntryDTO dto) {
+    ResponseEntity<Void> registerEntry(@RequestHeader(value = "token") String token, CreateTimetableEntryDTO dto) {
         facade.registerEntry(dto);
+        return ok().build();
     }
 }

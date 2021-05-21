@@ -5,12 +5,15 @@ import cz.idomatojde.facade.CategoryFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import io.swagger.annotations.Api;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Controller responsible for all things concerning Categories
@@ -28,7 +31,7 @@ public class CategoryController extends
     }
 
     @GetMapping("byName/{name}")
-    public CategoryDTO getByName(@PathVariable String name) {
-        return facade.getByName(name);
+    public ResponseEntity<CategoryDTO> getByName(@PathVariable String name) {
+        return ok(facade.getByName(name));
     }
 }
