@@ -63,6 +63,13 @@ public class SampleDataLoader {
         createCategory("Leisure");
         createCategory("Just Chatting");
 
+        User root = TestObjects.getUser("root", "12345", "John",
+                "Doe", F.phoneNumber().cellPhone(), 9999,
+                false, true);
+
+        users.create(root);
+        usersList.add(root);
+
         for (int i = 0; i < 2; i++) {
             String firstN = F.name().firstName();
             String lastN = F.name().lastName();

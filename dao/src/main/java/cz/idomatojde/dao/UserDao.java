@@ -20,7 +20,7 @@ public interface UserDao extends BaseDAO<User> {
     /**
      * Adds credits to a user
      *
-     * @param credits Number of credits to be added
+     * @param credits number of credits to be added
      * @param userId  user id to be added credits to
      */
     void addCredits(long userId, int credits);
@@ -32,4 +32,20 @@ public interface UserDao extends BaseDAO<User> {
      * @return user if user found, null otherwise
      */
     User getByEmail(String email);
+
+    /**
+     * Gets the {@link User} by their username
+     *
+     * @param username the username to search for
+     * @return the {@link User} with this username, null if not found
+     */
+    User getByUsername(String username);
+
+    /**
+     * Gets the {@link User} by their API token
+     *
+     * @param token the token to search for
+     * @return the {@link User} with this token, null if not found
+     */
+    User getByToken(String token);
 }

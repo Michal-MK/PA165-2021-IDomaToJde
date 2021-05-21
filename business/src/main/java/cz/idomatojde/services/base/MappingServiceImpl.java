@@ -86,6 +86,7 @@ public class MappingServiceImpl implements MappingService {
 
     @Override
     public UserDTO toUserDTO(User user) {
+        if (user == null) return null;
         var dto = new UserDTO();
 
         dto.setId(user.getId());
@@ -413,10 +414,9 @@ public class MappingServiceImpl implements MappingService {
             }
         }
         if (cls == TimetableEntry.class) {
-            if(dto instanceof  CreateTimetableEntryDTO){
+            if (dto instanceof CreateTimetableEntryDTO) {
                 return (TEntity) fromRegisterTimetableEntryDto((CreateTimetableEntryDTO) dto);
-            }
-            else {
+            } else {
                 return (TEntity) fromTimetableEntryDto((TimetableEntryDTO) dto);
             }
         }
