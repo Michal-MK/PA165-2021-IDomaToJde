@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 /**
  * Base class for all REST controllers needing authentication
  *
@@ -25,50 +27,48 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
 
     protected final TFacade facade;
 
-    private final boolean allowGet;
+    private final boolean allowUnauthenticatedGet;
 
     public AuthBaseRESTController(UserFacade users, TFacade coreFacade) {
         facade = coreFacade;
         userFacade = users;
-        allowGet = false;
+        allowUnauthenticatedGet = false;
     }
 
-    public AuthBaseRESTController(UserFacade users, TFacade coreFacade, boolean allowGet) {
+    public AuthBaseRESTController(UserFacade users, TFacade coreFacade, boolean allowUnauthenticatedGet) {
         facade = coreFacade;
         userFacade = users;
-        this.allowGet = allowGet;
+        this.allowUnauthenticatedGet = allowUnauthenticatedGet;
     }
 
     @GetMapping("find/{id}")
-    protected TDto getById(@RequestHeader(value = "token") String token, @PathVariable Long id) {
-        if (!allowGet && isAuthenticated(token) == null) {
-            return null;
-        }
-        return facade.getById(id);
+    protected ResponseEntity<TDto> getById(@RequestHeader(value = "token") String token, @PathVariable Long id) {
+        if (!allowUnauthenticatedGet && notAuthenticated(token)) return forbidden(null);
+
+        return ok(facade.getById(id));
     }
 
     @PutMapping(value = "register")
-    protected long register(@RequestHeader(value = "token") String token, TRegDto regDto) {
-        if (isAuthenticated(token) == null) {
-            return -1;
-        }
-        return facade.register(regDto);
+    protected ResponseEntity<Long> register(@RequestHeader(value = "token") String token, TRegDto regDto) {
+        if (notAuthenticated(token)) return forbidden(-1L);
+
+        return ok(facade.register(regDto));
     }
 
     @DeleteMapping(value = "delete")
-    protected void delete(@RequestHeader(value = "token") String token, TDto dto) {
-        if (isAuthenticated(token) == null) {
-            return;
-        }
+    protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, TDto dto) {
+        if (notAuthenticated(token)) return forbidden();
+
         facade.delete(dto);
+        return ok().build();
     }
 
     @DeleteMapping(value = "deleteId/{id}")
-    protected void delete(@RequestHeader(value = "token") String token, @PathVariable Long id) {
-        if (isAuthenticated(token) == null) {
-            return;
-        }
+    protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, @PathVariable Long id) {
+        if (notAuthenticated(token)) return forbidden();
+
         facade.delete(id);
+        return ok().build();
     }
 
     protected UserDTO isAuthenticated(String token) {
@@ -76,6 +76,10 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
             return null;
         }
         return userFacade.authenticate(token);
+    }
+
+    protected boolean notAuthenticated(String token) {
+        return isAuthenticated(token) == null;
     }
 
     protected ResponseEntity<Void> forbidden() {

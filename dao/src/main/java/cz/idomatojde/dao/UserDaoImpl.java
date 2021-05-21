@@ -5,6 +5,7 @@ import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+import java.time.LocalDate;
 
 /**
  * DAO implementation for {@link OfferDao} API
@@ -64,9 +65,14 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
             return null;
         }
         try {
-            return em.createQuery("select u from User u where u.token = :token", User.class)
+            User u = em.createQuery("select u from User u where u.token = :token", User.class)
                     .setParameter("token", token)
                     .getSingleResult();
+
+            if (u != null && u.getTokenExpiration().compareTo(LocalDate.now()) >= 0) {
+                return u;
+            }
+            return null;
         } catch (NoResultException ex) {
             return null;
         }

@@ -37,11 +37,15 @@ public class TimetableController extends
 
     @GetMapping("entry/{entryId}")
     ResponseEntity<TimetableEntryDTO> getEntryById(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
+        if (notAuthenticated(token)) return forbidden(null);
+
         return ok(facade.getEntryById(entryId));
     }
 
     @PutMapping("registerEntry")
     ResponseEntity<Void> registerEntry(@RequestHeader(value = "token") String token, CreateTimetableEntryDTO dto) {
+        if (notAuthenticated(token)) return forbidden();
+
         facade.registerEntry(dto);
         return ok().build();
     }

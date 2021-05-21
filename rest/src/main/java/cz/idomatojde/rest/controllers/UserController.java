@@ -36,22 +36,30 @@ public class UserController extends
 
     @GetMapping("contactInfo/{userId}")
     ResponseEntity<UserContactInfoDTO> getUserContactInfo(@RequestHeader(value = "token") String token, @PathVariable long userId) {
+        if (notAuthenticated(token)) return forbidden(null);
+
         return ok(facade.getUserContactInfo(userId));
     }
 
     @GetMapping("credits/{userId}")
     ResponseEntity<UserCreditsDTO> getUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId) {
+        if (notAuthenticated(token)) return forbidden(null);
+
         return ok(facade.getCredits(userId));
     }
 
     @PostMapping("setContactInfo/{userId}?phoneNum={phoneNum}")
     ResponseEntity<Void> changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable String phoneNum) {
+        if (notAuthenticated(token)) return forbidden();
+
         facade.changePhoneNumber(userId, phoneNum);
         return ok().build();
     }
 
     @PostMapping("setCredits/{userId}?credits={credits}")
     ResponseEntity<Void> setUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable int credits) {
+        if (notAuthenticated(token)) return forbidden();
+
         facade.setCredits(userId, credits);
         return ok().build();
     }
