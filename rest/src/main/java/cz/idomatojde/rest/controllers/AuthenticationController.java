@@ -4,7 +4,6 @@ import cz.idomatojde.dto.AuthDTO;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.TokenGenerator;
 import io.swagger.annotations.Api;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +28,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("login")
-    AuthDTO login(@RequestHeader HttpHeaders headers) {
-        if (!headers.containsKey("username")) {
-            return AuthDTO.Invalid();
-        }
-        if (!headers.containsKey("pass")) {
-            return AuthDTO.Invalid();
-        }
-
-        String username = headers.getFirst("username");
-        String pass = headers.getFirst("pass");
-
+    AuthDTO login(@RequestHeader(value = "username") String username, @RequestHeader(value = "pass")String pass) {
         AuthDTO response = users.authenticate(username, pass);
 
         if (response.isSuccessful()) {

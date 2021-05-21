@@ -4,9 +4,11 @@ import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.facade.OfferFacade;
-import cz.idomatojde.rest.controllers.base.BaseRESTController;
+import cz.idomatojde.facade.UserFacade;
+import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,14 +22,16 @@ import javax.inject.Inject;
 @Api(tags = "Offers Endpoint")
 @RestController
 @RequestMapping("offers")
-public class OfferController extends BaseRESTController<OfferFacade, RegisterOfferDTO, OfferDTO> {
+public class OfferController extends
+        AuthBaseRESTController<OfferFacade, RegisterOfferDTO, OfferDTO> {
+
     @Inject
-    public OfferController(OfferFacade offers) {
-        super(offers);
+    public OfferController(UserFacade userFacade, OfferFacade offers) {
+        super(userFacade, offers);
     }
 
     @PostMapping("changeDescription")
-    void changeDescription(ChangeDescriptionOfferDTO dto) {
+    void changeDescription(@RequestHeader(value = "token") String token, ChangeDescriptionOfferDTO dto) {
         facade.changeDescription(dto);
     }
 }
