@@ -16,6 +16,10 @@ The service keeps records of customers and their:
 Customers must register into our system.
 The system acts as a platform, the payment process is *not our responsibility!*
 
+## Rest
+
+The REST API documentation is built using Swagger2 and is available at `/swagger` (redirect)
+
 
 ## Reference project
 https://github.com/fi-muni/PA165/tree/master/eshop-persistence
@@ -30,4 +34,4 @@ https://github.com/fi-muni/PA165/tree/master/eshop-persistence
  - (Fix comments from reviewers)
  - When (and only when) all reviews gives the pull request an approval, merge into master
 
-> Updated at 18.05.2021
+> Updated at 23.05.2021
