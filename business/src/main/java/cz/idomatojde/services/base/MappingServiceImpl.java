@@ -274,8 +274,8 @@ public class MappingServiceImpl implements MappingService {
     public TimetableChatMessage fromRegisterTimetableChatMessageDto(AddTimetableChatMessageDTO dto) {
         var tcm = new TimetableChatMessage();
 
-        tcm.setSender(fromUserDto(dto.getSender()));
-        tcm.setTimetableEntry(fromTimetableEntryNoTimetableDto(dto.getTimetableEntry()));
+        tcm.setSender(users.getById(dto.getSenderId()));
+        tcm.setTimetableEntry(timetables.findEntry(dto.getTimetableEntryId()));
         tcm.setText(dto.getText());
 
         return tcm;
@@ -334,8 +334,8 @@ public class MappingServiceImpl implements MappingService {
         te.setLength(fromDurationDTO(dto.getLength()));
         te.setDescription(dto.getDescription());
         te.setDay(dto.getDay());
-        te.setTimetable(fromTimetableDto(dto.getTimetable()));
-        te.setOffer(fromOfferDto(dto.getOffer()));
+        te.setTimetable(timetables.getById(dto.getTimetableId()));
+        te.setOffer(offers.getById(dto.getOfferId()));
 
         return te;
     }
@@ -384,10 +384,10 @@ public class MappingServiceImpl implements MappingService {
         o.setPrice(dto.getPrice());
         o.setCreatedDate(LocalDate.now());
         o.setExpirationDate(LocalDate.now().plusMonths(1)); // TODO Hello we do not have this??
-        o.setCategory(fromCategoryDto(dto.getCategory()));
+        o.setCategory(categories.getById(dto.getCategoryId()));
         o.setCapacity(dto.getCapacity());
         o.setRegistered(0);
-        o.setOwner(fromUserDto(dto.getOwner()));
+        o.setOwner(users.getById(dto.getOwnerId()));
 
         return o;
     }

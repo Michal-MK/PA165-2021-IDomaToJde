@@ -28,17 +28,18 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
     protected final TFacade facade;
 
     private final boolean allowUnauthenticatedGet;
+    private final boolean ownerOnlyDelete;
+    private final boolean adminOnlyDelete;
+    private final boolean adminOnlyRegister;
 
-    public AuthBaseRESTController(UserFacade users, TFacade coreFacade) {
-        facade = coreFacade;
-        userFacade = users;
-        allowUnauthenticatedGet = false;
-    }
-
-    public AuthBaseRESTController(UserFacade users, TFacade coreFacade, boolean allowUnauthenticatedGet) {
+    public AuthBaseRESTController(UserFacade users, TFacade coreFacade, boolean allowUnauthenticatedGet,
+                                  boolean ownerOnlyDelete, boolean adminOnlyDelete, boolean adminOnlyRegister) {
         facade = coreFacade;
         userFacade = users;
         this.allowUnauthenticatedGet = allowUnauthenticatedGet;
+        this.ownerOnlyDelete = ownerOnlyDelete;
+        this.adminOnlyDelete = adminOnlyDelete;
+        this.adminOnlyRegister = adminOnlyRegister;
     }
 
     @GetMapping("find/{id}")
@@ -52,17 +53,20 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
     @PutMapping(value = "register")
     protected ResponseEntity<Long> register(@RequestHeader(value = "token") String token, @RequestBody TRegDto regDto) {
         AuthState auth = isAuthenticated(token);
-        if (!auth.authenticated()) return unauthorized(-1L);
+        if (!auth.authenticated()) return unauthorized(null);
+        if (adminOnlyRegister && !auth.admin()) return forbidden(null);
+        if (!allowedToRegister(auth, regDto)) return forbidden(null);
 
         return ok(facade.register(regDto));
     }
 
     @DeleteMapping(value = "delete")
+    @Deprecated(since = "This method should not exist..., currently does nothing!")
     protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, @RequestBody TDto dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
 
-        facade.delete(dto);
+        // facade.delete(dto);
         return ok().build();
     }
 
@@ -70,6 +74,8 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
     protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, @PathVariable Long id) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
+        if (adminOnlyDelete && !auth.admin()) return forbidden();
+        if (ownerOnlyDelete && isOwner(auth.principalId(), id)) return unauthorized();
 
         facade.delete(id);
         return ok().build();
@@ -81,6 +87,9 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
         }
         return new AuthState(userFacade.authenticate(token));
     }
+
+    protected abstract boolean isOwner(Long principalId, Long resourceId);
+    protected abstract boolean allowedToRegister(AuthState state, TRegDto dto);
 
     protected ResponseEntity<Void> unauthorized() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

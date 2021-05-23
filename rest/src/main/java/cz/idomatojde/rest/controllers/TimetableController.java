@@ -36,7 +36,7 @@ public class TimetableController extends
         AuthBaseRESTController<TimetableFacade, AddTimetableDTO, TimetableDTO> {
     @Inject
     public TimetableController(UserFacade userFacade, TimetableFacade timetables) {
-        super(userFacade, timetables);
+        super(userFacade, timetables, false, false, true, false);
     }
 
     @GetMapping("entry/{entryId}")
@@ -91,5 +91,15 @@ public class TimetableController extends
     private boolean offerAuthorOnlyPermission(long principalId, long timetableEntryId) {
         TimetableEntryDTO entry = facade.getEntryById(timetableEntryId);
         return entry.getOffer().getOwner().getId() == principalId;
+    }
+
+    @Override
+    protected boolean isOwner(Long principalId, Long resourceId) {
+        return facade.getById(resourceId).getUserInfo().getId().equals(principalId);
+    }
+
+    @Override
+    protected boolean allowedToRegister(AuthState state, AddTimetableDTO addTimetableDTO) {
+        return state.authenticated();
     }
 }

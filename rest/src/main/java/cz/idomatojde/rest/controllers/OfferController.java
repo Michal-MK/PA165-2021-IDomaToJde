@@ -35,7 +35,7 @@ public class OfferController extends
 
     @Inject
     public OfferController(UserFacade userFacade, OfferFacade offers) {
-        super(userFacade, offers, true);
+        super(userFacade, offers, true,true, true, false);
     }
 
     @GetMapping("all")
@@ -56,5 +56,15 @@ public class OfferController extends
     private boolean ownerOnlyPermission(long userId, long offerId) {
         OfferDTO dto = facade.getById(offerId);
         return dto.getOwner().getId() == userId;
+    }
+
+    @Override
+    protected boolean isOwner(Long principalId, Long resourceId) {
+        return facade.getById(resourceId).getOwner().getId().equals(principalId);
+    }
+
+    @Override
+    protected boolean allowedToRegister(AuthState state, RegisterOfferDTO registerOfferDTO) {
+        return state.authenticated();
     }
 }

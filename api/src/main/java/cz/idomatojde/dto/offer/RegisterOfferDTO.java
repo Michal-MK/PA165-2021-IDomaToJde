@@ -1,12 +1,6 @@
 package cz.idomatojde.dto.offer;
 
-import cz.idomatojde.dto.category.CategoryDTO;
-import cz.idomatojde.dto.timetable.TimetableEntryDTO;
-import cz.idomatojde.dto.user.UserDTO;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * DTO Responsible for new offer creation
@@ -15,7 +9,7 @@ import java.util.List;
  */
 public class RegisterOfferDTO {
 
-    private UserDTO owner;
+    private Long ownerId;
 
     private String title;
 
@@ -23,18 +17,16 @@ public class RegisterOfferDTO {
 
     private BigDecimal price;
 
-    private List<TimetableEntryDTO> events = new ArrayList<>();
-
-    private CategoryDTO category;
+    private Long categoryId;
 
     private Integer capacity;
 
-    public UserDTO getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(UserDTO owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getTitle() {
@@ -61,20 +53,12 @@ public class RegisterOfferDTO {
         this.price = price;
     }
 
-    public List<TimetableEntryDTO> getEvents() {
-        return events;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setEvents(List<TimetableEntryDTO> events) {
-        this.events = events;
-    }
-
-    public CategoryDTO getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryDTO category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Integer getCapacity() {

@@ -87,16 +87,16 @@ public class TimetableFacadeTest extends AbstractTestNGSpringContextTests {
         RegisterOfferDTO offer = new RegisterOfferDTO();
         offer.setTitle("Title");
         offer.setPrice(BigDecimal.ONE);
-        offer.setCategory(cat);
+        offer.setCategoryId(cat.getId());
         offer.setCapacity(20);
-        offer.setOwner(userFacade.getById(1));
+        offer.setOwnerId(1L);
         offer.setDescription("Description");
 
         long offerId = offerFacade.register(offer);
 
         CreateTimetableEntryDTO entry = new CreateTimetableEntryDTO();
 
-        entry.setTimetable(timetableFacade.getById(id));
+        entry.setTimetableId(id);
 
         LocalTimeDTO time = new LocalTimeDTO();
         time.setHour(20);
@@ -111,7 +111,7 @@ public class TimetableFacadeTest extends AbstractTestNGSpringContextTests {
         duration.setMinutes(120);
 
         entry.setLength(duration);
-        entry.setOffer(offerFacade.getById(offerId));
+        entry.setOfferId(offerId);
 
         long entryId = timetableFacade.registerEntry(entry);
 

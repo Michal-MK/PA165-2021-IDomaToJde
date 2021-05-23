@@ -41,8 +41,8 @@ public class TimetableFacadeImpl extends BaseFacadeImpl<AddTimetableDTO, Timetab
 
     @Override
     public long registerEntry(CreateTimetableEntryDTO entryDto) {
-        var timetable = timetableService.getById(entryDto.getTimetable().getId());
-        var offer = offerService.getById(entryDto.getOffer().getId());
+        var timetable = timetableService.getById(entryDto.getTimetableId());
+        var offer = offerService.getById(entryDto.getOfferId());
 
         var entry = timetableService.createEntry(timetable, entryDto.getDay(), offer,
                 mapService.fromLocalTimeDTO(entryDto.getEntryStart()), mapService.fromDurationDTO(entryDto.getLength()));

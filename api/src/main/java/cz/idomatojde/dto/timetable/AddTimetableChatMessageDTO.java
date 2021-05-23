@@ -1,36 +1,34 @@
 package cz.idomatojde.dto.timetable;
 
-import cz.idomatojde.dto.user.UserDTO;
-
 import java.util.Objects;
 
 /**
  * DTO Responsible for new timetable chat message creation
  *
- * @author Jiri Vrbka
+ * @author Michal Hazdra
  */
 public class AddTimetableChatMessageDTO {
 
-    private UserDTO sender;
+    private Long senderId;
 
-    private TimetableEntryDTO timetableEntry;
+    private Long timetableEntryId;
 
     private String text;
 
-    public UserDTO getSender() {
-        return sender;
+    public Long getSenderId() {
+        return senderId;
     }
 
-    public void setSender(UserDTO sender) {
-        this.sender = sender;
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
     }
 
-    public TimetableEntryDTO getTimetableEntry() {
-        return timetableEntry;
+    public Long getTimetableEntryId() {
+        return timetableEntryId;
     }
 
-    public void setTimetableEntry(TimetableEntryDTO timetableEntry) {
-        this.timetableEntry = timetableEntry;
+    public void setTimetableEntryId(Long timetableEntryId) {
+        this.timetableEntryId = timetableEntryId;
     }
 
     public String getText() {
@@ -46,13 +44,11 @@ public class AddTimetableChatMessageDTO {
         if (this == o) return true;
         if (!(o instanceof AddTimetableChatMessageDTO)) return false;
         AddTimetableChatMessageDTO that = (AddTimetableChatMessageDTO) o;
-        return Objects.equals(getSender(), that.getSender()) &&
-                Objects.equals(getTimetableEntry(), that.getTimetableEntry()) &&
-                Objects.equals(getText(), that.getText());
+        return Objects.equals(getSenderId(), that.getSenderId()) && Objects.equals(getTimetableEntryId(), that.getTimetableEntryId()) && Objects.equals(getText(), that.getText());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTimetableEntry(), getSender(), getText());
+        return Objects.hash(getSenderId(), getTimetableEntryId(), getText());
     }
 }

@@ -2,35 +2,35 @@ package cz.idomatojde.dto.timetable;
 
 import cz.idomatojde.dto.base.DurationDTO;
 import cz.idomatojde.dto.base.LocalTimeDTO;
-import cz.idomatojde.dto.offer.OfferDTO;
 
 /**
  * DTO Responsible for new timetable entry creation
  *
- * @author Jiri Vrbka
+ * @author Michal Hazdra
  */
 public class CreateTimetableEntryDTO {
-    private TimetableDTO timetable;
-    private OfferDTO offer;
+
+    private Long timetableId;
+    private Long offerId;
     private LocalTimeDTO entryStart;
     private DurationDTO length;
     private String description;
     private int day;
 
-    public TimetableDTO getTimetable() {
-        return timetable;
+    public Long getTimetableId() {
+        return timetableId;
     }
 
-    public void setTimetable(TimetableDTO timetable) {
-        this.timetable = timetable;
+    public void setTimetableId(Long timetableId) {
+        this.timetableId = timetableId;
     }
 
-    public OfferDTO getOffer() {
-        return offer;
+    public Long getOfferId() {
+        return offerId;
     }
 
-    public void setOffer(OfferDTO offer) {
-        this.offer = offer;
+    public void setOfferId(Long offerId) {
+        this.offerId = offerId;
     }
 
     public LocalTimeDTO getEntryStart() {

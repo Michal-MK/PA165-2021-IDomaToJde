@@ -37,7 +37,7 @@ public class UserController extends
 
     @Inject
     public UserController(UserFacade users, OfferFacade offers) {
-        super(users, users);
+        super(users, users, false, false, false, false);
         offerFacade = offers;
     }
 
@@ -105,5 +105,15 @@ public class UserController extends
 
     private boolean ownerOnlyPermission(long principalId, long userId) {
         return principalId == userId;
+    }
+
+    @Override
+    protected boolean isOwner(Long principalId, Long resourceId) {
+        return false; // Users do not own their instance in the database, therefore cannot delete themselves
+    }
+
+    @Override
+    protected boolean allowedToRegister(AuthState state, RegisterUserDTO registerUserDTO) {
+        return true; // Anyone can register into the system
     }
 }

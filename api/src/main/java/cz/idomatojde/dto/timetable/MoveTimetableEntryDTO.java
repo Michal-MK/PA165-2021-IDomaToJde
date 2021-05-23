@@ -3,17 +3,20 @@ package cz.idomatojde.dto.timetable;
 import cz.idomatojde.dto.base.DurationDTO;
 import cz.idomatojde.dto.base.LocalTimeDTO;
 
+/**
+ * @author Unknown ;)
+ */
 public class MoveTimetableEntryDTO {
-    private long timetableEntryId;
+    private Long timetableEntryId;
     private int day;
     private LocalTimeDTO time;
     private DurationDTO duration;
 
-    public long getTimetableEntryId() {
+    public Long getTimetableEntryId() {
         return timetableEntryId;
     }
 
-    public void setTimetableEntryId(long timetableEntryId) {
+    public void setTimetableEntryId(Long timetableEntryId) {
         this.timetableEntryId = timetableEntryId;
     }
 

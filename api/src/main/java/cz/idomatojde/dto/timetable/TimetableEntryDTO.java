@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class TimetableEntryDTO {
 
-    private long id;
+    private Long id;
 
     private TimetableDTO timetable;
 

@@ -10,9 +10,6 @@ public class UserCreditsDTO {
 
     private int bonusCredits;
 
-    public UserCreditsDTO() {
-    }
-
     public UserCreditsDTO(int credits, int bonusCredits) {
         this.credits = credits;
         this.bonusCredits = bonusCredits;

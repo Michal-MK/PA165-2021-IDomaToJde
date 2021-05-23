@@ -42,7 +42,7 @@ public class TimetableChatMessageController extends
 
     @Inject
     public TimetableChatMessageController(UserFacade userFacade, TimetableFacade timetables, OfferFacade offers, TimetableChatMessageFacade chatMessages) {
-        super(userFacade, chatMessages);
+        super(userFacade, chatMessages, false, false, true, false);
         timetableFacade = timetables;
         offerFacade = offers;
     }
@@ -85,6 +85,7 @@ public class TimetableChatMessageController extends
         return ok().build();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean ownerOnlyPermission(long principalId, long userId) {
         return principalId == userId;
     }
@@ -96,5 +97,15 @@ public class TimetableChatMessageController extends
         List<OfferDTO> subscribed = offerFacade.getAllSubscribedBy(userFacade.getById(principalId));
         boolean subscriber = subscribed.stream().anyMatch(f -> entryDto.getOffer() == f);
         return owner || subscriber;
+    }
+
+    @Override
+    protected boolean isOwner(Long principalId, Long resourceId) {
+        return facade.getById(resourceId).getUserId().equals(principalId);
+    }
+
+    @Override
+    protected boolean allowedToRegister(AuthState state, AddTimetableChatMessageDTO addTimetableChatMessageDTO) {
+        return relatedOnlyPermission(state.principalId(), addTimetableChatMessageDTO.getTimetableEntryId());
     }
 }
