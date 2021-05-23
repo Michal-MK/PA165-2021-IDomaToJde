@@ -43,6 +43,7 @@ public class TimetableController extends
     ResponseEntity<TimetableEntryDTO> getEntryById(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized(null);
+        if (!relatedOnlyPermission(auth.principalId(), entryId)) return forbidden(null);
 
         return ok(facade.getEntryById(entryId));
     }
@@ -76,9 +77,19 @@ public class TimetableController extends
     ResponseEntity<Void> moveEntry(@RequestHeader(value = "token") String token, @RequestBody MoveTimetableEntryDTO dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
-        // TODO Permissions
+        if (!offerAuthorOnlyPermission(auth.principalId(), dto.getTimetableEntryId())) return forbidden();
 
         facade.moveTimetableEntry(dto);
         return ok().build();
+    }
+
+    private boolean relatedOnlyPermission(long principalId, long entryId) {
+        boolean timetableOwner = facade.getFromEntry(entryId).getUserInfo().getId() == principalId;
+        return timetableOwner || offerAuthorOnlyPermission(principalId, entryId);
+    }
+
+    private boolean offerAuthorOnlyPermission(long principalId, long timetableEntryId) {
+        TimetableEntryDTO entry = facade.getEntryById(timetableEntryId);
+        return entry.getOffer().getOwner().getId() == principalId;
     }
 }

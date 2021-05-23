@@ -117,6 +117,8 @@ public class TimetableFacadeTest extends AbstractTestNGSpringContextTests {
 
         TimetableEntryDTO retrievedEntry = timetableFacade.getEntryById(entryId);
 
+        assertThat(retrievedEntry.getOffer().getOwner().getEmail()).isEqualTo("a@a.cz");
+
         TimetableDTO full = timetableFacade.getWithEntries(id);
 
         assertThat(full.getId()).isEqualTo(id);

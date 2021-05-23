@@ -63,6 +63,11 @@ public class TimetableFacadeImpl extends BaseFacadeImpl<AddTimetableDTO, Timetab
     }
 
     @Override
+    public TimetableDTO getFromEntry(long entryId) {
+        return mapService.toTimetableDTO(timetableService.getTimetableForEntry(entryId));
+    }
+
+    @Override
     public TimetableDTO getTimetableForCurrentWeek(long userId) {
         return mapService.toTimetableDTO(timetableService.getTimetableForCurrentWeek(userService.getById(userId)));
     }

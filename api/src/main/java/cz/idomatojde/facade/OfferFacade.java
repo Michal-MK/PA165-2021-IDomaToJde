@@ -33,6 +33,14 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
 
 
     /**
+     * Returns all {@link OfferDTO}s that the user is an author of
+     *
+     * @param user the user to filter by
+     */
+    List<OfferDTO> getAllOwnedBy(UserDTO user);
+
+
+    /**
      * Returns all {@link OfferDTO}s that belong to the supplied category
      *
      * @param category the category to filter by

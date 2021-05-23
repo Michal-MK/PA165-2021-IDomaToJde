@@ -50,6 +50,12 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
     }
 
     @Override
+    public List<OfferDTO> getAllOwnedBy(UserDTO user) {
+        List<Object> ofUser = new ArrayList<>(offerService.findByUser(mapService.mapDto(user, User.class)));
+        return mapService.mapEntityCollection(ofUser, OfferDTO.class);
+    }
+
+    @Override
     public List<OfferDTO> getAllByCategory(CategoryDTO category) {
         List<Offer> offers = offerService.getOffersByCategory(mapService.mapDto(category, Category.class));
         return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);

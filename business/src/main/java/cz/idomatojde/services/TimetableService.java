@@ -87,6 +87,15 @@ public interface TimetableService extends BaseService<Timetable> {
 
 
     /**
+     * Function to obtain the {@link Timetable} for a given {@link TimetableEntry} ID
+     *
+     * @param entryId the unique identifier of an entry
+     * @return the parent {@link Timetable}
+     */
+    Timetable getTimetableForEntry(long entryId);
+
+
+    /**
      * Function to obtain the {@link Timetable} with all {@link TimetableEntry} entries using an ID
      *
      * @param timetableId the unique ID of the {@link Timetable}

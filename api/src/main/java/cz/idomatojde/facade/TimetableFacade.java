@@ -39,6 +39,14 @@ public interface TimetableFacade extends BaseFacade<AddTimetableDTO, TimetableDT
     TimetableDTO getWithEntries(long timetableId);
 
     /**
+     * Get timetable by an existing entry within the timetable
+     *
+     * @param entryId unique identifier of the entry
+     * @return DTO representing the timetable
+     */
+    TimetableDTO getFromEntry(long entryId);
+
+    /**
      * Get timetable for current week
      *
      * @param userId unique identifier of the user the timetable belongs to
@@ -60,7 +68,6 @@ public interface TimetableFacade extends BaseFacade<AddTimetableDTO, TimetableDT
      * Move timetable entry by days/hours and duration
      *
      * @param moveEntryDTO the information which entry, the day and time + duration
-     * @return DTO representing the timetable
      */
     void moveTimetableEntry(MoveTimetableEntryDTO moveEntryDTO);
 }

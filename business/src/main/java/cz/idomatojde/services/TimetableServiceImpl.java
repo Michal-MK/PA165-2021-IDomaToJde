@@ -67,6 +67,11 @@ public class TimetableServiceImpl extends BaseServiceImpl<Timetable> implements 
         return timetables.getTimetable(user, year, week);
     }
 
+    @Override
+    public Timetable getTimetableForEntry(long entryId) {
+        return timetables.getTimetableForEntry(entryId);
+    }
+
 
     @Override
     public Timetable getTimetableWithEntries(long timetableId) {
