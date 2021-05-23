@@ -7,11 +7,11 @@ package cz.idomatojde.dto.timetable;
  */
 public class TimetableChatMessageDTO {
 
-    private long id;
+    private Long id;
 
-    private long userId;
+    private Long userId;
 
-    private long timetableEntryId;
+    private Long timetableEntryId;
 
     private String text;
 
@@ -23,19 +23,19 @@ public class TimetableChatMessageDTO {
         return id;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public long getTimetableEntryId() {
+    public Long getTimetableEntryId() {
         return timetableEntryId;
     }
 
-    public void setTimetableEntryId(long timetableEntryId) {
+    public void setTimetableEntryId(Long timetableEntryId) {
         this.timetableEntryId = timetableEntryId;
     }
 

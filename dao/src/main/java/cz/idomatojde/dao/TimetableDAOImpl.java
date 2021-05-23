@@ -94,8 +94,18 @@ public class TimetableDAOImpl extends BaseDAOImpl<Timetable> implements Timetabl
     }
 
     @Override
+    public Timetable getTimetableForEntry(long entryId) {
+        TimetableEntry entry = findEntry(entryId);
+
+        return em.createQuery("select t from Timetable t join fetch t.entries where :entry member of t.entries",
+                Timetable.class)
+                .setParameter("entry", entry)
+                .getSingleResult();
+    }
+
+    @Override
     public TimetableEntry findEntry(long entryId) {
-        return em.createQuery("select a from TimetableEntry a where a.id = :id", TimetableEntry.class)
+        return em.createQuery("select a from TimetableEntry a join fetch a.timetable where a.id = :id", TimetableEntry.class)
                 .setParameter("id", entryId)
                 .getSingleResult();
     }

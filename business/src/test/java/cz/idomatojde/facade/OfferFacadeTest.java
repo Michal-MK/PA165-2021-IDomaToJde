@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,9 +40,10 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
     public void registerOfferAndGetOfferWithId() {
         // Setup
         var userDto = getUserDTO();
-        var registerDto = getRegisterOffer(userDto);
-        long id = categoryFacade.register(registerDto.getCategory());
-        registerDto.getCategory().setId(id);
+        var categoryDto = getCategory();
+        var registerDto = getRegisterOffer(userDto, categoryDto);
+
+        registerDto.setCategoryId(categoryDto.getId());
 
         // Act
         var offerId = offerFacade.register(registerDto);
@@ -57,10 +57,10 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
     public void removeOffer() {
         // Setup
         var userDto = getUserDTO();
-        var registerDto = getRegisterOffer(userDto);
-        categoryFacade.register(registerDto.getCategory());
-        long catId = categoryFacade.register(registerDto.getCategory());
-        registerDto.getCategory().setId(catId);
+        var categoryDto = getCategory();
+        var registerDto = getRegisterOffer(userDto, categoryDto);
+
+        registerDto.setCategoryId(categoryDto.getId());
         var offerId = offerFacade.register(registerDto);
 
         // Act
@@ -74,10 +74,10 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         var newTitle = "Changed";
 
         var userDto = getUserDTO();
-        var registerDto = getRegisterOffer(userDto);
+        var categoryDto = getCategory();
+        var registerDto = getRegisterOffer(userDto, categoryDto);
 
-        long id = categoryFacade.register(registerDto.getCategory());
-        registerDto.getCategory().setId(id);
+        registerDto.setCategoryId(categoryDto.getId());
 
         var offerId = offerFacade.register(registerDto);
 
@@ -96,19 +96,23 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
         assertThat(actual.getTitle()).isEqualTo(newTitle);
     }
 
-    private RegisterOfferDTO getRegisterOffer(UserDTO userDTO) {
+    private CategoryDTO getCategory() {
+        var category = new CategoryDTO();
+        category.setName("Category");
+        long id = categoryFacade.register(category);
+        category.setId(id);
+        return category;
+    }
+
+    private RegisterOfferDTO getRegisterOffer(UserDTO userDTO, CategoryDTO categoryDTO) {
         var offer = new RegisterOfferDTO();
 
         offer.setCapacity(10);
-        offer.setEvents(new ArrayList<>());
         offer.setPrice(new BigDecimal(110));
         offer.setDescription("Register");
         offer.setTitle("Title");
-        offer.setOwner(userDTO);
-
-        var category = new CategoryDTO();
-        category.setName("Category");
-        offer.setCategory(category);
+        offer.setOwnerId(userDTO.getId());
+        offer.setCategoryId(categoryDTO.getId());
 
         return offer;
     }

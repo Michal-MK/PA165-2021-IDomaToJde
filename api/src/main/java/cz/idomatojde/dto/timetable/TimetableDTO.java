@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class TimetableDTO {
 
-    private long id;
+    private Long id;
 
     private UserContactInfoDTO userInfo;
 
@@ -24,7 +24,7 @@ public class TimetableDTO {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

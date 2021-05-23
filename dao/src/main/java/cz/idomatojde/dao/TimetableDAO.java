@@ -99,6 +99,14 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
 
 
     /**
+     *  Fuction to obtain the {@link Timetable} for a given {@link TimetableEntry}
+     * @param entryId the unique identifier of a {@link TimetableEntry}
+     * @return the parent {@link Timetable}
+     */
+    Timetable getTimetableForEntry(long entryId);
+
+
+    /**
      * Function to obtain the {@link TimetableEntry}
      *
      * @param entryId the id to search for

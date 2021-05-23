@@ -1,9 +1,13 @@
 package cz.idomatojde.services.facades;
 
+import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
+import cz.idomatojde.dto.user.UserDTO;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
+import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.OfferFacade;
 import cz.idomatojde.services.CategoryService;
 import cz.idomatojde.services.OfferService;
@@ -14,9 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author Jiri Vrbka
+ * @author Michal Hazdra
  */
 @Service
 @Transactional
@@ -24,17 +30,10 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
 
     private final OfferService offerService;
 
-    private final UserService userService;
-
-    private final CategoryService categoryService;
-
     @Inject
-    public OfferFacadeImpl(MappingService mappingService, OfferService offerService,
-                           UserService userService, CategoryService categoryService) {
+    public OfferFacadeImpl(MappingService mappingService, OfferService offerService) {
         super(offerService, mappingService, OfferDTO.class, Offer.class);
         this.offerService = offerService;
-        this.userService = userService;
-        this.categoryService = categoryService;
     }
 
     @Override
@@ -42,5 +41,23 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
         var offer = offerService.getById(changeDescriptionOfferDTO.getId());
         offer.setDescription(changeDescriptionOfferDTO.getDescription());
         offer.setTitle(changeDescriptionOfferDTO.getTitle());
+    }
+
+    @Override
+    public List<OfferDTO> getAllSubscribedBy(UserDTO user) {
+        List<Offer> offers = offerService.getOffersSubscribedTo(mapService.mapDto(user, User.class));
+        return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
+    }
+
+    @Override
+    public List<OfferDTO> getAllOwnedBy(UserDTO user) {
+        List<Object> ofUser = new ArrayList<>(offerService.findByUser(mapService.mapDto(user, User.class)));
+        return mapService.mapEntityCollection(ofUser, OfferDTO.class);
+    }
+
+    @Override
+    public List<OfferDTO> getAllByCategory(CategoryDTO category) {
+        List<Offer> offers = offerService.getOffersByCategory(mapService.mapDto(category, Category.class));
+        return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
     }
 }

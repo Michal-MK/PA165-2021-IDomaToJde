@@ -26,6 +26,16 @@ To obtain a token you can log in via the `AuthenticationController` with the pre
 
 Then supply the returned token to all calls that need it. It currently stays valid for one day.
 
+### Permission System
+
+Just having the token is not enough, you have to have permission to access the resource
+- Category -> no restriction except `delete` for admins only
+- Offer -> being an owner or being subscribed to an `Offer` allows different interaction, `getAll` has no restrictions,
+  otherwise you have to be authenticated
+- User -> you have to be authenticated or be registered to one `Offer/s` of the `User` you want to contact
+- Timetable -> `move` is `Offer` owner only, otherwise mostly being authenticated and owner
+- TimetableChatMessage -> being an owner of the message or being related to the `TimetableEntry` (owner/`Offer` author)
+
 ## Reference project
 https://github.com/fi-muni/PA165/tree/master/eshop-persistence
 

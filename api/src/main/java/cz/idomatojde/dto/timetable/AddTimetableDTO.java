@@ -7,17 +7,17 @@ package cz.idomatojde.dto.timetable;
  */
 public class AddTimetableDTO {
 
-    private long userId;
+    private Long userId;
 
     private int year;
 
     private int week;
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

@@ -64,8 +64,8 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
 
         var dto = new AddTimetableChatMessageDTO();
         dto.setText("text");
-        dto.setSender(userDto);
-        dto.setTimetableEntry(entryDto);
+        dto.setSenderId(userDto.getId());
+        dto.setTimetableEntryId(entryDto.getId());
 
         // Act
         var msgId = chatMessageFacade.register(dto);
@@ -96,19 +96,19 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
     private OfferDTO getOfferDTO(UserDTO userDTO) {
         var category = new CategoryDTO();
         category.setName("Category");
+        var catId = categoryFacade.register(category);
+        category.setId(catId);
 
         var offer = new RegisterOfferDTO();
 
         offer.setCapacity(10);
-        offer.setEvents(new ArrayList<>());
         offer.setPrice(new BigDecimal(110));
         offer.setDescription("Register");
         offer.setTitle("Title");
-        offer.setOwner(userDTO);
-        offer.setCategory(category);
+        offer.setOwnerId(userDTO.getId());
+        offer.setCategoryId(category.getId());
+        offer.setCategoryId(catId);
 
-        var catId = categoryFacade.register(category);
-        category.setId(catId);
         var offerId = offerFacade.register(offer);
         return offerFacade.getById(offerId);
     }
@@ -135,8 +135,8 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
         TimetableDTO timetableDTO = timetableFacade.getById(id);
 
         var entryDto = new CreateTimetableEntryDTO();
-        entryDto.setOffer(offerDTO);
-        entryDto.setTimetable(timetableDTO);
+        entryDto.setOfferId(offerDTO.getId());
+        entryDto.setTimetableId(timetableDTO.getId());
         entryDto.setLength(mappingService.toDurationDTO(Duration.ofHours(1)));
         entryDto.setEntryStart(mappingService.toLocalTimeDTO(LocalTime.MIDNIGHT));
 
@@ -151,8 +151,8 @@ public class TimetableChatMessageFacadeTest extends AbstractTestNGSpringContextT
 
         var dto = new AddTimetableChatMessageDTO();
         dto.setText("text");
-        dto.setSender(userDto);
-        dto.setTimetableEntry(entryDto);
+        dto.setSenderId(userDto.getId());
+        dto.setTimetableEntryId(entryDto.getId());
 
         var msgId = chatMessageFacade.register(dto);
 
