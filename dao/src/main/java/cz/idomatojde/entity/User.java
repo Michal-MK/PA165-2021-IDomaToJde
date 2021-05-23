@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -14,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +27,7 @@ import java.util.Objects;
  */
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
-@Table(name = "\"User\"")
+@Table(name = "\"User\"", indexes = {@Index(name = "tokens_index", columnList = "api_token")})
 public class User implements IEntity {
 
     @Id
@@ -54,6 +56,11 @@ public class User implements IEntity {
     private int credits;
 
     private int bonusCredits;
+
+    @Column(name = "api_token")
+    private String token;
+
+    private LocalDate tokenExpiration;
 
     @OneToMany
     private List<Offer> offers;
@@ -140,6 +147,22 @@ public class User implements IEntity {
 
     public void setBonusCredits(int bonusCredits) {
         this.bonusCredits = bonusCredits;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public LocalDate getTokenExpiration() {
+        return tokenExpiration;
+    }
+
+    public void setTokenExpiration(LocalDate tokenExpiration) {
+        this.tokenExpiration = tokenExpiration;
     }
 
     public List<Offer> getOffers() {

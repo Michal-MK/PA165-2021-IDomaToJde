@@ -34,12 +34,22 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
      * Creates a new {@link TimetableEntry} from the required components
      *
      * @param timetable the {@link Timetable} this entry will be part of
+     * @param day       the day of the week this entry is in
      * @param offer     the {@link Offer} that initiated the entry
      * @param start     the time of day when the entry starts
      * @param duration  the duration of the entry
      * @return the newly created {@link TimetableEntry}
      */
-    TimetableEntry createEntry(Timetable timetable, Offer offer, LocalTime start, Duration duration);
+    TimetableEntry createEntry(Timetable timetable, int day, Offer offer, LocalTime start, Duration duration);
+
+
+    /**
+     * Creates a new {@link TimetableEntry} from an instance
+     *
+     * @param entry the entry to create
+     * @return the assigned ID
+     */
+    long createEntry(TimetableEntry entry);
 
 
     /**
@@ -49,7 +59,7 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
      * @param newStart    the new starting time of the entry
      * @param newDuration new duration of the entry
      */
-    void moveEntry(TimetableEntry entry, LocalTime newStart, Duration newDuration);
+    void moveEntry(TimetableEntry entry, int day, LocalTime newStart, Duration newDuration);
 
 
     /**
@@ -116,6 +126,7 @@ public interface TimetableDAO extends BaseDAO<Timetable> {
 
     /**
      * Same as getById but with the {@link User} field populated
+     *
      * @param timetableId the id of the {@link Timetable}
      * @return the {@link Timetable} object
      */

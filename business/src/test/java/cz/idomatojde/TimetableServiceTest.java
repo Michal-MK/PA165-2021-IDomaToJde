@@ -71,7 +71,7 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
         defUser = getUser("username");
         defOffer = getOffer(defUser, cat, "Yoga");
         defTimetable = getTimetable(defUser, 2020, 1);
-        defEntry = getTimetableEntry(defTimetable, 20, TIME_4PM, DUR_2H);
+        defEntry = getTimetableEntry(defTimetable, 4, TIME_4PM, DUR_2H);
 
         defTimetable.setId(1L);
         defEntry.setId(1L);
@@ -121,20 +121,20 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
             return defTimetable;
         });
 
-        when(mockDao.createEntry(any(Timetable.class), any(Offer.class), any(LocalTime.class), any(Duration.class)))
+        when(mockDao.createEntry(any(Timetable.class), anyInt(), any(Offer.class), any(LocalTime.class), any(Duration.class)))
                 .thenAnswer((params) -> {
-                    TimetableEntry entry = getTimetableEntry(params.getArgument(0), 20,
-                            params.getArgument(2),
-                            params.getArgument(3));
+                    TimetableEntry entry = getTimetableEntry(params.getArgument(0), params.getArgument(1),
+                            params.getArgument(3),
+                            params.getArgument(4));
 
-                    entry.setOffer(params.getArgument(1));
+                    entry.setOffer(params.getArgument(2));
                     return entry;
                 });
 
         when(mockDao.getAllTimetableEntries(anyLong())).thenAnswer((params) -> {
-            TimetableEntry t1 = getTimetableEntry(defTimetable, 19, TIME_4PM, DUR_2H);
+            TimetableEntry t1 = getTimetableEntry(defTimetable, 3, TIME_4PM, DUR_2H);
             TimetableEntry t2 = defEntry;
-            TimetableEntry t3 = getTimetableEntry(defTimetable, 21, TIME_4PM, Duration.ofHours(4L));
+            TimetableEntry t3 = getTimetableEntry(defTimetable, 5, TIME_4PM, Duration.ofHours(4L));
 
             defTimetable.setId(params.getArgument(0));
 
@@ -263,20 +263,20 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
     @Test
     public void createEntry() {
         verifyNoInteractions(mockDao);
-        service.createEntry(defTimetable, defOffer, LocalTime.of(16, 0), Duration.ofHours(2L));
+        service.createEntry(defTimetable, 4, defOffer, LocalTime.of(16, 0), Duration.ofHours(2L));
 
         verify(mockDao, times(1))
-                .createEntry(defTimetable, defOffer, LocalTime.of(16, 0), Duration.ofHours(2L));
+                .createEntry(defTimetable, 4, defOffer, LocalTime.of(16, 0), Duration.ofHours(2L));
         verifyNoMoreInteractions(mockDao);
     }
 
     @Test
-    public void moveEntryThreeParams() {
+    public void moveEntryFourParams() {
         verifyNoInteractions(mockDao);
-        service.moveEntry(defEntry, LocalTime.of(18, 0), Duration.ofHours(1L));
+        service.moveEntry(defEntry, 1, LocalTime.of(18, 0), Duration.ofHours(1L));
 
         verify(mockDao, times(1))
-                .moveEntry(defEntry, LocalTime.of(18, 0), Duration.ofHours(1L));
+                .moveEntry(defEntry, 1, LocalTime.of(18, 0), Duration.ofHours(1L));
         verifyNoMoreInteractions(mockDao);
     }
 
@@ -362,9 +362,9 @@ public class TimetableServiceTest extends AbstractTestNGSpringContextTests {
         Timetable full = service.getTimetableWithEntries(defTimetable.getId());
 
         assertThat(full.getEntries()).containsExactly(
-                getTimetableEntry(defTimetable, 19, TIME_4PM, DUR_2H),
+                getTimetableEntry(defTimetable, 3, TIME_4PM, DUR_2H),
                 defEntry,
-                getTimetableEntry(defTimetable, 21, TIME_4PM, Duration.ofHours(4L))
+                getTimetableEntry(defTimetable, 5, TIME_4PM, Duration.ofHours(4L))
         );
     }
 }

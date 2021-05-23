@@ -1,5 +1,6 @@
 package cz.idomatojde.facade;
 
+import cz.idomatojde.dto.AuthDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
@@ -45,4 +46,26 @@ public interface UserFacade extends BaseFacade<RegisterUserDTO, UserDTO> {
      * @param phoneNumber the phone number to set
      */
     void changePhoneNumber(long userId, String phoneNumber) throws InvalidPhoneNumberException;
+
+    /**
+     * Simple authentication method using username/password
+     * @param username the username of the user
+     * @param pass the password of the user
+     * @return {@link AuthDTO} with the token if successful, with empty token if unsuccessful
+     */
+    AuthDTO authenticate(String username, String pass);
+
+    /**
+     * Simple authentication method using a token
+     * @param token the token of the user
+     * @return {@link UserDTO} with the token if successful, null otherwise
+     */
+    UserDTO authenticate(String token);
+
+    /**
+     * Store a token generated for the REST API
+     * @param username the username this token belongs to
+     * @param token the new token
+     */
+    void saveToken(String username, String token);
 }

@@ -5,6 +5,7 @@ import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+import java.time.LocalDate;
 
 /**
  * DAO implementation for {@link OfferDao} API
@@ -33,12 +34,45 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
     @Override
     public User getByEmail(String email) {
         if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException("Cannot search for null e-mail");
+            throw new IllegalArgumentException("Cannot search for null e-mail"); //TODO Assert this?
         }
         try {
             return em.createQuery("select u from User u where u.email = :email", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        if (username.isBlank()) {
+            return null;
+        }
+        try {
+            return em.createQuery("select u from User u where u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public User getByToken(String token) {
+        if (token.isBlank()) {
+            return null;
+        }
+        try {
+            User u = em.createQuery("select u from User u where u.token = :token", User.class)
+                    .setParameter("token", token)
+                    .getSingleResult();
+
+            if (u != null && u.getTokenExpiration().compareTo(LocalDate.now()) >= 0) {
+                return u;
+            }
+            return null;
         } catch (NoResultException ex) {
             return null;
         }

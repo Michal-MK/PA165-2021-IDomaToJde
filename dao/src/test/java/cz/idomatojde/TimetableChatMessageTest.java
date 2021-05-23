@@ -66,7 +66,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         var msg = "my message";
 
         // Act
@@ -91,7 +91,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
 
         var chat1 = new TimetableChatMessage();
         chat1.setText("msg");
@@ -122,7 +122,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         var msgUpdated = "my message";
 
         var chat = new TimetableChatMessage();
@@ -148,7 +148,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         var msg = "my message";
 
         // Act
@@ -171,7 +171,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         var msg = "my message";
 
         // Act
@@ -204,7 +204,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         var msg = "my message";
 
         // Act
@@ -227,7 +227,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         var msg = "my message";
 
         var chat = new TimetableChatMessage();
@@ -253,7 +253,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         userDao.create(anotherUser);
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         var msg = "my message";
 
         var chat = new TimetableChatMessage();

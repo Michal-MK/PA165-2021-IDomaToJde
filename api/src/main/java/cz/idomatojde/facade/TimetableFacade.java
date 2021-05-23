@@ -2,6 +2,7 @@ package cz.idomatojde.facade;
 
 import cz.idomatojde.dto.timetable.AddTimetableDTO;
 import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
+import cz.idomatojde.dto.timetable.MoveTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
 import cz.idomatojde.facade.base.BaseFacade;
@@ -36,4 +37,30 @@ public interface TimetableFacade extends BaseFacade<AddTimetableDTO, TimetableDT
      * @return DTO representing the timetable
      */
     TimetableDTO getWithEntries(long timetableId);
+
+    /**
+     * Get timetable for current week
+     *
+     * @param userId unique identifier of the user the timetable belongs to
+     * @return DTO representing the timetable
+     */
+    TimetableDTO getTimetableForCurrentWeek(long userId);
+
+    /**
+     * Get timetable for current week
+     *
+     * @param userId unique identifier of the user the timetable belongs to
+     * @param year the year... what do you expect?
+     * @param week the week within the specified year
+     * @return DTO representing the timetable
+     */
+    TimetableDTO getTimetableForDate(long userId, int year, int week);
+
+    /**
+     * Move timetable entry by days/hours and duration
+     *
+     * @param moveEntryDTO the information which entry, the day and time + duration
+     * @return DTO representing the timetable
+     */
+    void moveTimetableEntry(MoveTimetableEntryDTO moveEntryDTO);
 }

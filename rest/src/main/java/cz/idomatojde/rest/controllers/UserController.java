@@ -5,15 +5,19 @@ import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
 import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.UserFacade;
-import cz.idomatojde.rest.controllers.base.BaseRESTController;
+import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import io.swagger.annotations.Api;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Controller responsible for all things concerning Users
@@ -23,29 +27,40 @@ import javax.inject.Inject;
 @Api(tags = "Users Endpoint")
 @RestController
 @RequestMapping("users")
-public class UserController extends BaseRESTController<UserFacade, RegisterUserDTO, UserDTO> {
+public class UserController extends
+        AuthBaseRESTController<UserFacade, RegisterUserDTO, UserDTO> {
     @Inject
     public UserController(UserFacade users) {
-        super(users);
+        super(users, users);
     }
 
     @GetMapping("contactInfo/{userId}")
-    UserContactInfoDTO getUserContactInfo(@PathVariable long userId) {
-        return facade.getUserContactInfo(userId);
+    ResponseEntity<UserContactInfoDTO> getUserContactInfo(@RequestHeader(value = "token") String token, @PathVariable long userId) {
+        if (notAuthenticated(token)) return unauthorized(null);
+
+        return ok(facade.getUserContactInfo(userId));
     }
 
     @GetMapping("credits/{userId}")
-    UserCreditsDTO getUserCredits(@PathVariable long userId) {
-        return facade.getCredits(userId);
+    ResponseEntity<UserCreditsDTO> getUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId) {
+        if (notAuthenticated(token)) return unauthorized(null);
+
+        return ok(facade.getCredits(userId));
     }
 
     @PostMapping("setContactInfo/{userId}?phoneNum={phoneNum}")
-    void changePhoneNumber(@PathVariable long userId, @PathVariable String phoneNum) {
+    ResponseEntity<Void> changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable String phoneNum) {
+        if (notAuthenticated(token)) return unauthorized();
+
         facade.changePhoneNumber(userId, phoneNum);
+        return ok().build();
     }
 
     @PostMapping("setCredits/{userId}?credits={credits}")
-    void setUserCredits(@PathVariable long userId, @PathVariable int credits) {
+    ResponseEntity<Void> setUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable int credits) {
+        if (notAuthenticated(token)) return unauthorized();
+
         facade.setCredits(userId, credits);
+        return ok().build();
     }
 }

@@ -84,7 +84,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
 
         // Act
-        var origin = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var origin = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         var timetableEntryList = timetableDAO.getAllTimetableEntries(timetable.getId());
 
         // Assert
@@ -96,6 +96,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         // Arrange
         var updatedTime = LocalTime.now().minusHours(1);
         var updatedDuration = Duration.ofMinutes(10);
+        var updatedDay = 5;
 
         var offer = getOffer(category, "moveEntryTest");
         userDao.create(offer.getOwner());
@@ -103,13 +104,14 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
 
         // Act
-        var origin = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
-        timetableDAO.moveEntry(origin, updatedTime, updatedDuration);
+        var origin = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
+        timetableDAO.moveEntry(origin, updatedDay, updatedTime, updatedDuration);
         var updated = timetableDAO.findEntry(origin.getId());
 
         // Assert
         assertThat(updated.getEntryStart()).isEqualTo(updatedTime);
         assertThat(updated.getLength()).isEqualTo(updatedDuration);
+        assertThat(updated.getDay()).isEqualTo(updatedDay);
     }
 
     @Test
@@ -123,7 +125,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
 
         // Act
-        var origin = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var origin = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
         timetableDAO.moveEntry(origin, updatedTime);
         var updated = timetableDAO.findEntry(origin.getId());
 
@@ -140,7 +142,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         offerDao.create(offer);
 
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var origin = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var origin = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
 
         // Assert
         List<TimetableEntry> entriesBefore = timetableDAO.getAllTimetableEntries(timetable.getId());
@@ -167,7 +169,7 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
 
         // Act
         entry.setDescription(newDesc);
@@ -204,9 +206,9 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         userDao.create(offer.getOwner());
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
-        var entry1 = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
-        var entry2 = timetableDAO.createEntry(timetable, offer, LocalTime.of(10, 10), Duration.ofMinutes(50));
-        var entry3 = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(10));
+        var entry1 = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry2 = timetableDAO.createEntry(timetable, 4, offer, LocalTime.of(10, 10), Duration.ofMinutes(50));
+        var entry3 = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(10));
 
         // Act
         var entryDb1 = timetableDAO.findEntry(entry1.getId());
@@ -254,9 +256,9 @@ public class TimetableTest extends AbstractTestNGSpringContextTests {
         offerDao.create(offer);
         var timetable = timetableDAO.createTimetable(offer.getOwner(), 2012, 2);
 
-        var entry1 = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(50));
-        var entry2 = timetableDAO.createEntry(timetable, offer, LocalTime.of(10, 10), Duration.ofMinutes(50));
-        var entry3 = timetableDAO.createEntry(timetable, offer, LocalTime.now(), Duration.ofMinutes(10));
+        var entry1 = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(50));
+        var entry2 = timetableDAO.createEntry(timetable, 4, offer, LocalTime.of(10, 10), Duration.ofMinutes(50));
+        var entry3 = timetableDAO.createEntry(timetable, 4, offer, LocalTime.now(), Duration.ofMinutes(10));
 
         // Act
         var entries = timetableDAO.getAllTimetableEntries(timetable.getId());
