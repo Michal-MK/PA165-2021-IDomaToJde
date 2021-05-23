@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -454,5 +456,23 @@ public class MappingServiceImpl implements MappingService {
             return (TDto) toCategoryDTO((Category) entity);
         }
         return null;
+    }
+
+    @Override
+    public <TEntity extends IEntity> List<TEntity> mapDtoCollection(List<Object> dtos, Class<TEntity> cls) {
+        List<TEntity> ret = new ArrayList<>();
+        for (Object o : dtos) {
+            ret.add(mapDto(o, cls));
+        }
+        return ret;
+    }
+
+    @Override
+    public <TDto> List<TDto> mapEntityCollection(List<Object> entities, Class<TDto> cls) {
+        List<TDto> ret = new ArrayList<>();
+        for (Object o : entities) {
+            ret.add(mapEntity(o, cls));
+        }
+        return ret;
     }
 }

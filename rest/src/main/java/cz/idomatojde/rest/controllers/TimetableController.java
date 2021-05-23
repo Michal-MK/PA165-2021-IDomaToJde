@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +64,7 @@ public class TimetableController extends
     }
 
     @PutMapping("registerEntry")
-    ResponseEntity<Void> registerEntry(@RequestHeader(value = "token") String token, CreateTimetableEntryDTO dto) {
+    ResponseEntity<Void> registerEntry(@RequestHeader(value = "token") String token, @RequestBody CreateTimetableEntryDTO dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
 
@@ -72,9 +73,10 @@ public class TimetableController extends
     }
 
     @PostMapping("moveEntry")
-    ResponseEntity<Void> moveEntry(@RequestHeader(value = "token") String token, MoveTimetableEntryDTO dto) {
+    ResponseEntity<Void> moveEntry(@RequestHeader(value = "token") String token, @RequestBody MoveTimetableEntryDTO dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
+        // TODO Permissions
 
         facade.moveTimetableEntry(dto);
         return ok().build();

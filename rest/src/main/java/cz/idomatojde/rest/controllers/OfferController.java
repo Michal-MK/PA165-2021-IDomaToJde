@@ -9,12 +9,16 @@ import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import cz.idomatojde.rest.controllers.base.AuthState;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+
+import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -31,16 +35,26 @@ public class OfferController extends
 
     @Inject
     public OfferController(UserFacade userFacade, OfferFacade offers) {
-        super(userFacade, offers);
+        super(userFacade, offers, true);
+    }
+
+    @GetMapping("all")
+    ResponseEntity<List<OfferDTO>> getAllOffers() {
+        return ok(facade.getAll());
     }
 
     @PostMapping("changeDescription")
-    ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, ChangeDescriptionOfferDTO dto) {
+    ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, @RequestBody ChangeDescriptionOfferDTO dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
-
+        if (!ownerOnlyPermission(auth.principalId(), dto.getId())) return forbidden();
 
         facade.changeDescription(dto);
         return ok().build();
+    }
+
+    private boolean ownerOnlyPermission(long userId, long offerId) {
+        OfferDTO dto = facade.getById(offerId);
+        return dto.getOwner().getId() == userId;
     }
 }

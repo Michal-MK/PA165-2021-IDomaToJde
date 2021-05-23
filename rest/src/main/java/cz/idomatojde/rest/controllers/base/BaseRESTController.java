@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * Base class for all REST controller providing CRUD operations
@@ -28,12 +29,12 @@ public abstract class BaseRESTController<TFacade extends BaseFacade<TRegDto, TDt
     }
 
     @PutMapping(value = "register")
-    protected long register(TRegDto regDto) {
+    protected long register(@RequestBody TRegDto regDto) {
         return facade.register(regDto);
     }
 
     @DeleteMapping(value = "delete")
-    protected void delete(TDto dto) {
+    protected void delete(@RequestBody TDto dto) {
         facade.delete(dto);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -41,7 +42,7 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
     }
 
     @GetMapping("find/{id}")
-    protected ResponseEntity<TDto> getById(@RequestHeader(value = "token") String token, @PathVariable Long id) {
+    protected ResponseEntity<TDto> getById(@RequestHeader(value = "token", required = false) String token, @PathVariable Long id) {
         AuthState auth = isAuthenticated(token);
         if (!allowUnauthenticatedGet && !auth.authenticated()) return unauthorized(null);
 
@@ -49,7 +50,7 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
     }
 
     @PutMapping(value = "register")
-    protected ResponseEntity<Long> register(@RequestHeader(value = "token") String token, TRegDto regDto) {
+    protected ResponseEntity<Long> register(@RequestHeader(value = "token") String token, @RequestBody TRegDto regDto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized(-1L);
 
@@ -57,7 +58,7 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
     }
 
     @DeleteMapping(value = "delete")
-    protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, TDto dto) {
+    protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, @RequestBody TDto dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
 
@@ -75,7 +76,7 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
     }
 
     protected AuthState isAuthenticated(String token) {
-        if (token.isBlank()) {
+        if (token == null || token.isBlank()) {
             return null;
         }
         return new AuthState(userFacade.authenticate(token));
@@ -87,5 +88,13 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
 
     protected <T> ResponseEntity<T> unauthorized(T object) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(object);
+    }
+
+    protected ResponseEntity<Void> forbidden() {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    protected <T> ResponseEntity<T> forbidden(T object) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(object);
     }
 }

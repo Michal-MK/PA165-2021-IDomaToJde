@@ -81,6 +81,13 @@ public class SampleDataLoader {
         users.create(root);
         usersList.add(root);
 
+        User std = TestObjects.getUser("john", "doe", "John",
+                "Doe The Not-Admin", F.phoneNumber().cellPhone(), 0,
+                true, false);
+
+        users.create(std);
+        usersList.add(std);
+
         for (int i = 0; i < 2; i++) {
             String firstN = F.name().firstName();
             String lastN = F.name().lastName();
@@ -105,6 +112,20 @@ public class SampleDataLoader {
             usersList.add(u);
         }
 
+        LocalDate std_startLd = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, randInt(1, 28));
+        Date std_start = F.date().between(toDate(std_startLd), toDate(std_startLd.plusDays(randInt(0, 120))));
+        Date std_end = F.date().between(toDate(fromDate(std_start).plusDays(randInt(0, 50))),
+                toDate(fromDate(std_start).plusDays(randInt(50, 120))));
+
+        int std_capacity = F.number().numberBetween(2, 60);
+        Offer std_o = TestObjects.getOffer(std, F.book().title(),
+                F.lorem().characters(50, 250), categoriesList.get(RND.nextInt(categoriesList.size())),
+                std_capacity, F.number().numberBetween(0, std_capacity),
+                BigDecimal.valueOf(F.number().randomNumber(2, true)),
+                fromDate(std_start), fromDate(std_end));
+
+        offers.create(std_o);
+        offerList.add(std_o);
 
         for (int i = 0; i < 30; i++) {
             LocalDate startLd = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, randInt(1, 28));
@@ -112,9 +133,10 @@ public class SampleDataLoader {
             Date end = F.date().between(toDate(fromDate(start).plusDays(randInt(0, 50))),
                     toDate(fromDate(start).plusDays(randInt(50, 120))));
 
+            int capacity = F.number().numberBetween(2, 60);
             Offer o = TestObjects.getOffer(usersList.get(RND.nextInt(usersList.size())), F.book().title(),
                     F.lorem().characters(50, 250), categoriesList.get(RND.nextInt(categoriesList.size())),
-                    RND.nextInt(40), RND.nextInt(40),
+                    capacity, F.number().numberBetween(0, capacity),
                     BigDecimal.valueOf(F.number().randomNumber(2, true)),
                     fromDate(start), fromDate(end));
             offers.create(o);
@@ -147,7 +169,7 @@ public class SampleDataLoader {
         for (TimetableEntry e : entryList) {
             TimetableChatMessage cm = new TimetableChatMessage();
             cm.setSender(usersList.get(RND.nextInt(usersList.size())));
-            cm.setText(F.lorem().characters(10,200));
+            cm.setText(F.lorem().characters(10, 200));
             cm.setTimetableEntry(e);
             chatMessages.create(cm);
             chatMessageList.add(cm);

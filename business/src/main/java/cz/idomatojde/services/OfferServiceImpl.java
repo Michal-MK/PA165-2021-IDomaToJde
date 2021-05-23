@@ -1,6 +1,7 @@
 package cz.idomatojde.services;
 
 import cz.idomatojde.dao.OfferDao;
+import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.services.base.BaseServiceImpl;
@@ -10,7 +11,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 /**
- * @author Jiri Vrbka
+ * @author Jiri Vrbka & Michal Hazdra
  */
 @Service
 public class OfferServiceImpl extends BaseServiceImpl<Offer> implements OfferService {
@@ -31,5 +32,15 @@ public class OfferServiceImpl extends BaseServiceImpl<Offer> implements OfferSer
     @Override
     public List<Offer> getActiveOffers() {
         return offers.getActiveOffers();
+    }
+
+    @Override
+    public List<Offer> getOffersSubscribedTo(User user) {
+        return offers.getSubscribedOffers(user);
+    }
+
+    @Override
+    public List<Offer> getOffersByCategory(Category category) {
+        return offers.getAllByCategory(category);
     }
 }

@@ -24,6 +24,7 @@ import cz.idomatojde.entity.base.IEntity;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * Custom implementation of a mapper service, the methods available are self explanatory
@@ -101,4 +102,24 @@ public interface MappingService {
      * @return the mapped DTO implementation
      */
     <TDto> TDto mapEntity(Object entity, Class<TDto> cls);
+
+    /**
+     * A shortcut for mapping collections based on the {@link Class<TEntity>} to obtain the specific {@link IEntity} implementations
+     *
+     * @param dtos      the DTO objects
+     * @param cls       the class type to map to
+     * @param <TEntity> generic type specifying all entity classes
+     * @return the mapped entity implementations
+     */
+    <TEntity extends IEntity> List<TEntity> mapDtoCollection(List<Object> dtos, Class<TEntity> cls);
+
+    /**
+     * A shortcut for mapping collections based on the {@link Class<TDto>} to obtain the specific DTO implementations
+     *
+     * @param entities the entity objects
+     * @param cls      the class type to map to
+     * @param <TDto>   generic type specifying all DTO classes
+     * @return the mapped DTO implementations
+     */
+    <TDto> List<TDto> mapEntityCollection(List<Object> entities, Class<TDto> cls);
 }
