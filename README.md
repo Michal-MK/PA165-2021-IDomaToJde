@@ -18,8 +18,13 @@ The system acts as a platform, the payment process is *not our responsibility!*
 
 ## Rest
 
-The REST API documentation is built using Swagger2 and is available at `/swagger` (redirect)
+The REST API documentation is built using Swagger2 and is available at `/swagger` (redirect)\
+To obtain a token you can log in via the `AuthenticationController` with the predefined admin account:
+> Username: root
+> 
+> Passsword: 12345
 
+Then supply the returned token to all calls that need it. It currently stays valid for one day.
 
 ## Reference project
 https://github.com/fi-muni/PA165/tree/master/eshop-persistence
