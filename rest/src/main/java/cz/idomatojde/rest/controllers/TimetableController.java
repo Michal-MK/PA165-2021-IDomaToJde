@@ -5,10 +5,10 @@ import cz.idomatojde.dto.timetable.CreateTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.MoveTimetableEntryDTO;
 import cz.idomatojde.dto.timetable.TimetableDTO;
 import cz.idomatojde.dto.timetable.TimetableEntryDTO;
-import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.TimetableFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
+import cz.idomatojde.rest.controllers.base.AuthState;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,30 +40,32 @@ public class TimetableController extends
 
     @GetMapping("entry/{entryId}")
     ResponseEntity<TimetableEntryDTO> getEntryById(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
-        if (notAuthenticated(token)) return unauthorized(null);
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized(null);
 
         return ok(facade.getEntryById(entryId));
     }
 
     @GetMapping("forWeek/now")
     ResponseEntity<TimetableDTO> getForCurrentWeek(@RequestHeader(value = "token") String token) {
-        if (notAuthenticated(token)) return unauthorized(null);
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized(null);
 
-        UserDTO u = isAuthenticated(token);
-        return ok(facade.getTimetableForCurrentWeek(u.getId()));
+        return ok(facade.getTimetableForCurrentWeek(auth.principalId()));
     }
 
     @GetMapping("forWeek/{year}/{week}")
     ResponseEntity<TimetableDTO> getForWeek(@RequestHeader(value = "token") String token, @PathVariable int year, @PathVariable int week) {
-        if (notAuthenticated(token)) return unauthorized(null);
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized(null);
 
-        UserDTO u = isAuthenticated(token);
-        return ok(facade.getTimetableForDate(u.getId(), year, week));
+        return ok(facade.getTimetableForDate(auth.principalId(), year, week));
     }
 
     @PutMapping("registerEntry")
     ResponseEntity<Void> registerEntry(@RequestHeader(value = "token") String token, CreateTimetableEntryDTO dto) {
-        if (notAuthenticated(token)) return unauthorized();
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
 
         facade.registerEntry(dto);
         return ok().build();
@@ -71,7 +73,8 @@ public class TimetableController extends
 
     @PostMapping("moveEntry")
     ResponseEntity<Void> moveEntry(@RequestHeader(value = "token") String token, MoveTimetableEntryDTO dto) {
-        if (notAuthenticated(token)) return unauthorized();
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
 
         facade.moveTimetableEntry(dto);
         return ok().build();

@@ -6,6 +6,7 @@ import cz.idomatojde.dto.user.UserCreditsDTO;
 import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
+import cz.idomatojde.rest.controllers.base.AuthState;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,21 +37,24 @@ public class UserController extends
 
     @GetMapping("contactInfo/{userId}")
     ResponseEntity<UserContactInfoDTO> getUserContactInfo(@RequestHeader(value = "token") String token, @PathVariable long userId) {
-        if (notAuthenticated(token)) return unauthorized(null);
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized(null);
 
         return ok(facade.getUserContactInfo(userId));
     }
 
     @GetMapping("credits/{userId}")
     ResponseEntity<UserCreditsDTO> getUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId) {
-        if (notAuthenticated(token)) return unauthorized(null);
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized(null);
 
         return ok(facade.getCredits(userId));
     }
 
     @PostMapping("setContactInfo/{userId}?phoneNum={phoneNum}")
     ResponseEntity<Void> changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable String phoneNum) {
-        if (notAuthenticated(token)) return unauthorized();
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
 
         facade.changePhoneNumber(userId, phoneNum);
         return ok().build();
@@ -58,7 +62,8 @@ public class UserController extends
 
     @PostMapping("setCredits/{userId}?credits={credits}")
     ResponseEntity<Void> setUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable int credits) {
-        if (notAuthenticated(token)) return unauthorized();
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
 
         facade.setCredits(userId, credits);
         return ok().build();

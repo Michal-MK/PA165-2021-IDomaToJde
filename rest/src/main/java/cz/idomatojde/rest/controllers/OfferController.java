@@ -6,6 +6,7 @@ import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.facade.OfferFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
+import cz.idomatojde.rest.controllers.base.AuthState;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +36,9 @@ public class OfferController extends
 
     @PostMapping("changeDescription")
     ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, ChangeDescriptionOfferDTO dto) {
-        if (notAuthenticated(token)) return unauthorized();
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
+
 
         facade.changeDescription(dto);
         return ok().build();

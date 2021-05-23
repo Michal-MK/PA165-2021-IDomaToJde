@@ -6,6 +6,7 @@ import cz.idomatojde.dto.timetable.TimetableChatMessageDTO;
 import cz.idomatojde.facade.TimetableChatMessageFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
+import cz.idomatojde.rest.controllers.base.AuthState;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,21 +38,24 @@ public class TimetableChatMessageController extends
 
     @GetMapping("allMessagesOfUser?userId={userId}")
     ResponseEntity<List<TimetableChatMessageDTO>> getMessagesByUserId(@RequestHeader(value = "token") String token, @PathVariable long userId) {
-        if (notAuthenticated(token)) return unauthorized(null);
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized(null);
 
         return ok(facade.getAllMessagesOfUser(userId));
     }
 
     @GetMapping("allMessagesOfTimetableEntry?entryId={entryId}")
     ResponseEntity<List<TimetableChatMessageDTO>> getAllMessagesOfTimetableEntry(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
-        if (notAuthenticated(token)) return unauthorized(null);
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized(null);
 
         return ok(facade.getAllMessagesOfTimetableEntry(entryId));
     }
 
     @PostMapping("changeMessage")
     ResponseEntity<Void> changeMessage(@RequestHeader(value = "token") String token, ChangeTextTimetableChatMessageDTO dto) {
-        if (notAuthenticated(token)) return unauthorized();
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
 
         facade.changeText(dto);
         return ok().build();
@@ -59,7 +63,8 @@ public class TimetableChatMessageController extends
 
     @PostMapping("deleteAllMessages?userId={userId}")
     ResponseEntity<Void> deleteMessagesByUserId(@RequestHeader(value = "token") String token, @PathVariable long userId) {
-        if (notAuthenticated(token)) return unauthorized();
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
 
         facade.deleteAllMessagesOfUser(userId);
         return ok().build();
