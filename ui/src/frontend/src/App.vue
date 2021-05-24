@@ -1,14 +1,17 @@
 <template>
-  <HelloWorld/>
+  <Navbar/>
+  <Search/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Navbar from "@/components/Navbar";
+import Search from "@/components/Search";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Search,
+    Navbar
   }
 }
 </script>
