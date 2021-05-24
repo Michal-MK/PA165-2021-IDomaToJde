@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 
+import java.util.List;
+
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -34,6 +36,11 @@ public class CategoryController extends
     @GetMapping("byName/{name}")
     public ResponseEntity<CategoryDTO> getByName(@PathVariable String name) {
         return ok(facade.getByName(name));
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<CategoryDTO>> getAll() {
+        return ok(facade.getAll());
     }
 
     @Override
