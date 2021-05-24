@@ -13,15 +13,17 @@
 
         <!-- Search engine -->
         <div class="align-middle">
-          <div><b>Search for course</b></div>
+          <h1 class="text-center">Search for course</h1>
           <br/>
+          <div class="pr-5 pl-5 pt-2 pb-2">
           <input
-              class="form-control mr-sm-2 w-100"
+              class="form-control text-center mr-sm-2 w-100 input-lg"
               type="search"
               placeholder="Search"
               aria-label="Search"
               v-model="userFilter"
               v-on:input="filterOffers">
+          </div>
         </div>
 
         <!-- Categories -->
