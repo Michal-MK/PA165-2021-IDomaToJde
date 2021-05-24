@@ -29,7 +29,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "Users Endpoint")
 @RestController
-@RequestMapping("users")
+@RequestMapping("api/users")
 public class UserController extends
         AuthBaseRESTController<UserFacade, RegisterUserDTO, UserDTO> {
 

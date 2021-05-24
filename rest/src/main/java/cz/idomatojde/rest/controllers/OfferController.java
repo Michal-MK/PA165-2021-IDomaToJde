@@ -29,7 +29,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "Offers Endpoint")
 @RestController
-@RequestMapping("offers")
+@RequestMapping("api/offers")
 public class OfferController extends
         AuthBaseRESTController<OfferFacade, RegisterOfferDTO, OfferDTO> {
 

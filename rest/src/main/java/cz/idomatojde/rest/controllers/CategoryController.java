@@ -25,7 +25,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "Categories Endpoint")
 @RestController
-@RequestMapping("categories")
+@RequestMapping("api/categories")
 public class CategoryController extends
         AuthBaseRESTController<CategoryFacade, CategoryDTO, CategoryDTO> {
     @Inject

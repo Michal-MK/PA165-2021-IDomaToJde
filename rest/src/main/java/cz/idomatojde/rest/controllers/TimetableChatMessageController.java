@@ -33,7 +33,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "TimetableChatMessages Endpoint")
 @RestController
-@RequestMapping("timetableChatMessages")
+@RequestMapping("api/timetableChatMessages")
 public class TimetableChatMessageController extends
         AuthBaseRESTController<TimetableChatMessageFacade, AddTimetableChatMessageDTO, TimetableChatMessageDTO> {
 

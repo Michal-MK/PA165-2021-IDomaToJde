@@ -18,7 +18,7 @@ import javax.inject.Inject;
  */
 @Api(tags = "Authentication Endpoint")
 @RestController
-@RequestMapping("auth")
+@RequestMapping("api/auth")
 public class AuthenticationController {
     private final UserFacade users;
 

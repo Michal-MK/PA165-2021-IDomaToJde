@@ -31,7 +31,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "Timetables Endpoint")
 @RestController
-@RequestMapping("timetables")
+@RequestMapping("api/timetables")
 public class TimetableController extends
         AuthBaseRESTController<TimetableFacade, AddTimetableDTO, TimetableDTO> {
     @Inject
