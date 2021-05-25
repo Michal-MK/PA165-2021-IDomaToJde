@@ -5,9 +5,11 @@ import cz.idomatojde.facade.base.BaseFacade;
 import cz.idomatojde.services.base.BaseService;
 import cz.idomatojde.services.base.MappingService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 public class BaseFacadeImpl<TRegDto, TDto, TEntity extends IEntity> implements BaseFacade<TRegDto, TDto> {
 
     private final BaseService<TEntity> baseService;
