@@ -60,4 +60,6 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
         List<Offer> offers = offerService.getOffersByCategory(mapService.mapDto(category, Category.class));
         return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
     }
+
+
 }

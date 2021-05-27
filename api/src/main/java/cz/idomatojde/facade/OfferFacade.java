@@ -5,6 +5,7 @@ import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.user.UserDTO;
+import cz.idomatojde.entity.Offer;
 import cz.idomatojde.facade.base.BaseFacade;
 
 import java.util.List;
@@ -46,4 +47,5 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
      * @param category the category to filter by
      */
     List<OfferDTO> getAllByCategory(CategoryDTO category);
+
 }

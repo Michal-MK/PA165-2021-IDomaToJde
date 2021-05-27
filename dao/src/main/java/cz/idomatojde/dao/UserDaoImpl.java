@@ -1,6 +1,7 @@
 package cz.idomatojde.dao;
 
 import cz.idomatojde.dao.common.BaseDAOImpl;
+import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import org.springframework.stereotype.Repository;
 
@@ -76,5 +77,13 @@ public class UserDaoImpl extends BaseDAOImpl<User> implements UserDao {
         } catch (NoResultException ex) {
             return null;
         }
+    }
+
+    @Override
+    public void addSubscription(long userId, Offer offer) {
+        var user = this.getById(userId);
+        var subs = user.getOffers();
+        subs.add(offer);
+        user.setOffers(subs);
     }
 }

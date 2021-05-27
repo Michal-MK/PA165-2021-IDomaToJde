@@ -3,6 +3,7 @@ package cz.idomatojde.rest.controllers;
 import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
+import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.OfferFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
@@ -10,6 +11,7 @@ import cz.idomatojde.rest.controllers.base.AuthState;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,6 +44,27 @@ public class OfferController extends
     ResponseEntity<List<OfferDTO>> getAllOffers() {
         return ok(facade.getAll());
     }
+
+    @GetMapping("ofUser/{userId}")
+    ResponseEntity<List<OfferDTO>> ofUser(@PathVariable long userId) {
+        var user = userFacade.getById(userId);
+        var owned = facade.getAllOwnedBy(user);
+        return ok(owned);
+    }
+
+    @GetMapping("withSubscribedUser/{userId}")
+    ResponseEntity<List<OfferDTO>> withSubscribedUser(@PathVariable long userId) {
+        var user = userFacade.getById(userId);
+        var subscribed = facade.getAllSubscribedBy(user);
+        return ok(subscribed);
+    }
+
+//    @GetMapping("getSubscribedUsers/{offerId}")
+//    ResponseEntity<List<UserDTO>> getSubscribedUsers(@PathVariable long offerId) {
+//        var user = userFacade.getById(userId);
+//        var subscribed = facade.getAllSubscribedBy(user);
+//        return ok(subscribed);
+//    } TODO
 
     @PostMapping("changeDescription")
     ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, @RequestBody ChangeDescriptionOfferDTO dto) {

@@ -39,10 +39,9 @@ public final class TestObjects {
     public static User getUser(String username, String password, String name, String surname,
                                String phoneNum, int credits, boolean wantsAds, boolean isAdmin) {
         User user = new User();
-        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
 
         user.setUsername(username);
-        user.setPassword(encoder.encode(password));
+        user.setPassword(password);
         user.setName(name);
         user.setSurname(surname);
         user.setPhoneNumber(phoneNum);

@@ -76,13 +76,22 @@ public class UserController extends
         return ok().build();
     }
 
-    @PostMapping("setCredits/{userId}?credits={credits}")
+    @PostMapping("setCredits/{userId}/{credits}")
     ResponseEntity<Void> setUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable int credits) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
         // TODO only after valid purchase...
 
         facade.setCredits(userId, credits);
+        return ok().build();
+    }
+
+    @PostMapping("addSubscription/{userId}/{offerId}")
+    ResponseEntity<Void> addSubscription(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable long offerId) {
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
+
+        facade.addSubscription(userId, offerFacade.getById(offerId));
         return ok().build();
     }
 

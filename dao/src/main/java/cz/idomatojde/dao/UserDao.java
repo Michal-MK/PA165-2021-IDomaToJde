@@ -1,6 +1,7 @@
 package cz.idomatojde.dao;
 
 import cz.idomatojde.dao.common.BaseDAO;
+import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 
 /**
@@ -48,4 +49,11 @@ public interface UserDao extends BaseDAO<User> {
      * @return the {@link User} with this token, null if not found
      */
     User getByToken(String token);
+
+    /**
+     * Adds offer as subscribed by user
+     * @param userId to be added to
+     * @param offer be added
+     */
+    void addSubscription(long userId, Offer offer);
 }

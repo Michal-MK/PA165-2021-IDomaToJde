@@ -1,6 +1,7 @@
 package cz.idomatojde.rest.controllers;
 
 import cz.idomatojde.dto.AuthDTO;
+import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.TokenGenerator;
 import io.swagger.annotations.Api;
@@ -36,5 +37,10 @@ public class AuthenticationController {
             users.saveToken(username, response.getToken());
         }
         return response;
+    }
+
+    @PostMapping("authenticate")
+    UserDTO authenticate(@RequestHeader(value = "token") String token) {
+        return users.authenticate(token);
     }
 }
