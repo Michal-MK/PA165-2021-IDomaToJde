@@ -18,10 +18,18 @@ export default {
           .then((data) => {
             return data;
           });
-    }
+    },
   }
-
 }
+
+const fetchApiOffers = () => {
+  fetch("api/offers/all")
+      .then((response) => response.json())
+      .then((data) => {
+        return data;
+      });
+}
+
 </script>
 
 <style scoped>
