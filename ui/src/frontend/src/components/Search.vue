@@ -166,7 +166,7 @@ export default {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: rgba(17, 17, 17, 0.93);
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
