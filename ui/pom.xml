@@ -26,6 +26,25 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars.npm/postcss -->
+        <!-- https://mvnrepository.com/artifact/org.webjars.npm/postcss -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>postcss</artifactId>
+            <version>8.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.2.0</version>
+            <type>maven-plugin</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>3.1.2</version>
+            <type>maven-plugin</type>
+        </dependency>
     </dependencies>
 
     <build>
