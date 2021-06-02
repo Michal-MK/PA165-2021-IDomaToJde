@@ -118,8 +118,8 @@ public class SampleDataLoader {
                 toDate(fromDate(std_start).plusDays(randInt(50, 120))));
 
         int std_capacity = F.number().numberBetween(2, 60);
-        Offer std_o = TestObjects.getOffer(std, F.book().title(),
-                F.lorem().characters(50, 250), categoriesList.get(RND.nextInt(categoriesList.size())),
+        Offer std_o = TestObjects.getOffer(std, " Epic Offer!",
+                F.lorem().paragraph(F.number().numberBetween(1, 4)), categoriesList.get(RND.nextInt(categoriesList.size())),
                 std_capacity, F.number().numberBetween(0, std_capacity),
                 BigDecimal.valueOf(F.number().randomNumber(2, true)),
                 fromDate(std_start), fromDate(std_end));
@@ -127,15 +127,15 @@ public class SampleDataLoader {
         offers.create(std_o);
         offerList.add(std_o);
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 1000; i++) {
             LocalDate startLd = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, randInt(1, 28));
             Date start = F.date().between(toDate(startLd), toDate(startLd.plusDays(randInt(0, 120))));
             Date end = F.date().between(toDate(fromDate(start).plusDays(randInt(0, 50))),
                     toDate(fromDate(start).plusDays(randInt(50, 120))));
 
             int capacity = F.number().numberBetween(2, 60);
-            Offer o = TestObjects.getOffer(usersList.get(RND.nextInt(usersList.size())), F.book().title(),
-                    F.lorem().characters(50, 250), categoriesList.get(RND.nextInt(categoriesList.size())),
+            Offer o = TestObjects.getOffer(usersList.get(RND.nextInt(usersList.size())), "My offer in " + categoriesList.get(RND.nextInt(categoriesList.size())).getName() + " (" + i + ")",
+                    F.lorem().paragraph(F.number().numberBetween(1, 4)), categoriesList.get(RND.nextInt(categoriesList.size())),
                     capacity, F.number().numberBetween(0, capacity),
                     BigDecimal.valueOf(F.number().randomNumber(2, true)),
                     fromDate(start), fromDate(end));
