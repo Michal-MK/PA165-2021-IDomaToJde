@@ -7,6 +7,7 @@ import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserDTO;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -27,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration("classpath:applicationConfig.xml")
 @EnableAutoConfiguration
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @Transactional
 public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
 
