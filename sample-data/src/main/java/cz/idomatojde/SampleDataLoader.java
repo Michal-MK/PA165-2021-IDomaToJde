@@ -68,113 +68,46 @@ public class SampleDataLoader {
 
     public void loadData() {
 
-        createCategory("IT");
+        Category it = createCategory("IT");
         createCategory("Sport");
         createCategory("Education");
         createCategory("Leisure");
         createCategory("Just Chatting");
 
-        User root = TestObjects.getUser("root", "12345", "John",
-                "Doe", F.phoneNumber().cellPhone(), 9999,
-                false, true);
 
-        users.create(root);
-        usersList.add(root);
-
-        User std = TestObjects.getUser("john", "doe", "John",
-                "Doe The Not-Admin", F.phoneNumber().cellPhone(), 0,
-                true, false);
-
-        users.create(std);
-        usersList.add(std);
+        User root = createUser("root", "12345", "John", "Doe", phone(), 9999, false, true);
+        User user = createUser("john", "doe", "John", "Doe The Not-Admin", phone(), 0, true, false);
 
         for (int i = 0; i < 2; i++) {
-            String firstN = F.name().firstName();
-            String lastN = F.name().lastName();
-            String username = firstN.toLowerCase(Locale.ROOT) + "." + lastN.toLowerCase(Locale.ROOT);
-
-            User u = TestObjects.getUser(username, "admin" + i, firstN,
-                    lastN, F.phoneNumber().cellPhone(), F.number().numberBetween(0, 100),
-                    RND.nextDouble() > 0.8, true);
-            users.create(u);
-            usersList.add(u);
+            createUser("admin" + i, phone(), randInt(0, 100), RND.nextDouble() > 0.8, true);
         }
 
         for (int i = 0; i < 15; i++) {
-            String firstN = F.name().firstName();
-            String lastN = F.name().lastName();
-            String username = firstN.toLowerCase(Locale.ROOT) + "." + lastN.toLowerCase(Locale.ROOT);
-
-            User u = TestObjects.getUser(username, "user" + i, firstN,
-                    lastN, F.phoneNumber().cellPhone(), F.number().numberBetween(0, 100),
-                    RND.nextDouble() > 0.8, false);
-            users.create(u);
-            usersList.add(u);
+            createUser("user" + i, phone(), randInt(0, 100), RND.nextDouble() > 0.8, false);
         }
 
-        LocalDate std_startLd = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, randInt(1, 28));
-        Date std_start = F.date().between(toDate(std_startLd), toDate(std_startLd.plusDays(randInt(0, 120))));
-        Date std_end = F.date().between(toDate(fromDate(std_start).plusDays(randInt(0, 50))),
-                toDate(fromDate(std_start).plusDays(randInt(50, 120))));
-
-        int std_capacity = F.number().numberBetween(2, 60);
-        Offer std_o = TestObjects.getOffer(std, " Epic Offer!",
-                F.lorem().paragraph(F.number().numberBetween(1, 4)), categoriesList.get(RND.nextInt(categoriesList.size())),
-                std_capacity, F.number().numberBetween(0, std_capacity),
-                BigDecimal.valueOf(F.number().randomNumber(2, true)),
-                fromDate(std_start), fromDate(std_end));
-
-        offers.create(std_o);
-        offerList.add(std_o);
+        Offer epic = createOffer(user, it, "Epic Offer!");
 
         for (int i = 0; i < 1000; i++) {
-            LocalDate startLd = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, randInt(1, 28));
-            Date start = F.date().between(toDate(startLd), toDate(startLd.plusDays(randInt(0, 120))));
-            Date end = F.date().between(toDate(fromDate(start).plusDays(randInt(0, 50))),
-                    toDate(fromDate(start).plusDays(randInt(50, 120))));
-
-            int capacity = F.number().numberBetween(2, 60);
-            Offer o = TestObjects.getOffer(usersList.get(RND.nextInt(usersList.size())), "My offer in " + categoriesList.get(RND.nextInt(categoriesList.size())).getName() + " (" + i + ")",
-                    F.lorem().paragraph(F.number().numberBetween(1, 4)), categoriesList.get(RND.nextInt(categoriesList.size())),
-                    capacity, F.number().numberBetween(0, capacity),
-                    BigDecimal.valueOf(F.number().randomNumber(2, true)),
-                    fromDate(start), fromDate(end));
-            offers.create(o);
-            offerList.add(o);
+            Category cat = categoriesList.get(RND.nextInt(categoriesList.size()));
+            createOffer(user, cat, "My offer in " + cat.getName() + " (" + i + ")");
         }
 
         for (User u : usersList) {
             for (int j = 0; j < 3; j++) {
-                Timetable t = new Timetable();
-                t.setUser(u);
-                t.setYear(LocalDate.now().getYear());
-                t.setWeek(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR) - (1 - j));
-                timetables.create(t);
-                timetableList.add(t);
+                createTimetable(u, j);
             }
         }
 
         for (Offer o : offerList) {
-            TimetableEntry e = new TimetableEntry();
-            e.setOffer(o);
-            e.setTimetable(timetableList.get(RND.nextInt(timetableList.size())));
-            e.setDescription(F.harryPotter().book());
-            e.setEntryStart(LocalTime.of(F.number().numberBetween(8, 20), F.number().numberBetween(0, 59), 0));
-            e.setLength(Duration.ofMinutes(F.number().numberBetween(20, 60 * 4)));
-            e.setDay(F.number().numberBetween(0, 7));
-            timetables.createEntry(e);
-            entryList.add(e);
+            createTimetableEntry(o, timetableList.get(RND.nextInt(timetableList.size())));
         }
 
         for (TimetableEntry e : entryList) {
-            TimetableChatMessage cm = new TimetableChatMessage();
-            cm.setSender(usersList.get(RND.nextInt(usersList.size())));
-            cm.setText(F.lorem().characters(10, 200));
-            cm.setTimetableEntry(e);
-            chatMessages.create(cm);
-            chatMessageList.add(cm);
+            createTimetableChatMessage(usersList.get(RND.nextInt(usersList.size())), e);
         }
     }
+
 
     private LocalDate fromDate(Date d) {
         return d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -188,10 +121,91 @@ public class SampleDataLoader {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    private void createCategory(String name) {
+    private String phone() {
+        return F.phoneNumber().cellPhone();
+    }
+
+    private Category createCategory(String name) {
         Category c = new Category();
         c.setName(name);
         categories.create(c);
         categoriesList.add(c);
+
+        return c;
+    }
+
+    private User createUser(String userName, String pass, String name, String surname,
+                            String phoneNum, int creds, boolean ads, boolean admin) {
+        User user = TestObjects.getUser(userName, pass, name, surname, phoneNum, creds, ads, admin);
+        users.create(user);
+        usersList.add(user);
+
+        return user;
+    }
+
+
+    private User createUser(String pass, String phoneNum, int creds, boolean ads, boolean admin) {
+        String firstName = F.name().firstName();
+        String lastName = F.name().lastName();
+        String userName = firstName.toLowerCase(Locale.ROOT) + "." + lastName.toLowerCase(Locale.ROOT);
+
+        return createUser(userName, pass, firstName, lastName, phoneNum, creds, ads, admin);
+    }
+
+    private Offer createOffer(User owner, Category cat, String title) {
+        LocalDate startLocalDate = LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, randInt(1, 28));
+        Date start = F.date().between(toDate(startLocalDate), toDate(startLocalDate.plusDays(randInt(0, 120))));
+        Date end = F.date().between(toDate(fromDate(start).plusDays(randInt(0, 50))),
+                toDate(fromDate(start).plusDays(randInt(50, 120))));
+
+        int capacity = F.number().numberBetween(2, 60);
+        Offer o = TestObjects.getOffer(owner, title,
+                F.lorem().paragraph(F.number().numberBetween(1, 4)), cat,
+                capacity, F.number().numberBetween(0, capacity),
+                BigDecimal.valueOf(F.number().randomNumber(2, true)),
+                fromDate(start), fromDate(end));
+        offers.create(o);
+        offerList.add(o);
+
+        return o;
+    }
+
+    private Timetable createTimetable(User u, int j) {
+        Timetable t = new Timetable();
+        t.setUser(u);
+        t.setYear(LocalDate.now().getYear());
+        t.setWeek(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR) - (1 - j));
+
+        timetables.create(t);
+        timetableList.add(t);
+
+        return t;
+    }
+
+    private TimetableEntry createTimetableEntry(Offer o, Timetable timetable) {
+        TimetableEntry e = new TimetableEntry();
+        e.setOffer(o);
+        e.setTimetable(timetable);
+        e.setDescription(F.lorem().paragraph(F.number().numberBetween(2, 4)));
+        e.setEntryStart(LocalTime.of(F.number().numberBetween(8, 20), F.number().numberBetween(0, 59), 0));
+        e.setLength(Duration.ofMinutes(F.number().numberBetween(20, 60 * 4)));
+        e.setDay(F.number().numberBetween(0, 7));
+
+        timetables.createEntry(e);
+        entryList.add(e);
+
+        return e;
+    }
+
+    private TimetableChatMessage createTimetableChatMessage(User sender, TimetableEntry e) {
+        TimetableChatMessage cm = new TimetableChatMessage();
+        cm.setSender(sender);
+        cm.setText(F.lorem().characters(10, 200));
+        cm.setTimetableEntry(e);
+
+        chatMessages.create(cm);
+        chatMessageList.add(cm);
+
+        return cm;
     }
 }
