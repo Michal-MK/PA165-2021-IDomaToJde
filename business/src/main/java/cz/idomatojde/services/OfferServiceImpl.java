@@ -35,8 +35,13 @@ public class OfferServiceImpl extends BaseServiceImpl<Offer> implements OfferSer
     }
 
     @Override
-    public List<Offer> getOffersSubscribedTo(User user) {
+    public List<Offer> getOffersSubscribedToBy(User user) {
         return offers.getSubscribedOffers(user);
+    }
+
+    @Override
+    public List<User> getAllSubscribersOf(long offerId) {
+        return offers.getById(offerId).getSubscribers();
     }
 
     @Override

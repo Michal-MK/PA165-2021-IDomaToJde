@@ -32,6 +32,13 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
      */
     List<OfferDTO> getAllSubscribedBy(UserDTO user);
 
+    /**
+     * Returns all {@link UserDTO}s that are subscribed to this offer
+     * @param offerId the identifier of an offer
+     * @return the list of all subscribers
+     */
+    List<UserDTO> getAllSubscribersOf(long offerId);
+
 
     /**
      * Returns all {@link OfferDTO}s that the user is an author of
@@ -47,5 +54,4 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
      * @param category the category to filter by
      */
     List<OfferDTO> getAllByCategory(CategoryDTO category);
-
 }

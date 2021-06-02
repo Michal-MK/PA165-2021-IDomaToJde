@@ -43,6 +43,11 @@ public class CategoryController extends
         return ok(facade.getAll());
     }
 
+    @GetMapping("/page={pageNum}&size={size}")
+    public ResponseEntity<List<CategoryDTO>> getPaged(@PathVariable Integer pageNum, @PathVariable Integer size) {
+        return ok(facade.getPaged(pageNum, size));
+    }
+
     @Override
     protected boolean isOwner(Long principalId, Long resourceId) {
         return false; // Nobody owns Categories

@@ -28,6 +28,13 @@ public interface BaseService<TEntity extends IEntity> {
     List<TEntity> findAll();
 
     /**
+     * <b>Retrieve</b> operation for obtaining a list of entities of class TEntity at page with a given page size
+     *
+     * @return the list of filtered entities
+     */
+    List<TEntity> findPaged(int page, int size);
+
+    /**
      * <b>Retrieve</b> operation for obtaining a single entity by its ID
      *
      * @param id the unique identifier of the entity

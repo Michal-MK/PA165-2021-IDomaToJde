@@ -35,7 +35,14 @@ public interface OfferService extends BaseService<Offer> {
      * @param user the user to filter by
      * @return the list of all offer this user subscribed to
      */
-    List<Offer> getOffersSubscribedTo(User user);
+    List<Offer> getOffersSubscribedToBy(User user);
+
+    /**
+     * Finds all {@link User}s that are subscribed to an {@link Offer}
+     * @param offerId the {@link Offer} id
+     * @return list of all subscribers
+     */
+    List<User> getAllSubscribersOf(long offerId);
 
     /**
      * Finds all offers of the specified {@link Category}

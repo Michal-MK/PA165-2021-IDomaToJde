@@ -1,5 +1,6 @@
 package cz.idomatojde.rest.controllers;
 
+import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
@@ -45,26 +46,27 @@ public class OfferController extends
         return ok(facade.getAll());
     }
 
+    @GetMapping("/page={pageNum}&size={size}")
+    public ResponseEntity<List<OfferDTO>> getPaged(@PathVariable Integer pageNum, @PathVariable Integer size) {
+        return ok(facade.getPaged(pageNum, size));
+    }
+
     @GetMapping("ofUser/{userId}")
     ResponseEntity<List<OfferDTO>> ofUser(@PathVariable long userId) {
         var user = userFacade.getById(userId);
-        var owned = facade.getAllOwnedBy(user);
-        return ok(owned);
+        return ok(facade.getAllOwnedBy(user));
     }
 
-    @GetMapping("withSubscribedUser/{userId}")
-    ResponseEntity<List<OfferDTO>> withSubscribedUser(@PathVariable long userId) {
+    @GetMapping("subscribedBy/{userId}")
+    ResponseEntity<List<OfferDTO>> subscribedBy(@PathVariable long userId) {
         var user = userFacade.getById(userId);
-        var subscribed = facade.getAllSubscribedBy(user);
-        return ok(subscribed);
+        return ok(facade.getAllSubscribedBy(user));
     }
 
-//    @GetMapping("getSubscribedUsers/{offerId}")
-//    ResponseEntity<List<UserDTO>> getSubscribedUsers(@PathVariable long offerId) {
-//        var user = userFacade.getById(userId);
-//        var subscribed = facade.getAllSubscribedBy(user);
-//        return ok(subscribed);
-//    } TODO
+    @GetMapping("subscribersOf/{offerId}")
+    ResponseEntity<List<UserDTO>> subscribersOf(@PathVariable long offerId) {
+        return ok(facade.getAllSubscribersOf(offerId));
+    }
 
     @PostMapping("changeDescription")
     ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, @RequestBody ChangeDescriptionOfferDTO dto) {

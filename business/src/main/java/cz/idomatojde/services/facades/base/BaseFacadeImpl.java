@@ -38,6 +38,13 @@ public class BaseFacadeImpl<TRegDto, TDto, TEntity extends IEntity> implements B
     }
 
     @Override
+    public List<TDto> getPaged(int page, int size) {
+        return baseService.findPaged(page, size).stream()
+                .map(m -> mapService.mapEntity(m, dtoCls))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public TDto getById(long id) {
         return mapService.mapEntity(baseService.getById(id), dtoCls);
     }

@@ -31,6 +31,14 @@ public interface BaseDAO<TEntity extends IEntity> {
 
 
     /**
+     * Common functionality to find entities given a page and its size
+     *
+     * @return the list of all entities in the database
+     */
+    List<TEntity> findPaged(int page, int size);
+
+
+    /**
      * Common functionality to obtain an entity by its id
      *
      * @param id the entity identifier
