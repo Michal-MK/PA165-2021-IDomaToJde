@@ -60,16 +60,6 @@ public abstract class AuthBaseRESTController<TFacade extends BaseFacade<TRegDto,
         return ok(facade.register(regDto));
     }
 
-    @DeleteMapping(value = "delete")
-    @Deprecated(since = "This method should not exist..., currently does nothing!")
-    protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, @RequestBody TDto dto) {
-        AuthState auth = isAuthenticated(token);
-        if (!auth.authenticated()) return unauthorized();
-
-        // facade.delete(dto);
-        return ok().build();
-    }
-
     @DeleteMapping(value = "deleteId/{id}")
     protected ResponseEntity<Void> delete(@RequestHeader(value = "token") String token, @PathVariable Long id) {
         AuthState auth = isAuthenticated(token);

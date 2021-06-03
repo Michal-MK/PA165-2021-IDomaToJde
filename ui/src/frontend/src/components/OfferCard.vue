@@ -1,20 +1,20 @@
 <template>
   <div class="content">
     <a class="card" style="width: 18rem;">
-    <div class="front" style="background-image: url(//source.unsplash.com/300x401)">
-      <div class="container">
-        <div class="row"><p>{{offer.title}}</p></div>
-        <div class="row"><p style="font-size: large"><i>{{offer.owner.name}} {{offer.owner.surname}}</i></p></div>
+      <div class="front" style="background-image: url(//source.unsplash.com/300x401)">
+        <div class="container">
+          <div class="row"><p>{{ offer.title }}</p></div>
+          <div class="row"><p style="font-size: large"><i>{{ offer.owner.name }} {{ offer.owner.surname }}</i></p></div>
+        </div>
       </div>
-    </div>
-    <div class="back">
-      <div>
-        <p class="pt-2 pb-2" style="font-size: large">{{getDescription()}}</p>
-        <p>At price: {{offer.price}}</p>
-        <button class="button" v-on:click="$emit('onSelected', offer)">Detail</button>
+      <div class="back">
+        <div>
+          <p class="pt-2 pb-2" style="font-size: large">{{ getDescription() }}</p>
+          <p>At price: {{ offer.price }}</p>
+          <button class="button" v-on:click="$emit('onSelected', offer)">Detail</button>
+        </div>
       </div>
-    </div></a>
-
+    </a>
   </div>
 </template>
 
@@ -29,8 +29,8 @@ export default {
 
   emits: ['onSelected'],
   methods: {
-    getDescription(){
-      if(this.offer.description.length > 100){
+    getDescription() {
+      if (this.offer.description.length > 100) {
         return this.offer.description.slice(0, 100) + "...";
       }
 
@@ -83,6 +83,7 @@ body {
   margin-bottom: 1rem;
   position: relative;
 }
+
 .heading:after {
   display: block;
   content: "";
@@ -111,11 +112,13 @@ body {
   margin: 1rem;
   position: relative;
 }
+
 @media screen and (max-width: 800px) {
   .card {
     width: calc(50% - 2rem);
   }
 }
+
 @media screen and (max-width: 500px) {
   .card {
     width: 100%;
@@ -156,6 +159,7 @@ body {
   overflow: hidden;
   font-family: Poppins, sans-serif;
 }
+
 .front:before {
   position: absolute;
   display: block;
@@ -168,9 +172,11 @@ body {
   opacity: 0.25;
   z-index: -1;
 }
+
 .card:hover .front {
   transform: rotateY(180deg);
 }
+
 .card:nth-child(even):hover .front {
   transform: rotateY(-180deg);
 }
@@ -182,26 +188,33 @@ body {
   padding-right: 2em;
   overflow: hidden;
 }
+
 .back .button {
   background: linear-gradient(135deg, #1a9be6, #1a57e6);
 }
+
 .back .button:before {
   box-shadow: 0 0 10px 10px rgba(26, 87, 230, 0.25);
   background-color: rgba(26, 87, 230, 0.25);
 }
+
 .card:hover .back {
   transform: rotateY(0deg);
 }
+
 .card:nth-child(even) .back {
   transform: rotateY(180deg);
 }
+
 .card:nth-child(even) .back .button {
   background: linear-gradient(135deg, #e61a80, #e61a3c);
 }
+
 .card:nth-child(even) .back .button:before {
   box-shadow: 0 0 10px 10px rgba(230, 26, 60, 0.25);
   background-color: rgba(230, 26, 60, 0.25);
 }
+
 .card:nth-child(even):hover .back {
   transform: rotateY(0deg);
 }
@@ -221,6 +234,7 @@ body {
   transform-style: preserve-3d;
   transition: 300ms ease;
 }
+
 .button:before {
   transition: 300ms ease;
   position: absolute;
@@ -235,15 +249,19 @@ body {
   left: 10px;
   top: 16px;
 }
+
 .button:hover {
   transform: translateZ(55px);
 }
+
 .button:hover:before {
   transform: translateZ(-55px);
 }
+
 .button:active {
   transform: translateZ(20px);
 }
+
 .button:active:before {
   transform: translateZ(-20px);
   top: 12px;

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -38,13 +39,13 @@ public class CategoryController extends
         return ok(facade.getByName(name));
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity<List<CategoryDTO>> getAll() {
         return ok(facade.getAll());
     }
 
-    @GetMapping("/page={pageNum}&size={size}")
-    public ResponseEntity<List<CategoryDTO>> getPaged(@PathVariable Integer pageNum, @PathVariable Integer size) {
+    @GetMapping("")
+    public ResponseEntity<List<CategoryDTO>> getPaged(@RequestParam Integer pageNum, @RequestParam Integer size) {
         return ok(facade.getPaged(pageNum, size));
     }
 

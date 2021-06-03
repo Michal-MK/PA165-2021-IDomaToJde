@@ -1,33 +1,20 @@
-
 <script>
 export default {
   name: "ApiController",
 
   methods: {
-    fetchOffers() {
-      fetch("api/offers/all")
+    fetchOffers(page, size, query) {
+      fetch("api/offers?pageNum=" + page + "&size=" + size + "&nameFilter=" + query)
           .then((response) => response.json())
-          .then((data) => {
-            return data;
-          });
+          .then((data) => data);
     },
 
     fetchCategories() {
-      fetch("api/categories/")
+      fetch("api/categories/all")
           .then((response) => response.json())
-          .then((data) => {
-            return data;
-          });
+          .then((data) => data);
     },
   }
-}
-
-const fetchApiOffers = () => {
-  fetch("api/offers/all")
-      .then((response) => response.json())
-      .then((data) => {
-        return data;
-      });
 }
 
 </script>

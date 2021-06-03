@@ -3,47 +3,38 @@
   <div id="mySidebarRight" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav">×</a>
 
-      <div v-if="isAuth">
-        <UserDetail
-          :user="getUser"
-          @onSignOut="signOut"
-        />
-      </div>
-      <div v-else>
-        <Login
-            @onLogged="AuthUser"
-        />
-        <br/>
-        <br/>
-        OR
-        <br/>
-        <br/>
-        <RegisterModal/>
-      </div>
+    <div v-if="isAuth">
+      <UserDetail :user="getUser" @onSignOut="signOut"/>
+    </div>
+    <div v-else>
+      <Login @onLogged="AuthUser"/>
+      <br/>
+      <br/>
+      OR
+      <br/>
+      <br/>
+      <RegisterModal/>
+    </div>
+
   </div>
-
-
 
   <div id="main">
     <button class="openbtn" v-on:click="openNav">
-    <div v-if="isAuth">
-    <div class="d-flex flex-column align-items-center text-center">
-      <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="70">
-      <div class="mt-3">
-        <h4>{{user.username}}</h4>
+
+      <div v-if="isAuth">
+        <div class="d-flex flex-column align-items-center text-center">
+          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="70">
+          <div class="mt-3">
+            <h4>{{ user.username }}</h4>
+          </div>
+        </div>
       </div>
-    </div>
-    </div>
-    <div v-else>
-
-
-    <span class="fa fa-user-circle-o" style="font-size:70px; color: black"></span>
-
-    </div>
-
+      <div v-else>
+        <span class="fa fa-user-circle-o" style="font-size:70px; color: black"/>
+      </div>
+      
     </button>
   </div>
-
 
 
 </template>
@@ -81,34 +72,34 @@ export default {
   },
 
   methods: {
-      async fetchApiUser(token){
-        const response = await fetch("api/auth/authenticate" , {
-          method: 'POST',
-          headers: {
-            "token" : token
-          }
-        });
+    async fetchApiUser(token) {
+      const response = await fetch("api/auth/authenticate", {
+        method: 'POST',
+        headers: {
+          "token": token
+        }
+      });
 
-        const data = await response.json();
-        console.log("Fetched by token: " + JSON.stringify(data));
-        return data;
-      },
-
-    isEmpty(s){
-      console.log("Checking for empty: " + s);
-      return (!s || s.length === 0 );
+      const data = await response.json();
+      console.log("Fetched by token: " + JSON.stringify(data));
+      return data;
     },
 
-    async AuthUser(){
+    isEmpty(s) {
+      console.log("Checking for empty: " + s);
+      return (!s || s.length === 0);
+    },
+
+    async AuthUser() {
       let token = this.$cookies.get("token");
 
-      if(this.isEmpty(token)){
+      if (this.isEmpty(token)) {
         console.log("Unauthenticated user");
         this.user = '';
         this.isAuthenticated = false;
-      }else{
+      } else {
         console.log("Authenticated user");
-        if(this.isEmpty(this.user)) {
+        if (this.isEmpty(this.user)) {
           this.user = await this.fetchApiUser(token);
 
         }
@@ -118,12 +109,12 @@ export default {
       }
     },
 
-    signOut(){
-        console.log("Calling sign out");
-        this.$cookies.remove("token");
-        this.user = '';
-        this.isAuthenticated = false;
-        this.closeNav();
+    signOut() {
+      console.log("Calling sign out");
+      this.$cookies.remove("token");
+      this.user = '';
+      this.isAuthenticated = false;
+      this.closeNav();
     },
 
     openNav() {
@@ -197,7 +188,12 @@ export default {
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-  .sidebar {padding-top: 15px;}
-  .sidebar a {font-size: 18px;}
+  .sidebar {
+    padding-top: 15px;
+  }
+
+  .sidebar a {
+    font-size: 18px;
+  }
 }
 </style>

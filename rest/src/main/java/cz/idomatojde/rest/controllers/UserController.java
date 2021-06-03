@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -52,7 +53,7 @@ public class UserController extends
         return ok(facade.getUserContactInfo(userId));
     }
 
-    @PostMapping(value = "signup")
+    @PutMapping(value = "signup")
     ResponseEntity<Long> signup(@RequestBody RegisterUserDTO regDto) {
         return ok(facade.register(regDto));
     }
@@ -66,8 +67,8 @@ public class UserController extends
         return ok(facade.getCredits(userId));
     }
 
-    @PostMapping("setContactInfo/{userId}?phoneNum={phoneNum}")
-    ResponseEntity<Void> changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable String phoneNum) {
+    @PostMapping("setContactInfo/{userId}")
+    ResponseEntity<Void> changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @RequestParam String phoneNum) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
         if (!ownerOnlyPermission(auth.principalId(), userId)) return forbidden();

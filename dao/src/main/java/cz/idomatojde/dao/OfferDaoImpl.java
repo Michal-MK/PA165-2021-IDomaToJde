@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * DAO implementation for {@link OfferDao} API
@@ -46,6 +47,18 @@ public class OfferDaoImpl extends BaseDAOImpl<Offer> implements OfferDao {
     public List<Offer> getAllByCategory(Category category) {
         return em.createQuery("select o from Offer o where o.category = :cat", Offer.class)
                 .setParameter("cat", category)
+                .getResultList();
+    }
+
+    @Override
+    public List<Offer> getFiltered(String nameFilter, int pageNum, int size) {
+        if (nameFilter == null || nameFilter.isBlank()) {
+            return findPaged(pageNum, size);
+        }
+        return em.createQuery("select o from Offer o where lower(o.title) like %:nameFilter%", Offer.class)
+                .setParameter("nameFilter", nameFilter.toLowerCase(Locale.ROOT))
+                .setFirstResult((pageNum - 1) * size)
+                .setMaxResults(size)
                 .getResultList();
     }
 }

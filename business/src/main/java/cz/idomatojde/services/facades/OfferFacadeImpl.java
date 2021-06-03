@@ -42,6 +42,12 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
     }
 
     @Override
+    public List<OfferDTO> getFiltered(String nameFilter, int pageNum, int size) {
+        List<Offer> offers = offerService.getFiltered(nameFilter, pageNum, size);
+        return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
+    }
+
+    @Override
     public List<OfferDTO> getAllSubscribedBy(UserDTO user) {
         List<Offer> offers = offerService.getOffersSubscribedToBy(mapService.mapDto(user, User.class));
         return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
@@ -64,6 +70,5 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
         List<Offer> offers = offerService.getOffersByCategory(mapService.mapDto(category, Category.class));
         return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
     }
-
 
 }

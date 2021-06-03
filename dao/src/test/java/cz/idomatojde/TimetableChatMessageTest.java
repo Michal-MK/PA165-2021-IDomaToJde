@@ -220,7 +220,7 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         assertThat(chatDb).isEqualTo(chat);
     }
 
-    @Test(expectedExceptions = javax.persistence.NoResultException.class)
+    @Test()
     public void deleteTest() {
         // Arrange
         var offer = getOffer(category, "deleteTest");
@@ -241,7 +241,9 @@ public class TimetableChatMessageTest extends AbstractTestNGSpringContextTests {
         timetableChatMessageDAO.delete(chat);
 
         // Assert
-        timetableChatMessageDAO.getById(chat.getId());
+        var found = timetableChatMessageDAO.getById(chat.getId());
+
+        assertThat(found).isNull();
     }
 
     @Test

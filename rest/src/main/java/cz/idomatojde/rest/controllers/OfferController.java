@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -38,33 +39,40 @@ public class OfferController extends
 
     @Inject
     public OfferController(UserFacade userFacade, OfferFacade offers) {
-        super(userFacade, offers, true,true, true, false);
+        super(userFacade, offers, true, true, true, false);
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     ResponseEntity<List<OfferDTO>> getAllOffers() {
         return ok(facade.getAll());
     }
 
-    @GetMapping("/page={pageNum}&size={size}")
-    public ResponseEntity<List<OfferDTO>> getPaged(@PathVariable Integer pageNum, @PathVariable Integer size) {
-        return ok(facade.getPaged(pageNum, size));
+    @GetMapping("")
+    public ResponseEntity<List<OfferDTO>> getPaged(@RequestParam Integer pageNum, @RequestParam Integer size,
+                                                   @RequestParam(required = false) String nameFilter) {
+        return ok(facade.getFiltered(nameFilter, pageNum, size));
     }
 
     @GetMapping("ofUser/{userId}")
     ResponseEntity<List<OfferDTO>> ofUser(@PathVariable long userId) {
+        // TODO permission check ?
+
         var user = userFacade.getById(userId);
         return ok(facade.getAllOwnedBy(user));
     }
 
     @GetMapping("subscribedBy/{userId}")
     ResponseEntity<List<OfferDTO>> subscribedBy(@PathVariable long userId) {
+        // TODO permission check ?
+
         var user = userFacade.getById(userId);
         return ok(facade.getAllSubscribedBy(user));
     }
 
     @GetMapping("subscribersOf/{offerId}")
     ResponseEntity<List<UserDTO>> subscribersOf(@PathVariable long offerId) {
+        // TODO permission check ?
+
         return ok(facade.getAllSubscribersOf(offerId));
     }
 
@@ -72,15 +80,15 @@ public class OfferController extends
     ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, @RequestBody ChangeDescriptionOfferDTO dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
-        if (!ownerOnlyPermission(auth.principalId(), dto.getId())) return forbidden();
+        if (!ownerOnlyPermission(auth, dto.getId())) return forbidden();
 
         facade.changeDescription(dto);
         return ok().build();
     }
 
-    private boolean ownerOnlyPermission(long userId, long offerId) {
+    private boolean ownerOnlyPermission(AuthState principal, long offerId) {
         OfferDTO dto = facade.getById(offerId);
-        return dto.getOwner().getId() == userId;
+        return dto.getOwner().getId() == principal.principalId() || principal.admin();
     }
 
     @Override

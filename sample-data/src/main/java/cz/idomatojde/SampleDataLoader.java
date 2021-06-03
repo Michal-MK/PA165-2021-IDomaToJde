@@ -25,8 +25,10 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -54,6 +56,9 @@ public class SampleDataLoader {
     private final List<TimetableEntry> entryList = new ArrayList<>();
     private final List<TimetableChatMessage> chatMessageList = new ArrayList<>();
 
+    private final Map<User, Offer> ownership = new HashMap<>();
+    private final Map<Offer, List<User>> subscribersOf = new HashMap<>();
+
 
     @Inject
     public SampleDataLoader(UserService users, OfferService offers,
@@ -78,19 +83,34 @@ public class SampleDataLoader {
         User root = createUser("root", "12345", "John", "Doe", phone(), 9999, false, true);
         User user = createUser("john", "doe", "John", "Doe The Not-Admin", phone(), 0, true, false);
 
+        Offer epic = createOffer(user, it, "Epic Offer!");
+
+        epic.getSubscribers().add(root);
+
         for (int i = 0; i < 2; i++) {
-            createUser("admin" + i, phone(), randInt(0, 100), RND.nextDouble() > 0.8, true);
+            User u = createUser("admin" + i, "admin" + i, "Admin " + i, "The Admin", phone(), randInt(0, 100), RND.nextDouble() > 0.8, true);
+            epic.getSubscribers().add(u);
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 30; i++) {
             createUser("user" + i, phone(), randInt(0, 100), RND.nextDouble() > 0.8, false);
         }
 
-        Offer epic = createOffer(user, it, "Epic Offer!");
 
         for (int i = 0; i < 1000; i++) {
-            Category cat = categoriesList.get(RND.nextInt(categoriesList.size()));
-            createOffer(user, cat, "My offer in " + cat.getName() + " (" + i + ")");
+            Category cat = categoriesList.get(randInt(0, categoriesList.size()));
+            User owner = usersList.get(randInt(0, usersList.size()));
+            createOffer(owner, cat, "My offer in " + cat.getName() + " (" + i + ")");
+        }
+
+        for (Offer offer : offerList) {
+            for (User u : usersList) {
+                if (RND.nextDouble() > 0.98) {
+                    offer.getSubscribers().add(u);
+                    u.getSubscribedOffers().add(offer);
+                    subscribersOf.get(offer).add(u);
+                }
+            }
         }
 
         for (User u : usersList) {
@@ -99,12 +119,18 @@ public class SampleDataLoader {
             }
         }
 
-        for (Offer o : offerList) {
-            createTimetableEntry(o, timetableList.get(RND.nextInt(timetableList.size())));
+        for (Timetable t : timetableList) {
+            var subbed = t.getUser().getSubscribedOffers();
+            if (!subbed.isEmpty()) {
+                createTimetableEntry(subbed.get(RND.nextInt(subbed.size())), t);
+            }
         }
 
         for (TimetableEntry e : entryList) {
-            createTimetableChatMessage(usersList.get(RND.nextInt(usersList.size())), e);
+            var subs = subscribersOf.get(e.getOffer());
+            if (!subs.isEmpty()) {
+                createTimetableChatMessage(subs.get(randInt(0, subs.size())), e);
+            }
         }
     }
 
@@ -159,13 +185,18 @@ public class SampleDataLoader {
                 toDate(fromDate(start).plusDays(randInt(50, 120))));
 
         int capacity = F.number().numberBetween(2, 60);
+        String lorem = F.lorem().paragraph(F.number().numberBetween(2, 4));
+
         Offer o = TestObjects.getOffer(owner, title,
-                F.lorem().paragraph(F.number().numberBetween(1, 4)), cat,
+                lorem.substring(0, Math.min(255, lorem.length())), cat,
                 capacity, F.number().numberBetween(0, capacity),
                 BigDecimal.valueOf(F.number().randomNumber(2, true)),
                 fromDate(start), fromDate(end));
         offers.create(o);
         offerList.add(o);
+
+        ownership.put(owner, o);
+        subscribersOf.put(o, new ArrayList<>());
 
         return o;
     }
@@ -184,9 +215,11 @@ public class SampleDataLoader {
 
     private TimetableEntry createTimetableEntry(Offer o, Timetable timetable) {
         TimetableEntry e = new TimetableEntry();
+        String lorem = F.lorem().paragraph(F.number().numberBetween(2, 4));
+
         e.setOffer(o);
         e.setTimetable(timetable);
-        e.setDescription(F.lorem().paragraph(F.number().numberBetween(2, 4)));
+        e.setDescription(lorem.substring(0, Math.min(255, lorem.length())));
         e.setEntryStart(LocalTime.of(F.number().numberBetween(8, 20), F.number().numberBetween(0, 59), 0));
         e.setLength(Duration.ofMinutes(F.number().numberBetween(20, 60 * 4)));
         e.setDay(F.number().numberBetween(0, 7));
@@ -199,8 +232,9 @@ public class SampleDataLoader {
 
     private TimetableChatMessage createTimetableChatMessage(User sender, TimetableEntry e) {
         TimetableChatMessage cm = new TimetableChatMessage();
+        String lorem = F.lorem().paragraph(F.number().numberBetween(2, 4));
         cm.setSender(sender);
-        cm.setText(F.lorem().characters(10, 200));
+        cm.setText(lorem.substring(0, Math.min(255, lorem.length())));
         cm.setTimetableEntry(e);
 
         chatMessages.create(cm);

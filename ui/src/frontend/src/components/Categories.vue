@@ -2,18 +2,18 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col" v-for="cat in cats" :key="cat.name">
+
         <div v-if="checkedCategories.includes(cat.name)">
-          <button
-              class="btn my-2 my-sm-0 w-100 btn-success"
-              v-on:click="toggleButton(cat.name) "
-          >{{ cat.name }}</button>
+          <button class="btn my-2 my-sm-0 w-100 btn-success" v-on:click="toggleButton(cat.name)">
+            {{ cat.name }}
+          </button>
         </div>
         <div v-else>
-          <button
-              class="btn my-2 my-sm-0 w-100 btn-outline-success"
-              v-on:click="toggleButton(cat.name)"
-          >{{ cat.name }}</button>
+          <button class="btn my-2 my-sm-0 w-100 btn-outline-success" v-on:click="toggleButton(cat.name)">
+            {{ cat.name }}
+          </button>
         </div>
+
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@ export default {
     }
   },
   mounted() {
-    fetch("api/categories/")
+    fetch("api/categories/all")
         .then((response) => response.json())
         .then((data) => {
           this.cats = data;
@@ -42,8 +42,8 @@ export default {
   },
 
   methods: {
-    toggleButton(categoryName){
-      if(categoryName) {
+    toggleButton(categoryName) {
+      if (categoryName) {
 
         if (this.checkedCategories.includes(categoryName)) {
           let index = this.checkedCategories.indexOf(categoryName);

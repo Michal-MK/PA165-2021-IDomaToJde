@@ -2,46 +2,35 @@
 
   <br/>
   <br/>
-
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <div class="col-2">
-        <!--  -->
-
-
-        </div>
-        <div id="mySidebar" class="sidebar">
-          <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav">×</a>
-
-          <div class="pt-5 mt-5" style="text-align: center">
-
+      <div class="col-2"/>
+      <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav">×</a>
+        <div class="pt-5 mt-5" style="text-align: center">
           <div v-if="selectedOffer">
-            <SelectedOffer
-                :offer="currentOffer"
-            ></SelectedOffer>
+            <SelectedOffer :offer="currentOffer"/>
           </div>
         </div>
-
       </div>
-      <div class="col">
 
+      <div class="col">
         <!-- Search engine -->
         <div class="align-middle">
           <div class="pr-5 pl-5 pt-2 pb-2">
-          <input
-              class="form-control text-center mr-sm-2 w-100 input-lg"
-              type="search"
-              placeholder="Type to search specific course"
-              aria-label="Search"
-              v-model="userFilter"
-              v-on:input="filterOffers">
+            <input
+                class="form-control text-center mr-sm-2 w-100 input-lg"
+                type="search"
+                placeholder="Type to search specific course"
+                aria-label="Search"
+                v-model="userFilter"
+                v-on:input="filterOffers"/>
           </div>
         </div>
 
         <br/>
         <br/>
         <br/>
-
 
         <!-- Categories -->
         <Categories @categoryChanged="filterByCategory"/>
@@ -51,20 +40,14 @@
         <div class="container-fluid">
           <div class="row no-gutters">
             <div class="col" v-for="offer in showOffers" :key="offer.id">
-              <OfferCard
-                :offer="offer"
-                @onSelected="OnSelectedOffer"
-              />
+              <OfferCard :offer="offer" @onSelected="OnSelectedOffer"/>
             </div>
-
           </div>
         </div>
 
-
       </div>
       <div class="col-2">
-        <!--  -->
-        <Account></Account>
+        <Account/>
       </div>
     </div>
   </div>
@@ -102,11 +85,11 @@ export default {
     currentOffer() {
       return this.selectedOffer;
     }
-    },
+  },
 
   mounted() {
-
-    fetch("api/offers/all")
+    //TODO implement proper pagination
+    fetch("api/offers?pageNum=1&size=20&nameFilter=" + this.userFilter)
         .then((response) => response.json())
         .then((data) => {
           this.offers = data;
@@ -122,6 +105,9 @@ export default {
 
   methods: {
     filterOffers() {
+      // This needs some polling so that we do not query the database with every stroke
+      // From how I understand this now, all the offers are cached in the browser and the filtering is done at client's side
+      // I will leave this to you
       this.filterAll();
     },
 
@@ -130,12 +116,12 @@ export default {
       this.filterAll();
     },
 
-    filterAll(){
+    filterAll() {
       let byCategory = this.offers.filter(d => this.checkedCategories.includes(d.category.name));
       this.showOffers = byCategory.filter(d => d.title.toLowerCase().includes(this.userFilter.toLowerCase()))
     },
 
-    OnSelectedOffer(offer){
+    OnSelectedOffer(offer) {
       this.closeNav();
       this.selectedOffer = offer;
       console.log("selected " + this.selectedOffer);
@@ -150,8 +136,8 @@ export default {
     },
 
     closeNav() {
-        document.getElementById("mySidebar").style.width = "0";
-        document.getElementById("main").style.marginLeft= "0";
+      document.getElementById("mySidebar").style.width = "0";
+      document.getElementById("main").style.marginLeft = "0";
     }
   }
 
@@ -200,7 +186,12 @@ export default {
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-  .sidebar {padding-top: 15px;}
-  .sidebar a {font-size: 18px;}
+  .sidebar {
+    padding-top: 15px;
+  }
+
+  .sidebar a {
+    font-size: 18px;
+  }
 }
 </style>

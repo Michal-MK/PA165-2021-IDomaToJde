@@ -48,4 +48,9 @@ public class OfferServiceImpl extends BaseServiceImpl<Offer> implements OfferSer
     public List<Offer> getOffersByCategory(Category category) {
         return offers.getAllByCategory(category);
     }
+
+    @Override
+    public List<Offer> getFiltered(String nameFilter, int pageNum, int size) {
+        return offers.getFiltered(nameFilter, pageNum, size);
+    }
 }

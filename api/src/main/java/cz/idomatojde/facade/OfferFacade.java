@@ -24,6 +24,14 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
      */
     void changeDescription(ChangeDescriptionOfferDTO changeDescriptionOfferDTO);
 
+    /**
+     * Returns all {@link OfferDTO}s containing provided name in a paged manner
+     *
+     * @param nameFilter the name to filter by
+     * @param pageNum the requested page
+     * @param size the requested page size
+     */
+    List<OfferDTO> getFiltered(String nameFilter, int pageNum, int size);
 
     /**
      * Returns all {@link OfferDTO}s that the user is subscribed to

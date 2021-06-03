@@ -43,4 +43,14 @@ public interface OfferDao extends BaseDAO<Offer> {
      * @return list of all {@link Offer}s that are part of the category
      */
     List<Offer> getAllByCategory(Category category);
+
+    /**
+     * Finds all offers containing the specified name in a paged manner
+     *
+     * @param nameFilter the containing name
+     * @param pageNum    the requested page
+     * @param size       the requested page size
+     * @return the list of all {@link Offer}s matching the criteria
+     */
+    List<Offer> getFiltered(String nameFilter, int pageNum, int size);
 }
