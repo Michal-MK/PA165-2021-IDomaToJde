@@ -1,42 +1,35 @@
 <template>
-<div class="conteiner">
-  <div class="row">
-    <div class="col-4">
+  <div class="conteiner">
+    <div class="row">
+      <div class="col-4"/>
 
-    </div>
-    <div class="col-4">
+      <div class="col-4">
+        <div class="form__group field">
+          <input v-model="loginName" type="input" class="form__field" placeholder="Name" name="name" id='name'
+                 required/>
+          <label for="name" class="form__label">Surname</label>
+        </div>
 
-      <div class="form__group field">
-        <input v-model="loginName" type="input" class="form__field" placeholder="Name" name="name" id='name' required />
-        <label for="name" class="form__label">Surname</label>
+        <div class="form__group field">
+          <input v-model="loginPass" type="input" class="form__field" placeholder="Password" name="pass" id='pass'
+                 required/>
+          <label for="pass" class="form__label">Password</label>
+        </div>
+
+        <br/>
+        <br/>
+        <button class="btn btn-primary btn-lg btn-block" v-on:click="logIn">Login</button>
       </div>
 
-      <div class="form__group field">
-        <input v-model="loginPass" type="input" class="form__field" placeholder="Password" name="pass" id='pass' required />
-        <label for="pass" class="form__label">Password</label>
-      </div>
-
-      <br/>
-      <br/>
-      <button class="btn btn-primary btn-lg btn-block" v-on:click="logIn">Login</button>
-
+      <div class="col-4"/>
     </div>
-    <div class="col-4">
-
-    </div>
-
   </div>
-
-</div>
-
-
-<!--  <label>Username:</label>-->
-<!--  <input type="text" id="fname" name="fname">-->
-<!--  <br><br>-->
-<!--  <label>Password:</label>-->
-<!--  <input type="text" id="lname" name="lname">-->
-<!--  <br><br>-->
-
+  <!--  <label>Username:</label>-->
+  <!--  <input type="text" id="fname" name="fname">-->
+  <!--  <br><br>-->
+  <!--  <label>Password:</label>-->
+  <!--  <input type="text" id="lname" name="lname">-->
+  <!--  <br><br>-->
 </template>
 
 <script>
@@ -51,22 +44,22 @@ export default {
   },
 
   methods: {
-    logIn(){
+    logIn() {
       let name = this.loginName;
       let pass = this.loginPass;
 
       fetch("api/auth/login", {
         method: 'POST',
-        headers: { "Content-Type": "application/json", "username": name, "pass": pass }
+        headers: {"Content-Type": "application/json", "username": name, "pass": pass}
       }).then((response) => response.json())
           .then((data) => {
 
             let success = data.successful;
-            if(success === true){
+            if (success === true) {
               this.$cookies.set("token", data.token);
               this.$emit("onLogged");
               console.log("Logged");
-            }else{
+            } else {
               console.log("Not logged")
             }
 
@@ -99,9 +92,11 @@ export default {
   background: transparent;
   transition: border-color 0.2s;
 }
+
 .form__field::placeholder {
   color: transparent;
 }
+
 .form__field:placeholder-shown ~ .form__label {
   font-size: 1.3rem;
   cursor: text;
@@ -124,6 +119,7 @@ export default {
   border-image: linear-gradient(to right, #11998e, #38ef7d);
   border-image-slice: 1;
 }
+
 .form__field:focus ~ .form__label {
   position: absolute;
   top: 0;

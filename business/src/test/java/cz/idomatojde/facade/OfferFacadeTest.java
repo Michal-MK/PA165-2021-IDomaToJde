@@ -2,10 +2,12 @@ package cz.idomatojde.facade;
 
 import cz.idomatojde.dto.category.CategoryDTO;
 import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
+import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserDTO;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -15,6 +17,8 @@ import org.testng.annotations.Test;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration("classpath:applicationConfig.xml")
 @EnableAutoConfiguration
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @Transactional
 public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
 
@@ -94,6 +99,30 @@ public class OfferFacadeTest extends AbstractTestNGSpringContextTests {
 
         assertThat(actual.getDescription()).isEqualTo(newDesc);
         assertThat(actual.getTitle()).isEqualTo(newTitle);
+    }
+
+    @Test
+    void paginationTest() {
+        var cat = getCategory();
+        var user = getUserDTO();
+
+        for (int i = 0; i < 50; i++) {
+            RegisterOfferDTO reg = getRegisterOffer(user, cat);
+            reg.setTitle("" + i);
+            offerFacade.register(reg);
+        }
+
+        var page1 = offerFacade.getPaged(1, 10);
+
+        assertThat(page1.size()).isEqualTo(10);
+        assertThat(page1.stream().map(OfferDTO::getId).collect(Collectors.toList()))
+                .containsAll(LongStream.range(1, 11).boxed().collect(Collectors.toList()));
+
+        var page2 = offerFacade.getPaged(2, 20);
+
+        assertThat(page2.size()).isEqualTo(20);
+        assertThat(page2.stream().map(OfferDTO::getId).collect(Collectors.toList()))
+                .containsAll(LongStream.range(21, 41).boxed().collect(Collectors.toList()));
     }
 
     private CategoryDTO getCategory() {

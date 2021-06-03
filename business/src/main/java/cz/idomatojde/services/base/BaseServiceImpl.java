@@ -6,8 +6,8 @@ import cz.idomatojde.entity.base.IEntity;
 import java.util.List;
 
 /**
- * @author Michal Hazdra
  * @param <TEntity> the entity class serviced
+ * @author Michal Hazdra
  */
 public abstract class BaseServiceImpl<TEntity extends IEntity> implements BaseService<TEntity> {
 
@@ -26,6 +26,11 @@ public abstract class BaseServiceImpl<TEntity extends IEntity> implements BaseSe
     @Override
     public List<TEntity> findAll() {
         return base.findAll();
+    }
+
+    @Override
+    public List<TEntity> findPaged(int page, int size) {
+        return base.findPaged(page, size);
     }
 
     @Override

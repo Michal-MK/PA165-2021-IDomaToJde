@@ -24,6 +24,14 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
      */
     void changeDescription(ChangeDescriptionOfferDTO changeDescriptionOfferDTO);
 
+    /**
+     * Returns all {@link OfferDTO}s containing provided name in a paged manner
+     *
+     * @param nameFilter the name to filter by
+     * @param pageNum the requested page
+     * @param size the requested page size
+     */
+    List<OfferDTO> getFiltered(String nameFilter, int pageNum, int size);
 
     /**
      * Returns all {@link OfferDTO}s that the user is subscribed to
@@ -31,6 +39,13 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
      * @param user the user to filter by
      */
     List<OfferDTO> getAllSubscribedBy(UserDTO user);
+
+    /**
+     * Returns all {@link UserDTO}s that are subscribed to this offer
+     * @param offerId the identifier of an offer
+     * @return the list of all subscribers
+     */
+    List<UserDTO> getAllSubscribersOf(long offerId);
 
 
     /**
@@ -47,5 +62,4 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
      * @param category the category to filter by
      */
     List<OfferDTO> getAllByCategory(CategoryDTO category);
-
 }

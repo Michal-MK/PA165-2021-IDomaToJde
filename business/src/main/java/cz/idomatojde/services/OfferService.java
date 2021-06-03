@@ -35,7 +35,14 @@ public interface OfferService extends BaseService<Offer> {
      * @param user the user to filter by
      * @return the list of all offer this user subscribed to
      */
-    List<Offer> getOffersSubscribedTo(User user);
+    List<Offer> getOffersSubscribedToBy(User user);
+
+    /**
+     * Finds all {@link User}s that are subscribed to an {@link Offer}
+     * @param offerId the {@link Offer} id
+     * @return list of all subscribers
+     */
+    List<User> getAllSubscribersOf(long offerId);
 
     /**
      * Finds all offers of the specified {@link Category}
@@ -44,4 +51,14 @@ public interface OfferService extends BaseService<Offer> {
      * @return the list of all offer part of the provided {@link Category}
      */
     List<Offer> getOffersByCategory(Category category);
+
+    /**
+     * Finds all offers containing the specified name in a paged manner
+     *
+     * @param nameFilter the containing name
+     * @param pageNum    the requested page
+     * @param size       the requested page size
+     * @return the list of all {@link Offer}s matching the criteria
+     */
+    List<Offer> getFiltered(String nameFilter, int pageNum, int size);
 }

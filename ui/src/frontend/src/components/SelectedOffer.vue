@@ -1,18 +1,14 @@
 <template>
 
-
-    <p class="text-white">{{JSON.stringify(offer)}}</p>
-
-
-
-
+  <p class="text-white">{{ JSON.stringify(offer) }}</p>
 
   <div class="container">
     <div class="main-body">
       <div class="row">
+
         <div v-if="!isEmpty(getError)">
           <div class="alert alert-danger">
-            {{getError}}
+            {{ getError }}
           </div>
         </div>
         <div v-else>
@@ -20,23 +16,25 @@
 
           </div>
         </div>
+
       </div>
       <div class="row gutters-sm">
         <div class="col-md-4 mb-3">
           <div class="card">
             <div class="card-body">
               <div class="d-flex flex-column align-items-center text-center">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT81XbWhkSL6nudDIrPXvc6J5Z4yNcUdzq4dg&usqp=CAU" alt="course" class="rounded-circle" width="150">
+                <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT81XbWhkSL6nudDIrPXvc6J5Z4yNcUdzq4dg&usqp=CAU"
+                    alt="course" class="rounded-circle" width="150">
                 <div class="mt-3">
-                  <h4>{{offer.title}}</h4>
+                  <h4>{{ offer.title }}</h4>
                 </div>
 
                 <div class="mt-2">
-                  <div>by <i>{{offer.owner.name}} {{offer.owner.surname}}</i></div>
+                  <div>by <i>{{ offer.owner.name }} {{ offer.owner.surname }}</i></div>
                   <br/>
                 </div>
                 <div>
-
                   <button class="btn btn-primary" v-on:click="onAssign">Assign</button>
                 </div>
               </div>
@@ -45,12 +43,18 @@
           <div class="card mt-3">
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                <h6 class="mb-0"><span class="fa fa-credit-card-alt"/><pre style="display: inline"> </pre>Price</h6>
-                <span class="text-secondary">{{offer.price}}</span>
+                <h6 class="mb-0"><span class="fa fa-credit-card-alt"/>
+                  <pre style="display: inline"/>
+                  Price
+                </h6>
+                <span class="text-secondary">{{ offer.price }}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                <h6 class="mb-0"><span class="fa fa-mortar-board"/><pre style="display: inline"> </pre>Category</h6>
-                <span class="text-secondary">{{offer.category.name}}</span>
+                <h6 class="mb-0"><span class="fa fa-mortar-board"/>
+                  <pre style="display: inline"/>
+                  Category
+                </h6>
+                <span class="text-secondary">{{ offer.category.name }}</span>
               </li>
             </ul>
           </div>
@@ -63,7 +67,7 @@
                   <h6 class="mb-0">Description</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  {{offer.description}}
+                  {{ offer.description }}
                 </div>
               </div>
               <hr>
@@ -72,10 +76,9 @@
                   <h6 class="mb-0">Capacity</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                  <small>{{offer.capacity - offer.registered}} free spaces</small>
+                  <small>{{ offer.capacity - offer.registered }} free spaces</small>
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -85,27 +88,32 @@
                 <div class="card-body">
                   <h6 class="d-flex align-items-center mb-3">Assigned people</h6>
                   <div v-for="offer in getOwnedOffers" :key="offer.id">
-                    <button class="btn btn-outline-success">{{offer.title}}</button>
+                    <button class="btn btn-outline-success">{{ offer.title }}</button>
                   </div>
                   <small>Web Design</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <small>Website Markup</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <small>One Page</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <small>Mobile Template</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <small>Backend API</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                 </div>
               </div>
@@ -116,23 +124,28 @@
                   <h6 class="d-flex align-items-center mb-3">Your courses</h6>
                   <small>Web Design</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <small>Website Markup</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <small>One Page</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <small>Mobile Template</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                   <small>Backend API</small>
                   <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                 </div>
               </div>
@@ -140,10 +153,8 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
-
 
 
 </template>
@@ -168,56 +179,58 @@ export default {
   },
 
   computed: {
-    getError(){
+    getError() {
       return this.error;
     }
   },
 
   methods: {
-    getOwnedOffers(){
+    getOwnedOffers() {
       fetch("api/offers/ofUser/" + this.offer.owner.id)
           .then((result) => result.json())
-          .then((data) => {return data;})
+          .then((data) => {
+            return data;
+          })
     },
 
-    isEmpty(s){
-      return (!s || s.length === 0 );
+    isEmpty(s) {
+      return (!s || s.length === 0);
     },
 
-    async onAssign(){
+    async onAssign() {
       let token = this.$cookies.get("token");
       let user = await this.fetchApiUser(token);
 
-      if(this.isEmpty(user)){
+      if (this.isEmpty(user)) {
         this.error = "You have to log first!";
         return;
       }
 
-      if(!this.isEmpty(user.offers) && user.offers.some(o => o.id == this.offer.id)){
+      if (!this.isEmpty(user.offers) && user.offers.some(o => o.id == this.offer.id)) {
         this.error = "You are already assigned";
         return;
       }
 
-      if(this.offer.price > user.credit + user.bonus){
+      if (this.offer.price > user.credit + user.bonus) {
         this.error = "Not enough credits!";
         return;
       }
 
       console.log("Now I should assign");
 
-      await fetch("api/users/addSubscription/" + user.id + "/" + this.offer.id , {
+      await fetch("api/users/addSubscription/" + user.id + "/" + this.offer.id, {
         method: 'POST',
         headers: {
-          "token" : token
+          "token": token
         }
       });
     },
 
-    async fetchApiUser(token){
-      const response = await fetch("api/auth/authenticate" , {
+    async fetchApiUser(token) {
+      const response = await fetch("api/auth/authenticate", {
         method: 'POST',
         headers: {
-          "token" : token
+          "token": token
         }
       });
 
@@ -229,19 +242,21 @@ export default {
 
 <style scoped>
 
-body{
-  margin-top:20px;
+body {
+  margin-top: 20px;
   color: #1a202c;
   text-align: left;
   background-color: #e2e8f0;
 
   font-family: "Nunito Sans", sans-serif;
 }
+
 .main-body {
   padding: 15px;
 }
+
 .card {
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
 }
 
 .card {
@@ -252,7 +267,7 @@ body{
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 0 solid rgba(0,0,0,.125);
+  border: 0 solid rgba(0, 0, 0, .125);
   border-radius: .25rem;
 }
 
@@ -267,21 +282,24 @@ body{
   margin-left: -8px;
 }
 
-.gutters-sm>.col, .gutters-sm>[class*=col-] {
+.gutters-sm > .col, .gutters-sm > [class*=col-] {
   padding-right: 8px;
   padding-left: 8px;
 }
+
 .mb-3, .my-3 {
-  margin-bottom: 1rem!important;
+  margin-bottom: 1rem !important;
 }
 
 .bg-gray-300 {
   background-color: #e2e8f0;
 }
+
 .h-100 {
-  height: 100%!important;
+  height: 100% !important;
 }
+
 .shadow-none {
-  box-shadow: none!important;
+  box-shadow: none !important;
 }
 </style>
