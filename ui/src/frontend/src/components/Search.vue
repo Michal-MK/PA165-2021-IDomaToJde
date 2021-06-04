@@ -87,7 +87,7 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     //TODO implement proper pagination
     fetch("api/offers?pageNum=1&size=20&nameFilter=" + this.userFilter)
         .then((response) => response.json())
@@ -96,11 +96,8 @@ export default {
           this.showOffers = data;
         });
 
-    fetch("api/categories/")
-        .then((response) => response.json())
-        .then((data) => {
-          this.checkedCategories = data.map(c => c.name);
-        });
+    let allCat = await this.$store.getters.getAllCategories;
+    this.checkedCategories = allCat.forEach(c => c.name);
   },
 
   methods: {

@@ -10,18 +10,31 @@ const apiModule = {
 
     getters: {
 
-        async isAuth(state, getters){
-            // let token = getters.getAuthToken;
-            //
-            // if(getters.stringEmpty(token)) {
-            //     return null;
-            // }
+        async getAuthUser(state, getters){
+            let token = getters.getAuthToken;
 
-            return await getters.fetchApiUser;
+            if(getters.stringEmpty(token)) {
+                return null;
+            }
+
+            return await getters.__fetchApiUser;
+        },
+
+        async getAllCategories(state, getters){
+            return await getters.__apiGet("api/categories/all");
         },
 
 
-        async fetchApiUser(state, getters){
+        stringEmpty: () => (string) => {
+            return string == null || string.length === 0;
+        },
+
+        getAuthToken(state){
+            return Cookies.get(state.tokenName);
+        },
+
+        // private methods
+        async __fetchApiUser(state, getters){
             try {
                 const response = await fetch("api/auth/authenticate", {
                     method: 'POST',
@@ -39,18 +52,12 @@ const apiModule = {
             } catch (e){
                 return null;
             }
-
         },
 
-        stringEmpty: () => (string) => {
-            return string == null || string.length === 0;
-        },
-
-        getAuthToken(state){
-            return Cookies.get(state.tokenName);
-        },
-
-        // private methods
+        __apiGet: () => async (url) => {
+            const response = await fetch(url);
+            return await response.json();
+        }
     },
 }
 

@@ -32,13 +32,9 @@ export default {
       errorClass: 'btn-danger'
     }
   },
-  mounted() {
-    fetch("api/categories/all")
-        .then((response) => response.json())
-        .then((data) => {
-          this.cats = data;
-          this.checkedCategories = this.cats.map(c => c.name);
-        });
+  async mounted() {
+    this.cats = await this.$store.getters.getAllCategories;
+    this.checkedCategories = this.cats.map(c => c.name);
   },
 
   methods: {
