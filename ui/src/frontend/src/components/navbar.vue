@@ -5,14 +5,6 @@
 <script>
 export default {
   name: "navbar",
-
-  async mounted() {
-
-    let user = await this.$store.getters.getAuthUser;
-    console.log("Ubla bla " + user);
-
-  },
-
   methods: {
   }
 }

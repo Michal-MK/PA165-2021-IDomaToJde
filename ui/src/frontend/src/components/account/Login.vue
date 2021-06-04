@@ -1,35 +1,54 @@
 <template>
+  <button class="btn btn-primary" v-on:click="openNav">Log in</button>
+
+  <!--  Sidebar  -->
+  <div id="LogSidebarRight" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav">×</a>
+
   <div class="conteiner">
     <div class="row">
       <div class="col-4"/>
 
       <div class="col-4">
+        <form>
         <div class="form__group field">
-          <input v-model="loginName" type="input" class="form__field" placeholder="Name" name="name" id='name'
+          <input v-model="loginName" type="input" class="form__field" placeholder="Name" name="name" id='name' autocomplete="username"
                  required/>
           <label for="name" class="form__label">Surname</label>
         </div>
 
         <div class="form__group field">
-          <input v-model="loginPass" type="input" class="form__field" placeholder="Password" name="pass" id='pass'
+          <input v-model="loginPass" type="password" class="form__field" placeholder="Password" name="pass" id='pass' autocomplete="current-password"
                  required/>
           <label for="pass" class="form__label">Password</label>
         </div>
+        </form>
+        <br/>
+        <br/>
 
-        <br/>
-        <br/>
-        <button class="btn btn-primary btn-lg btn-block" v-on:click="logIn">Login</button>
       </div>
 
       <div class="col-4"/>
     </div>
+
+    <!--    Error display-->
+    <div class="row">
+      <div class="col text-center">
+        <div v-if="loginResponse">
+          <div class="text-danger">{{ loginResponse }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!--  Login button  -->
+    <div class="row pt-3">
+      <div class="col text-center">
+          <button class="btn btn-primary btn-lg btn-block" v-on:click="logIn">Login</button>
+      </div>
+    </div>
+
   </div>
-  <!--  <label>Username:</label>-->
-  <!--  <input type="text" id="fname" name="fname">-->
-  <!--  <br><br>-->
-  <!--  <label>Password:</label>-->
-  <!--  <input type="text" id="lname" name="lname">-->
-  <!--  <br><br>-->
+  </div>
 </template>
 
 <script>
@@ -39,9 +58,14 @@ export default {
   data() {
     return {
       loginName: '',
-      loginPass: ''
+      loginPass: '',
+      loginResponse: ''
     }
   },
+
+  emits: [
+    "onLogged"
+  ],
 
   methods: {
     logIn() {
@@ -60,13 +84,23 @@ export default {
               this.$emit("onLogged");
               console.log("Logged");
             } else {
+              this.loginResponse = "Invalid username or password";
               console.log("Not logged")
             }
 
             console.log("Login response: " + success);
           });
 
-    }
+    },
+
+      openNav() {
+        document.getElementById("LogSidebarRight").style.width = "100%";
+      },
+
+      closeNav() {
+        document.getElementById("LogSidebarRight").style.width = "0";
+      }
+
   }
 
 
@@ -147,4 +181,71 @@ body {
   background-color: #222222;
 }
 
+
+/* Sidebar */
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: rgba(17, 17, 17, 0.93);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #fff;
+
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  color: black;
+}
+
+#main {
+  transition: .5s;
+  padding: 16px;
+  text-align: right;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {
+    padding-top: 15px;
+  }
+
+  .sidebar a {
+    font-size: 18px;
+  }
+}
 </style>
