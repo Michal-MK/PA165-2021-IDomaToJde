@@ -23,8 +23,52 @@ const apiModule = {
             return await getters.__apiGet("api/categories/all");
         },
 
-        async registerUser() {
+        getOwnedOffers: (state, getters) => async (userId) => {
+            return await getters.__apiGet("api/offers/ofUser/" + userId);
+        },
 
+        getSubscribedOffers: (state, getters) => async (userId) => {
+            return await getters.__apiGet("api/offers/subscribedBy/" + userId);
+        },
+
+        getCurrentTimetable: (state, getters) => async () => {
+            let requestOptions = {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    "token": getters.getAuthToken
+                }
+            };
+
+            return await getters.__apiPost("api/timetables/forWeek/current", requestOptions);
+        },
+
+        addCredits: (state, getters) => async (userId, credits) => {
+            let requestForCredits = {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    "token": getters.getAuthToken
+                }
+            };
+
+            let requestSetCredits = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "token": getters.getAuthToken
+                }
+            };
+
+            let current = await getters.__apiPost("api/users/credits/" + userId, requestForCredits);
+
+            if(current == null)
+                return false;
+
+            let newCredits = current.credits + credits;
+            let setResponse = await getters.__apiPost("api/users/setCredits/" + userId + "/" + newCredits, requestSetCredits);
+
+            return setResponse != null;
         },
 
 
@@ -78,6 +122,7 @@ const apiModule = {
         },
 
         __apiGet: () => async (url) => {
+            console.log("DEBUG: Request [Get] to " + url);
             try {
                 const response = await fetch(url);
                 return await response.json();
@@ -88,17 +133,20 @@ const apiModule = {
         },
 
         __apiPost: () => async (url, options) => {
-            // try {
+            try {
+                console.log("DEBUG: Request [Post] to " + url);
                 let response = await fetch(url, options);
 
-                if(!response.ok)
+                if(!response.ok) {
+                    console.log("DEBUG: Result [Post] not ok: " + response.error());
                     return null;
+                }
 
                 return await response.json();
-            // } catch (e) {
-            //     console.log("Error: " + e);
-            //     return null;
-            // }
+            } catch (e) {
+                console.log("ERROR: " + e);
+                return null;
+            }
         }
     },
 }

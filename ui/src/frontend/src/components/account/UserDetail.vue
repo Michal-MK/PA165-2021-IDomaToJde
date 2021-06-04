@@ -84,16 +84,95 @@
                     {{ user.contactInfo.phoneNumber }}
                   </div>
                 </div>
+
+                <hr>
+                <div class="row">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Calendar</h6>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getCurrentEntries }}
+                  </div>
+                </div>
+<!--                Monday-->
+                <div class="row ml-3">
+                  <div class="col-sm-3">
+                    <i class="mb-0">Monday</i>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getEntriesFor(getCurrentEntries, 0) }}
+                  </div>
+                </div>
+                <!--                Tuesday-->
+                <div class="row ml-2">
+                  <div class="col-sm-3">
+                    <i class="mb-0">Tuesday</i>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getEntriesFor(getCurrentEntries, 1) }}
+                  </div>
+                </div>
+                <!--                Wednesday-->
+                <div class="row ml-2">
+                  <div class="col-sm-3">
+                    <i class="mb-0">Wednesday</i>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getEntriesFor(getCurrentEntries, 2) }}
+                  </div>
+                </div>
+                <!--                Thursday-->
+                <div class="row ml-2">
+                  <div class="col-sm-3">
+                    <i class="mb-0">Thursday</i>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getEntriesFor(getCurrentEntries, 3) }}
+                  </div>
+                </div>
+                <!--                Friday-->
+                <div class="row ml-2">
+                  <div class="col-sm-3">
+                    <i class="mb-0">Friday</i>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getEntriesFor(getCurrentEntries, 4) }}
+                  </div>
+                </div>
+                <!--                Saturday-->
+                <div class="row ml-2">
+                  <div class="col-sm-3">
+                    <i class="mb-0">Saturday</i>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ getEntriesFor(getCurrentEntries, 5) }}
+                  </div>
+                </div>
+                <!--                Sunday-->
+                <div class="row ml-2">
+                  <div class="col-sm-3">
+                    <i class="mb-0">Sunday</i>
+                  </div>
+                  <div class="col-sm-9 text-secondary">
+                    {{ (getEntriesFor(getCurrentEntries, 6)) }}
+                  </div>
+                </div>
+
               </div>
             </div>
+
+
+
 
             <div class="row gutters-sm">
               <div class="col-sm-6 mb-3">
                 <div class="card h-100">
                   <div class="card-body">
                     <h6 class="d-flex align-items-center mb-3">Assigned courses</h6>
-                    <div v-for="offer in getSubscribedOffers" :key="offer.id">
-                      <button class="btn btn-outline-success">{{ offer.title }}</button>
+                    <div v-for="offer in getSubscribed" :key="offer.id">
+                      <button class="btn btn-outline-success m-1">
+                        {{ offer.title }}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -102,8 +181,10 @@
                 <div class="card h-100">
                   <div class="card-body">
                     <h6 class="d-flex align-items-center mb-3">Your courses</h6>
-                    <div v-for="offer in getOwnedOffers" :key="offer.id">
-                      <button class="btn btn-outline-success">{{ offer.title }}</button>
+                    <div v-for="offer in getOfferByUser" :key="offer.id">
+                      <button class="btn btn-outline-success m-1">
+                        {{ offer.title }}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -127,22 +208,46 @@ export default {
   data() {
     return {
       credits: 0,
+      offerOfUser: '',
+      subscribed: '',
+      entries: '',
     }
   },
 
   computed: {
     getCredits() {
       return this.credits;
-    }
+    },
+
+    getOfferByUser(){
+      return this.offerOfUser;
+    },
+
+    getSubscribed(){
+      return this.subscribed;
+    },
+
+    getCurrentEntries(){
+      return this.entries;
+    },
+
   },
 
-  mounted() {
+  async mounted() {
     this.credits = this.user.credits;
+    this.offerOfUser = await this.$store.getters.getOwnedOffers(this.user.id);
+    this.subscribed = await this.$store.getters.getSubscribedOffers(this.user.id);
+    let fullEntries = await this.$store.getters.getCurrentTimetable();
+    this.entries = fullEntries.entries;
   },
 
   emits: ['onSignOut'],
 
   methods: {
+    getEntriesFor(entries, intDay){
+        return Object.values(entries).filter(e => e.day === intDay);
+    },
+
     openNav() {
       document.getElementById("UserDetailSidebarRight").style.width = "100%";
     },
@@ -151,35 +256,9 @@ export default {
       document.getElementById("UserDetailSidebarRight").style.width = "0";
     },
 
-
     async addTenCredits() {
       this.credits = this.credits + 10;
-      console.log("Updating credits to: " + this.credits);
-
-      let token = this.$cookies.get("token");
-
-      await fetch("api/users/setCredits/" + this.user.id + "/" + this.credits, {
-        method: 'POST',
-        headers: {
-          "token": token
-        }
-      });
-    },
-
-    getOwnedOffers() {
-      fetch("api/offers/ofUser/" + this.user.id)
-          .then((result) => result.json())
-          .then((data) => {
-            return data;
-          })
-    },
-
-    getSubscribedOffers() {
-      fetch("api/offers/withSubscribedUser/" + this.user.id)
-          .then((result) => result.json())
-          .then((data) => {
-            return data;
-          })
+      await this.$store.getters.addCredits(this.user.id, 10);
     },
 
     async fetchApiUser(token) {
