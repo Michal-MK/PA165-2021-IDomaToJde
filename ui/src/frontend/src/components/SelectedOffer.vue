@@ -218,7 +218,7 @@ export default {
 
       console.log("Now I should assign");
 
-      await fetch("api/users/addSubscription/" + user.id + "/" + this.offer.id, {
+      await fetch("api/offers/subscribe?userId=" + user.id + "&offerId=" + this.offer.id, {
         method: 'POST',
         headers: {
           "token": token
