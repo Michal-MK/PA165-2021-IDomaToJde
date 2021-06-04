@@ -26,6 +26,7 @@ To start UI for this project, you have to:
  * npm install vue bootstrap bootstrap-vue
  * npm install vue-cookies --save
  * npm install vuex --save
+ * npm install js-cookie --save
 
  To run UI you have to:
   * Open terminal
