@@ -5,7 +5,6 @@ import cz.idomatojde.dto.offer.ChangeDescriptionOfferDTO;
 import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.offer.RegisterOfferDTO;
 import cz.idomatojde.dto.user.UserDTO;
-import cz.idomatojde.entity.Offer;
 import cz.idomatojde.facade.base.BaseFacade;
 
 import java.util.List;
@@ -28,8 +27,8 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
      * Returns all {@link OfferDTO}s containing provided name in a paged manner
      *
      * @param nameFilter the name to filter by
-     * @param pageNum the requested page
-     * @param size the requested page size
+     * @param pageNum    the requested page
+     * @param size       the requested page size
      */
     List<OfferDTO> getFiltered(String nameFilter, int pageNum, int size);
 
@@ -42,10 +41,20 @@ public interface OfferFacade extends BaseFacade<RegisterOfferDTO, OfferDTO> {
 
     /**
      * Returns all {@link UserDTO}s that are subscribed to this offer
+     *
      * @param offerId the identifier of an offer
      * @return the list of all subscribers
      */
     List<UserDTO> getAllSubscribersOf(long offerId);
+
+
+    /**
+     * Adds an offer as to a users subscription list
+     *
+     * @param userId  the subscriber's id
+     * @param offerId the id of the offer being subscribed to
+     */
+    void addSubscription(long userId, long offerId);
 
 
     /**

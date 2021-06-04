@@ -1,7 +1,6 @@
 package cz.idomatojde.services.facades;
 
 import cz.idomatojde.dto.AuthDTO;
-import cz.idomatojde.dto.offer.OfferDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
@@ -89,10 +88,5 @@ public class UserFacadeImpl extends BaseFacadeImpl<RegisterUserDTO, UserDTO, Use
     @Override
     public void saveToken(String username, String token) {
         userService.saveToken(username, token);
-    }
-
-    @Override
-    public void addSubscription(long userId, OfferDTO offer) {
-        userService.addSubscription(userId, mapService.fromOfferDto(offer));
     }
 }

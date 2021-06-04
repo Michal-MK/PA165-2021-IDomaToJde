@@ -1,6 +1,7 @@
 package cz.idomatojde;
 
 import cz.idomatojde.dao.OfferDao;
+import cz.idomatojde.dao.UserDao;
 import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OfferServiceTest {
 
     private OfferDao mockOffers;
+    private UserDao mockUsers;
 
     private OfferService service;
 
@@ -33,7 +35,8 @@ public class OfferServiceTest {
     void setup() {
         //This is used as @Inject and @InjectMock are not compatible with constructor injection...
         mockOffers = mock(OfferDao.class);
-        service = new OfferServiceImpl(mockOffers);
+        mockUsers = mock(UserDao.class);
+        service = new OfferServiceImpl(mockOffers, mockUsers);
         user = getUser("test");
 
         when(mockOffers.getActiveOffers()).thenReturn(getOffers(user));

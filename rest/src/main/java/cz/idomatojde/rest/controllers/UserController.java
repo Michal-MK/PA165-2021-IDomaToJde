@@ -87,16 +87,6 @@ public class UserController extends
         return ok().build();
     }
 
-    @PostMapping("addSubscription/{userId}/{offerId}")
-    ResponseEntity<Void> addSubscription(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable long offerId) {
-        AuthState auth = isAuthenticated(token);
-        if (!auth.authenticated()) return unauthorized();
-
-        facade.addSubscription(userId, offerFacade.getById(offerId));
-        return ok().build();
-    }
-
-
     private boolean relatedOnlyPermission(AuthState state, long userId) {
         var subscribedBy = offerFacade.getAllSubscribedBy(state.principal());
         var ownedBy = offerFacade.getAllOwnedBy(facade.getById(userId));

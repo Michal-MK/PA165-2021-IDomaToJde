@@ -1,7 +1,6 @@
 package cz.idomatojde.services;
 
 import cz.idomatojde.dao.UserDao;
-import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.services.base.BaseServiceImpl;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -68,10 +67,5 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
         u.setToken(token);
         u.setTokenExpiration(LocalDate.now().plusDays(1));
-    }
-
-    @Override
-    public void addSubscription(long userId, Offer offer) {
-        userDao.addSubscription(userId, offer);
     }
 }

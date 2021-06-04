@@ -76,6 +76,15 @@ public class OfferController extends
         return ok(facade.getAllSubscribersOf(offerId));
     }
 
+    @PostMapping("subscribe")
+    ResponseEntity<Void> addSubscription(@RequestHeader(value = "token") String token, @RequestParam long userId, @RequestParam long offerId) {
+        AuthState auth = isAuthenticated(token);
+        if (!auth.authenticated()) return unauthorized();
+
+        facade.addSubscription(userId, offerId);
+        return ok().build();
+    }
+
     @PostMapping("changeDescription")
     ResponseEntity<Void> changeDescription(@RequestHeader(value = "token") String token, @RequestBody ChangeDescriptionOfferDTO dto) {
         AuthState auth = isAuthenticated(token);

@@ -1,6 +1,5 @@
 package cz.idomatojde.services;
 
-import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.services.base.BaseService;
 
@@ -50,11 +49,4 @@ public interface UserService extends BaseService<User> {
      * @param token    tje newly generated token
      */
     void saveToken(String username, String token);
-
-    /**
-     * Adds offer as subscribed by user
-     * @param userId to be added to
-     * @param offer to be added
-     */
-    void addSubscription(long userId, Offer offer);
 }

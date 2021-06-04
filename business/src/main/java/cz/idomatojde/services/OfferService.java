@@ -39,6 +39,7 @@ public interface OfferService extends BaseService<Offer> {
 
     /**
      * Finds all {@link User}s that are subscribed to an {@link Offer}
+     *
      * @param offerId the {@link Offer} id
      * @return list of all subscribers
      */
@@ -61,4 +62,12 @@ public interface OfferService extends BaseService<Offer> {
      * @return the list of all {@link Offer}s matching the criteria
      */
     List<Offer> getFiltered(String nameFilter, int pageNum, int size);
+
+    /**
+     * Adds an offer as to a users subscription list
+     *
+     * @param userId  the subscriber's id
+     * @param offerId the id of the offer being subscribed to
+     */
+    void addSubscription(long offerId, long userId);
 }

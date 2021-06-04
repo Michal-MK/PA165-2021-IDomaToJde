@@ -71,4 +71,8 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
         return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
     }
 
+    @Override
+    public void addSubscription(long userId, long offerId) {
+        offerService.addSubscription(offerId, userId);
+    }
 }
