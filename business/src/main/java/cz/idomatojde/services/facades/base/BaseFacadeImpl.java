@@ -5,9 +5,11 @@ import cz.idomatojde.facade.base.BaseFacade;
 import cz.idomatojde.services.base.BaseService;
 import cz.idomatojde.services.base.MappingService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 public class BaseFacadeImpl<TRegDto, TDto, TEntity extends IEntity> implements BaseFacade<TRegDto, TDto> {
 
     private final BaseService<TEntity> baseService;
@@ -31,6 +33,13 @@ public class BaseFacadeImpl<TRegDto, TDto, TEntity extends IEntity> implements B
     @Override
     public List<TDto> getAll() {
         return baseService.findAll().stream()
+                .map(m -> mapService.mapEntity(m, dtoCls))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TDto> getPaged(int page, int size) {
+        return baseService.findPaged(page, size).stream()
                 .map(m -> mapService.mapEntity(m, dtoCls))
                 .collect(Collectors.toList());
     }

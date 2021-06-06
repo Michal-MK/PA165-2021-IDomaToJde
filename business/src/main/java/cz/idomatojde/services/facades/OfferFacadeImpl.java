@@ -9,9 +9,7 @@ import cz.idomatojde.entity.Category;
 import cz.idomatojde.entity.Offer;
 import cz.idomatojde.entity.User;
 import cz.idomatojde.facade.OfferFacade;
-import cz.idomatojde.services.CategoryService;
 import cz.idomatojde.services.OfferService;
-import cz.idomatojde.services.UserService;
 import cz.idomatojde.services.base.MappingService;
 import cz.idomatojde.services.facades.base.BaseFacadeImpl;
 import org.springframework.stereotype.Service;
@@ -44,9 +42,21 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
     }
 
     @Override
-    public List<OfferDTO> getAllSubscribedBy(UserDTO user) {
-        List<Offer> offers = offerService.getOffersSubscribedTo(mapService.mapDto(user, User.class));
+    public List<OfferDTO> getFiltered(String nameFilter, int pageNum, int size) {
+        List<Offer> offers = offerService.getFiltered(nameFilter, pageNum, size);
         return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
+    }
+
+    @Override
+    public List<OfferDTO> getAllSubscribedBy(UserDTO user) {
+        List<Offer> offers = offerService.getOffersSubscribedToBy(mapService.mapDto(user, User.class));
+        return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
+    }
+
+    @Override
+    public List<UserDTO> getAllSubscribersOf(long offerId) {
+        List<User> users = offerService.getAllSubscribersOf(offerId);
+        return mapService.mapEntityCollection(new ArrayList<>(users), UserDTO.class);
     }
 
     @Override
@@ -59,5 +69,10 @@ public class OfferFacadeImpl extends BaseFacadeImpl<RegisterOfferDTO, OfferDTO, 
     public List<OfferDTO> getAllByCategory(CategoryDTO category) {
         List<Offer> offers = offerService.getOffersByCategory(mapService.mapDto(category, Category.class));
         return mapService.mapEntityCollection(new ArrayList<>(offers), OfferDTO.class);
+    }
+
+    @Override
+    public void addSubscription(long userId, long offerId) {
+        offerService.addSubscription(offerId, userId);
     }
 }

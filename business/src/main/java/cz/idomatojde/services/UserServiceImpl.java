@@ -24,6 +24,15 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
+    public long create(User entity) {
+        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
+
+        entity.setPassword(encoder.encode(entity.getPassword()));
+        super.create(entity);
+        return entity.getId();
+    }
+
+    @Override
     public void addPhone(long userId, String phoneNumber) {
         userDao.addPhone(userId, phoneNumber);
     }

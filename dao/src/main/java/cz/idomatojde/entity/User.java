@@ -41,7 +41,7 @@ public class User implements IEntity {
     private String password;
 
     @Column(nullable = false, unique = true)
-    @Pattern(regexp = ".+@.+\\....?")
+    @Pattern(regexp = ".+@.+\\...+?")
     private String email;
 
     @NotNull

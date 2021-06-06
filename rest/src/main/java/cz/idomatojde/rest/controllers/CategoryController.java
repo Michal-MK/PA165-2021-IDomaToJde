@@ -10,9 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+
+import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -23,7 +26,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "Categories Endpoint")
 @RestController
-@RequestMapping("categories")
+@RequestMapping("api/categories")
 public class CategoryController extends
         AuthBaseRESTController<CategoryFacade, CategoryDTO, CategoryDTO> {
     @Inject
@@ -34,6 +37,16 @@ public class CategoryController extends
     @GetMapping("byName/{name}")
     public ResponseEntity<CategoryDTO> getByName(@PathVariable String name) {
         return ok(facade.getByName(name));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CategoryDTO>> getAll() {
+        return ok(facade.getAll());
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<CategoryDTO>> getPaged(@RequestParam Integer pageNum, @RequestParam Integer size) {
+        return ok(facade.getPaged(pageNum, size));
     }
 
     @Override

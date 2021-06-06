@@ -25,6 +25,13 @@ public interface BaseFacade<TRegDto, TDto> {
     List<TDto> getAll();
 
     /**
+     * Obtain instances of defined object type at a page with given page size
+     *
+     * @return a collection of filtered instances
+     */
+    List<TDto> getPaged(int page, int size);
+
+    /**
      * Obtain an object stored in the system
      *
      * @param id the unique ID of the object

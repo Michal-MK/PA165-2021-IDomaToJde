@@ -31,7 +31,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "Timetables Endpoint")
 @RestController
-@RequestMapping("timetables")
+@RequestMapping("api/timetables")
 public class TimetableController extends
         AuthBaseRESTController<TimetableFacade, AddTimetableDTO, TimetableDTO> {
     @Inject
@@ -43,12 +43,12 @@ public class TimetableController extends
     ResponseEntity<TimetableEntryDTO> getEntryById(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized(null);
-        if (!relatedOnlyPermission(auth.principalId(), entryId)) return forbidden(null);
+        if (!relatedOnlyPermission(auth, entryId)) return forbidden(null);
 
         return ok(facade.getEntryById(entryId));
     }
 
-    @GetMapping("forWeek/now")
+    @GetMapping("forWeek/current")
     ResponseEntity<TimetableDTO> getForCurrentWeek(@RequestHeader(value = "token") String token) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized(null);
@@ -77,20 +77,20 @@ public class TimetableController extends
     ResponseEntity<Void> moveEntry(@RequestHeader(value = "token") String token, @RequestBody MoveTimetableEntryDTO dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
-        if (!offerAuthorOnlyPermission(auth.principalId(), dto.getTimetableEntryId())) return forbidden();
+        if (!offerAuthorOnlyPermission(auth, dto.getTimetableEntryId())) return forbidden();
 
         facade.moveTimetableEntry(dto);
         return ok().build();
     }
 
-    private boolean relatedOnlyPermission(long principalId, long entryId) {
-        boolean timetableOwner = facade.getFromEntry(entryId).getUserInfo().getId() == principalId;
-        return timetableOwner || offerAuthorOnlyPermission(principalId, entryId);
+    private boolean relatedOnlyPermission(AuthState principal, long entryId) {
+        boolean timetableOwner = facade.getFromEntry(entryId).getUserInfo().getId() == principal.principalId();
+        return timetableOwner || offerAuthorOnlyPermission(principal, entryId) || principal.admin();
     }
 
-    private boolean offerAuthorOnlyPermission(long principalId, long timetableEntryId) {
+    private boolean offerAuthorOnlyPermission(AuthState principal, long timetableEntryId) {
         TimetableEntryDTO entry = facade.getEntryById(timetableEntryId);
-        return entry.getOffer().getOwner().getId() == principalId;
+        return entry.getOffer().getOwner().getId() == principal.principalId() || principal.admin();
     }
 
     @Override

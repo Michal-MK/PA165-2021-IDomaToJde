@@ -16,6 +16,25 @@ The service keeps records of customers and their:
 Customers must register into our system.
 The system acts as a platform, the payment process is *not our responsibility!*
 
+## UI
+For UI we use Vue3 js. 
+
+To start UI for this project, you have to:
+ * Install npm
+ * npm install
+ * npm install vue@next
+ * npm install -g @vue/cli
+ * npm install vue bootstrap bootstrap-vue
+ * npm install vue-cookies --save
+ * npm install vuex --save
+ * npm install js-cookie --save
+
+ To run UI you have to:
+  * Open terminal
+  * Go to 'ui\src\frontend'
+  * execute command 'npm run serve'
+  * In browser open 'http://localhost:3000/'
+
 ## Rest
 
 The REST API documentation is built using Swagger2 and is available at `/swagger` (redirect)\

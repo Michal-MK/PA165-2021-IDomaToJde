@@ -14,11 +14,11 @@ import cz.idomatojde.rest.controllers.base.AuthState;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "TimetableChatMessages Endpoint")
 @RestController
-@RequestMapping("timetableChatMessages")
+@RequestMapping("api/timetableChatMessages")
 public class TimetableChatMessageController extends
         AuthBaseRESTController<TimetableChatMessageFacade, AddTimetableChatMessageDTO, TimetableChatMessageDTO> {
 
@@ -47,20 +47,20 @@ public class TimetableChatMessageController extends
         offerFacade = offers;
     }
 
-    @GetMapping("allMessagesOfUser?userId={userId}")
-    ResponseEntity<List<TimetableChatMessageDTO>> getMessagesByUserId(@RequestHeader(value = "token") String token, @PathVariable long userId) {
+    @GetMapping("allMessagesOfUser")
+    ResponseEntity<List<TimetableChatMessageDTO>> getMessagesByUserId(@RequestHeader(value = "token") String token, @RequestParam Long userId) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized(null);
-        if (!ownerOnlyPermission(auth.principalId(), userId)) return forbidden(null);
+        if (!ownerOnlyPermission(auth, userId)) return forbidden(null);
 
         return ok(facade.getAllMessagesOfUser(userId));
     }
 
-    @GetMapping("allMessagesOfTimetableEntry?entryId={entryId}")
-    ResponseEntity<List<TimetableChatMessageDTO>> getAllMessagesOfTimetableEntry(@RequestHeader(value = "token") String token, @PathVariable long entryId) {
+    @GetMapping("allMessagesOfTimetableEntry")
+    ResponseEntity<List<TimetableChatMessageDTO>> getAllMessagesOfTimetableEntry(@RequestHeader(value = "token") String token, @RequestParam Long entryId) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized(null);
-        if (!relatedOnlyPermission(auth.principalId(), entryId)) return forbidden(null);
+        if (!relatedOnlyPermission(auth, entryId)) return forbidden(null);
 
         return ok(facade.getAllMessagesOfTimetableEntry(entryId));
     }
@@ -69,14 +69,14 @@ public class TimetableChatMessageController extends
     ResponseEntity<Void> changeMessage(@RequestHeader(value = "token") String token, @RequestBody ChangeTextTimetableChatMessageDTO dto) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
-        if (!ownerOnlyPermission(auth.principalId(), facade.getById(dto.getId()).getUserId())) return forbidden(null);
+        if (!ownerOnlyPermission(auth, facade.getById(dto.getId()).getUserId())) return forbidden(null);
 
         facade.changeText(dto);
         return ok().build();
     }
 
-    @PostMapping("deleteAllMessages?userId={userId}")
-    ResponseEntity<Void> deleteMessagesByUserId(@RequestHeader(value = "token") String token, @PathVariable long userId) {
+    @PostMapping("deleteAllMessages")
+    ResponseEntity<Void> deleteMessagesByUserId(@RequestHeader(value = "token") String token, @RequestParam long userId) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
         if (!auth.admin()) return forbidden();
@@ -86,17 +86,17 @@ public class TimetableChatMessageController extends
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean ownerOnlyPermission(long principalId, long userId) {
-        return principalId == userId;
+    private boolean ownerOnlyPermission(AuthState principal, long userId) {
+        return principal.principalId() == userId || principal.admin();
     }
 
-    private boolean relatedOnlyPermission(long principalId, long entryId) {
+    private boolean relatedOnlyPermission(AuthState principal, long entryId) {
         TimetableChatMessageDTO dto = facade.getById(entryId);
         TimetableEntryDTO entryDto = timetableFacade.getEntryById(dto.getTimetableEntryId());
-        boolean owner = entryDto.getOffer().getOwner().getId() == principalId;
-        List<OfferDTO> subscribed = offerFacade.getAllSubscribedBy(userFacade.getById(principalId));
+        boolean owner = entryDto.getOffer().getOwner().getId() == principal.principalId();
+        List<OfferDTO> subscribed = offerFacade.getAllSubscribedBy(userFacade.getById(principal.principalId()));
         boolean subscriber = subscribed.stream().anyMatch(f -> entryDto.getOffer() == f);
-        return owner || subscriber;
+        return owner || subscriber || principal.admin();
     }
 
     @Override
@@ -106,6 +106,6 @@ public class TimetableChatMessageController extends
 
     @Override
     protected boolean allowedToRegister(AuthState state, AddTimetableChatMessageDTO addTimetableChatMessageDTO) {
-        return relatedOnlyPermission(state.principalId(), addTimetableChatMessageDTO.getTimetableEntryId());
+        return relatedOnlyPermission(state, addTimetableChatMessageDTO.getTimetableEntryId());
     }
 }

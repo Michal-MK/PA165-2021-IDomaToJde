@@ -1,11 +1,13 @@
 package cz.idomatojde.rest.controllers;
 
 import cz.idomatojde.dto.offer.OfferDTO;
+import cz.idomatojde.dto.timetable.AddTimetableDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
 import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.OfferFacade;
+import cz.idomatojde.facade.TimetableFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import cz.idomatojde.rest.controllers.base.AuthState;
@@ -14,12 +16,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
+
+import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -29,16 +38,18 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Api(tags = "Users Endpoint")
 @RestController
-@RequestMapping("users")
+@RequestMapping("api/users")
 public class UserController extends
         AuthBaseRESTController<UserFacade, RegisterUserDTO, UserDTO> {
 
     private final OfferFacade offerFacade;
+    private final TimetableFacade timetableFacade;
 
     @Inject
-    public UserController(UserFacade users, OfferFacade offers) {
+    public UserController(UserFacade users, OfferFacade offers, TimetableFacade timetables) {
         super(users, users, false, false, false, false);
         offerFacade = offers;
+        timetableFacade = timetables;
     }
 
     @GetMapping("contactInfo/{userId}")
@@ -50,6 +61,24 @@ public class UserController extends
         return ok(facade.getUserContactInfo(userId));
     }
 
+    @PutMapping(value = "signup")
+    ResponseEntity<Long> signup(@RequestBody RegisterUserDTO regDto) {
+        try {
+            Long userId = facade.register(regDto);
+
+            var timetable = new AddTimetableDTO();
+            timetable.setUserId(userId);
+            timetable.setYear(LocalDate.now().getYear());
+            timetable.setWeek(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
+            timetableFacade.register(timetable);
+
+            return ok(userId);
+        } catch (Exception e) {
+            // TODO provide more info if possible
+            return badRequest().body(-1L);
+        }
+    }
+
     @GetMapping("credits/{userId}")
     ResponseEntity<UserCreditsDTO> getUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId) {
         AuthState auth = isAuthenticated(token);
@@ -59,8 +88,8 @@ public class UserController extends
         return ok(facade.getCredits(userId));
     }
 
-    @PostMapping("setContactInfo/{userId}?phoneNum={phoneNum}")
-    ResponseEntity<Void> changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable String phoneNum) {
+    @PostMapping("setContactInfo/{userId}")
+    ResponseEntity<Void> changePhoneNumber(@RequestHeader(value = "token") String token, @PathVariable long userId, @RequestParam String phoneNum) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
         if (!ownerOnlyPermission(auth.principalId(), userId)) return forbidden();
@@ -69,7 +98,7 @@ public class UserController extends
         return ok().build();
     }
 
-    @PostMapping("setCredits/{userId}?credits={credits}")
+    @PostMapping("setCredits/{userId}/{credits}")
     ResponseEntity<Void> setUserCredits(@RequestHeader(value = "token") String token, @PathVariable long userId, @PathVariable int credits) {
         AuthState auth = isAuthenticated(token);
         if (!auth.authenticated()) return unauthorized();
@@ -78,7 +107,6 @@ public class UserController extends
         facade.setCredits(userId, credits);
         return ok().build();
     }
-
 
     private boolean relatedOnlyPermission(AuthState state, long userId) {
         var subscribedBy = offerFacade.getAllSubscribedBy(state.principal());

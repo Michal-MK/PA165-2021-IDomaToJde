@@ -40,10 +40,23 @@ public abstract class BaseDAOImpl<TEntity extends IEntity> implements BaseDAO<TE
     }
 
     @Override
+    public List<TEntity> findPaged(int page, int size) {
+        return em.createQuery("select a from " + cls.getName() + " a", cls)
+                .setFirstResult((page - 1) * size)
+                .setMaxResults(size)
+                .getResultList();
+    }
+
+    @Override
     public TEntity getById(long id) {
-        return em.createQuery("select a from " + cls.getName() + " a where a.id = :id", cls)
-                .setParameter("id", id)
-                .getSingleResult();
+        try {
+            return em.createQuery("select a from " + cls.getName() + " a where a.id = :id", cls)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }
+        catch (Exception e){
+            return null;
+        }
     }
 
     @Override

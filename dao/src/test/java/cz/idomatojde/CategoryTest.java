@@ -4,8 +4,6 @@ import cz.idomatojde.dao.CategoryDao;
 import cz.idomatojde.dao.OfferDao;
 import cz.idomatojde.dao.UserDao;
 import cz.idomatojde.entity.Category;
-import cz.idomatojde.entity.Offer;
-import cz.idomatojde.entity.User;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -13,15 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.inject.Inject;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-
-import static cz.idomatojde.TestObjects.getOffer;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
