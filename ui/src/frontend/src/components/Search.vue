@@ -88,19 +88,34 @@ export default {
   },
 
   async mounted() {
-    //TODO implement proper pagination
-    fetch("api/offers?pageNum=1&size=20&nameFilter=" + this.userFilter)
+    fetch("api/offers/all" + this.userFilter)
         .then((response) => response.json())
         .then((data) => {
           this.offers = data;
-          this.showOffers = data;
+          this.showOffers = this.getRandom(data, 12);
         });
 
     let allCat = await this.$store.getters.getAllCategories;
-    this.checkedCategories = allCat.forEach(c => c.name);
+    this.checkedCategories = allCat.map(c => c.name);
   },
 
   methods: {
+    getRandom(arr, n) {
+      let result = new Array(n),
+          len = arr.length,
+          taken = new Array(len);
+      if (n > len)
+        return arr;
+
+      while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+      }
+
+      return result;
+    },
+
     filterOffers() {
       // This needs some polling so that we do not query the database with every stroke
       // From how I understand this now, all the offers are cached in the browser and the filtering is done at client's side
@@ -115,7 +130,8 @@ export default {
 
     filterAll() {
       let byCategory = this.offers.filter(d => this.checkedCategories.includes(d.category.name));
-      this.showOffers = byCategory.filter(d => d.title.toLowerCase().includes(this.userFilter.toLowerCase()))
+      let filtered = byCategory.filter(d => d.title.toLowerCase().includes(this.userFilter.toLowerCase()));
+      this.showOffers = this.getRandom(filtered, 12);
     },
 
     OnSelectedOffer(offer) {
