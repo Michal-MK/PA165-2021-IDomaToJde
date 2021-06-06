@@ -121,6 +121,10 @@ const apiModule = {
             return Cookies.get(state.tokenName);
         },
 
+        isAuthenticated(state, getters) {
+            return !getters.stringEmpty(getters.getAuthToken);
+        },
+
         // private methods
         async __fetchApiUser(state, getters) {
             try {
@@ -159,7 +163,7 @@ const apiModule = {
                 let response = await fetch(url, options);
 
                 if (!response.ok) {
-                    console.log("DEBUG: Result [Post] not ok: " + response.error());
+                    console.log("DEBUG: Result [Post] [" + url + "] not ok");
                     return null;
                 }
 

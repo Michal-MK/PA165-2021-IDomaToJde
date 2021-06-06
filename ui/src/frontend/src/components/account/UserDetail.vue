@@ -139,7 +139,6 @@ export default {
 
   data() {
     return {
-      credits: 0,
       offerOfUser: '',
     }
   },
@@ -151,22 +150,26 @@ export default {
     },
 
     getCredits() {
-      return this.credits;
+      return this.$store.getters.getCatchedCredits;
+    },
+
+    isAdmin() {
+      return this.user.admin === true;
     },
   },
 
   async mounted() {
     this.offerOfUser = await this.$store.getters.getOwnedOffers(this.user.id);
-    this.credits = this.user.credits;
+
+    let currentCredit = await this.$store.getters.getCredits(this.user.id);
+    this.$store.commit('setCatchedCredits', currentCredit);
   },
 
   emits: ['onSignOut'],
 
   methods: {
 
-    isAdmin() {
-      return this.user.admin === true;
-    },
+
 
 
     openNav() {
@@ -179,7 +182,8 @@ export default {
     },
 
     async addTenCredits() {
-      this.credits = this.credits + 10;
+      let cr = this.$store.getters.getCatchedCredits + 10;
+      this.$store.commit('setCatchedCredits', cr);
       await this.$store.getters.addCredits(this.user.id, 10);
     },
 

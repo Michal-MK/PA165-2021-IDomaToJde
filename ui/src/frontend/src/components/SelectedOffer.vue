@@ -128,6 +128,7 @@ export default {
       let user = await this.$store.getters.getAuthUser;
       this.assigned = this.subscribers.some(s => s.id === user.id);
       this.owner = this.offer.owner.id === user.id;
+      this.error = '';
       console.log("Subscribers: " + this.subscribers);
     }
   },
@@ -152,7 +153,7 @@ export default {
     },
 
     alreadyAssigned() {
-      return this.assigned;
+      return this.$store.getters.isAuthenticated && this.assigned;
     },
 
     getSubscribers() {
@@ -162,22 +163,22 @@ export default {
       return this.owner;
     },
 
-
     getOfferId() {
       return this.offer.id;
     },
 
+    isLogged() {
+      let isAuth = this.$store.getters.isAuthenticated;
+      console.log("Checking auth: " + isAuth);
+      return isAuth;
+    },
 
   },
 
   methods: {
 
 
-    isLogged() {
-      let isAuth = this.$store.state.isUserAuth;
-      console.log("Checking auth: " + isAuth);
-      return isAuth;
-    },
+
 
 
     getOwnedOffers() {
@@ -206,18 +207,19 @@ export default {
         return;
       }
 
-      if (this.offer.price > user.credit + user.bonus) {
+      let userCredits = await this.$store.getters.getCredits(user.id);
+      if (this.offer.price > userCredits) {
         this.error = "Not enough credits!";
         return;
       }
-
-      console.log("Now I should assign");
 
       await this.$store.getters.addCredits(user.id, -this.offer.price);
 
       await this.$store.getters.addSubscriptions(user.id, this.offer.id);
       this.assigned = true;
       this.$store.commit('addSubscribed', this.offer);
+
+      this.$store.commit('setCatchedCredits', userCredits - this.offer.price);
     },
 
     async fetchApiUser(token) {

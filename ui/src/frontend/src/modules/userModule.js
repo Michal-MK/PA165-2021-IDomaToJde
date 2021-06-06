@@ -2,6 +2,7 @@ const userModule = {
     state: () => ({
         isUserAuth: false,
         user: '',
+        credits: 0,
         ownedOffers: [],
         subscriptions: [],
     }),
@@ -10,11 +11,12 @@ const userModule = {
         setUser (state, user) {
             console.log("Setting user: " + user);
             state.user = user;
+            state.credits = user.credits;
             state.isUserAuth = true;
         },
 
         setCatchedCredits(state, value){
-            state.user.credits = value;
+            state.credits = value;
         },
 
         setOwned(state, owned){
@@ -39,6 +41,7 @@ const userModule = {
         unsetUser(state) {
             state.user = '';
             state.isUserAuth = false;
+            state.credits = 0;
             state.ownedOffers = [];
             state.subscriptions = [];
         }
@@ -50,8 +53,9 @@ const userModule = {
         },
 
         getCatchedCredits(state) {
-            return state.user.credits;
-        }
+                console.log("Catched credits: " + state.user.credits);
+                return state.credits;
+        },
     }
 }
 
