@@ -1,18 +1,18 @@
 <template>
-      <div v-if="isAuth">
-        <UserDetail :user="getUser" @onSignOut="signOut"/>
+  <div v-if="isAuth">
+    <UserDetail :user="getUser" @onSignOut="signOut"/>
+  </div>
+  <div v-else>
+    <div class="container hover-base">
+      <span class="fa fa-user-circle-o on-hover-invisible top-right" style="font-size:70px; color: black"/>
+      <div class="on-hover-visible top-right">
+        <Login @onLogged="AuthUser"/>
       </div>
-      <div v-else>
-          <div class="container hover-base">
-            <span class="fa fa-user-circle-o on-hover-invisible top-right" style="font-size:70px; color: black"/>
-            <div class="on-hover-visible top-right">
-              <Login @onLogged="AuthUser"/>
-            </div>
-            <div class="on-hover-visible top-right-second">
-              <Register @onLogged="AuthUser"/>
-            </div>
-          </div>
+      <div class="on-hover-visible top-right-second">
+        <Register @onLogged="AuthUser"/>
       </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -48,6 +48,7 @@ export default {
   },
 
   methods: {
+
     async fetchApiUser(token) {
       const response = await fetch("api/auth/authenticate", {
         method: 'POST',
@@ -87,21 +88,11 @@ export default {
 
     signOut() {
       console.log("Calling sign out");
+      this.$store.commit('unsetUser');
       this.$cookies.remove("token");
       this.user = '';
       this.isAuthenticated = false;
-      this.closeNav();
     },
-
-    openNav() {
-      document.getElementById("mySidebarRight").style.width = "100%";
-      document.getElementById("main").style.marginRight = "100%";
-    },
-
-    closeNav() {
-      document.getElementById("mySidebarRight").style.width = "0";
-      document.getElementById("main").style.marginRight = "0";
-    }
   }
 }
 
@@ -135,6 +126,7 @@ export default {
 .hover-base .on-hover-invisible {
   visibility: visible;
 }
+
 .hover-base .on-hover-visible {
   visibility: hidden;
 }
@@ -142,6 +134,7 @@ export default {
 .hover-base:hover .on-hover-invisible {
   visibility: hidden;
 }
+
 .hover-base:hover .on-hover-visible {
   visibility: visible;
 }
