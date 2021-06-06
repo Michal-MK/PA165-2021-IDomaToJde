@@ -5,49 +5,51 @@
   <div id="LogSidebarRight" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav">×</a>
 
-  <div class="conteiner">
-    <div class="row">
-      <div class="col-4"/>
+    <div class="conteiner">
+      <div class="row">
+        <div class="col-4"/>
 
-      <div class="col-4">
-        <form>
-        <div class="form__group field">
-          <input v-model="loginName" type="input" class="form__field" placeholder="Name" name="name" id='name' autocomplete="username"
-                 required/>
-          <label for="name" class="form__label">Surname</label>
+        <div class="col-4">
+          <form>
+            <div class="form__group field">
+              <input v-model="loginName" type="input" class="form__field" placeholder="Name" name="name" id='name'
+                     autocomplete="username"
+                     required/>
+              <label for="name" class="form__label">Surname</label>
+            </div>
+
+            <div class="form__group field">
+              <input v-model="loginPass" type="password" class="form__field" placeholder="Password" name="pass"
+                     id='pass' autocomplete="current-password"
+                     required/>
+              <label for="pass" class="form__label">Password</label>
+            </div>
+          </form>
+          <br/>
+          <br/>
+
         </div>
 
-        <div class="form__group field">
-          <input v-model="loginPass" type="password" class="form__field" placeholder="Password" name="pass" id='pass' autocomplete="current-password"
-                 required/>
-          <label for="pass" class="form__label">Password</label>
-        </div>
-        </form>
-        <br/>
-        <br/>
-
+        <div class="col-4"/>
       </div>
 
-      <div class="col-4"/>
-    </div>
-
-    <!--    Error display-->
-    <div class="row">
-      <div class="col text-center">
-        <div v-if="loginResponse">
-          <div class="text-danger">{{ loginResponse }}</div>
+      <!--    Error display-->
+      <div class="row">
+        <div class="col text-center">
+          <div v-if="loginResponse">
+            <div class="text-danger">{{ loginResponse }}</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!--  Login button  -->
-    <div class="row pt-3">
-      <div class="col text-center">
+      <!--  Login button  -->
+      <div class="row pt-3">
+        <div class="col text-center">
           <button class="btn btn-primary btn-lg btn-block" v-on:click="logIn">Login</button>
+        </div>
       </div>
-    </div>
 
-  </div>
+    </div>
   </div>
 </template>
 
@@ -68,38 +70,37 @@ export default {
   ],
 
   methods: {
-    logIn() {
+    async logIn() {
       let name = this.loginName;
       let pass = this.loginPass;
 
-      fetch("api/auth/login", {
-        method: 'POST',
-        headers: {"Content-Type": "application/json", "username": name, "pass": pass}
-      }).then((response) => response.json())
-          .then((data) => {
+      let logged = await this.$store.getters.logIn(name, pass);
+      if (logged) {
+        let user = await this.$store.getters.getAuthUser;
+        let owned = await this.$store.getters.getOwnedOffers(user.id);
+        let subs = await this.$store.getters.getSubscribedOffers(user.id);
 
-            let success = data.successful;
-            if (success === true) {
-              this.$cookies.set("token", data.token);
-              this.$emit("onLogged");
-              console.log("Logged");
-            } else {
-              this.loginResponse = "Invalid username or password";
-              console.log("Not logged")
-            }
+        this.$store.commit('setUser', user);
+        this.$store.commit('setOwned', owned);
+        this.$store.commit('setSubscribed', subs);
 
-            console.log("Login response: " + success);
-          });
+        this.closeNav();
+        this.$emit("onLogged");
 
+      } else {
+        this.loginResponse = "Invalid username or password";
+        console.log("Not logged")
+      }
     },
 
-      openNav() {
-        document.getElementById("LogSidebarRight").style.width = "100%";
-      },
+    openNav() {
+      document.getElementById("LogSidebarRight").style.width = "100%";
+    }
+    ,
 
-      closeNav() {
-        document.getElementById("LogSidebarRight").style.width = "0";
-      }
+    closeNav() {
+      document.getElementById("LogSidebarRight").style.width = "0";
+    }
 
   }
 
