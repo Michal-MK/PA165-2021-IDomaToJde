@@ -1,7 +1,4 @@
 <template>
-
-  <p class="text-white">{{ JSON.stringify(offer) }}</p>
-
   <div class="container">
     <div class="main-body">
       <div class="row">
@@ -35,7 +32,20 @@
                   <br/>
                 </div>
                 <div>
-                  <button class="btn btn-primary" v-on:click="onAssign">Assign</button>
+                  <div v-if="isLogged">
+                    <div v-if="isOwner">
+                      <button class="btn btn-primary-outline" disabled>Your course</button>
+                    </div>
+                    <div v-else-if="alreadyAssigned">
+                      <button class="btn btn-primary-outline" disabled>Already assigned</button>
+                    </div>
+                    <div v-else>
+                      <button class="btn btn-primary" v-on:click="onAssign">Assign</button>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <button class="btn btn-primary-outline" disabled>Log to assign</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -82,70 +92,12 @@
             </div>
           </div>
 
-          <div class="row gutters-sm">
-            <div class="col-sm-6 mb-3">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h6 class="d-flex align-items-center mb-3">Assigned people</h6>
-                  <div v-for="offer in getOwnedOffers" :key="offer.id">
-                    <button class="btn btn-outline-success">{{ offer.title }}</button>
-                  </div>
-                  <small>Web Design</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <small>Website Markup</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <small>One Page</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <small>Mobile Template</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <small>Backend API</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 mb-3">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h6 class="d-flex align-items-center mb-3">Your courses</h6>
-                  <small>Web Design</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <small>Website Markup</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <small>One Page</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <small>Mobile Template</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <small>Backend API</small>
-                  <div class="progress mb-3" style="height: 5px">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66"
-                         aria-valuemin="0" aria-valuemax="100"></div>
+          <div v-if="isOwner">
+            <div class="row gutters-sm">
+              <div class="col mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <AssignedPeople :offerId="getOfferId"></AssignedPeople>
                   </div>
                 </div>
               </div>
@@ -160,31 +112,74 @@
 </template>
 
 <script>
+import AssignedPeople from "@/components/offer/AssignedPeople";
+
 export default {
   name: "SelectedOffer",
-
+  components: {AssignedPeople},
   props: {
     offer: JSON
   },
 
-  data() {
-    return {
-      selectedOffer: '',
-      offers: [],
-      showOffers: [],
-      checkedCategories: [],
-      userFilter: '',
-      error: ''
+  watch: {
+    async offer() {
+      console.log("offer changed");
+      this.subscribers = await this.$store.getters.getSubscribersOfOffer(this.offer.id);
+      let user = await this.$store.getters.getAuthUser;
+      this.assigned = this.subscribers.some(s => s.id === user.id);
+      this.owner = this.offer.owner.id === user.id;
+      console.log("Subscribers: " + this.subscribers);
     }
   },
+
+  data() {
+    return {
+      error: '',
+      subscribers: '',
+      assigned: false,
+      owner: false,
+    }
+  },
+
 
   computed: {
     getError() {
       return this.error;
-    }
+    },
+
+    getAssigned() {
+      return this.getOwnedOffers();
+    },
+
+    alreadyAssigned() {
+      return this.assigned;
+    },
+
+    getSubscribers() {
+      return this.subscribers;
+    },
+    isOwner() {
+      return this.owner;
+    },
+
+
+    getOfferId() {
+      return this.offer.id;
+    },
+
+
   },
 
   methods: {
+
+
+    isLogged() {
+      let isAuth = this.$store.state.isUserAuth;
+      console.log("Checking auth: " + isAuth);
+      return isAuth;
+    },
+
+
     getOwnedOffers() {
       fetch("api/offers/ofUser/" + this.offer.owner.id)
           .then((result) => result.json())
@@ -218,12 +213,11 @@ export default {
 
       console.log("Now I should assign");
 
-      await fetch("api/offers/subscribe?userId=" + user.id + "&offerId=" + this.offer.id, {
-        method: 'POST',
-        headers: {
-          "token": token
-        }
-      });
+      await this.$store.getters.addCredits(user.id, -this.offer.price);
+
+      await this.$store.getters.addSubscriptions(user.id, this.offer.id);
+      this.assigned = true;
+      this.$store.commit('addSubscribed', this.offer);
     },
 
     async fetchApiUser(token) {
