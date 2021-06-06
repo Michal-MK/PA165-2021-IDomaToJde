@@ -21,6 +21,7 @@ For UI we use Vue3 js.
 
 To start UI for this project, you have to:
  * Install npm
+ * npm install
  * npm install vue@next
  * npm install -g @vue/cli
  * npm install vue bootstrap bootstrap-vue
