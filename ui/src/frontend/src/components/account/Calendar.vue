@@ -85,7 +85,7 @@
     </div>
     <div class="col-sm-9 text-secondary">
       <div v-for="entry in (getDayEntries(6))" :key="entry.id">
-        {{ entry.offer.title }} <i>At</i> {{ entry.entryStart.hour }}:{{ entry.entryStart.minute }} <i>takes</i>
+        {{ entry.offer.title }} <i>At</i> {{ entry.entryStart.hour }}:{{ entry.entryStart.minute }} o'clock <i>takes</i>
         {{ entry.length.minutes }} <i>minutes</i>
       </div>
     </div>
@@ -109,6 +109,9 @@ export default {
 
   methods: {
     getDayEntries(intDay) {
+      if(this.entries == null)
+        return [];
+
       try {
         let f = this.entries.entries.filter(e => e.day === intDay);
         console.log("Filtered for [" + intDay + "] : " + JSON.stringify(f));
