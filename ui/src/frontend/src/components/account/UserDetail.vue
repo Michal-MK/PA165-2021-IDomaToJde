@@ -1,21 +1,22 @@
 <template>
 
-    <div class="d-flex flex-column align-items-center text-center"  v-on:click="openNav">
-      <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="registeredUser" class="rounded-circle" width="70">
-      <div class="mt-3">
-        <h4>{{ user.username }}</h4>
+  <div class="d-flex flex-column align-items-center text-center" v-on:click="openNav">
+    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="registeredUser" class="rounded-circle"
+         width="70">
+    <div class="mt-3">
+      <h4>{{ user.username }}
+      </h4>
+
+      <div v-if="isAdmin">
+        admin
       </div>
     </div>
+  </div>
 
   <!--  Sidebar  -->
   <div id="UserDetailSidebarRight" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav">×</a>
 
-
-    <div class="text-white pt-5 mt-5" style="text-align: center">
-      <h2> Hello {{ user.username }} </h2>
-      <div>{{ JSON.stringify(user, null, '\n') }}</div>
-    </div>
 
     <div class="container">
       <div class="main-body">
@@ -28,8 +29,12 @@
                        width="150">
                   <div class="mt-3">
                     <h4>{{ user.username }}</h4>
+
+                    <div v-if="isAdmin">
+                      <span class="text-danger">admin</span>
+                    </div>
                   </div>
-                  <button class="btn btn-primary" v-on:click="$emit('onSignOut')">Sing out</button>
+                  <button class="btn btn-primary mt-2" v-on:click="$emit('onSignOut')">Sing out</button>
                 </div>
               </div>
             </div>
@@ -86,82 +91,10 @@
                 </div>
 
                 <hr>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Calendar</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getCurrentEntries }}
-                  </div>
-                </div>
-<!--                Monday-->
-                <div class="row ml-3">
-                  <div class="col-sm-3">
-                    <i class="mb-0">Monday</i>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getEntriesFor(getCurrentEntries, 0) }}
-                  </div>
-                </div>
-                <!--                Tuesday-->
-                <div class="row ml-2">
-                  <div class="col-sm-3">
-                    <i class="mb-0">Tuesday</i>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getEntriesFor(getCurrentEntries, 1) }}
-                  </div>
-                </div>
-                <!--                Wednesday-->
-                <div class="row ml-2">
-                  <div class="col-sm-3">
-                    <i class="mb-0">Wednesday</i>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getEntriesFor(getCurrentEntries, 2) }}
-                  </div>
-                </div>
-                <!--                Thursday-->
-                <div class="row ml-2">
-                  <div class="col-sm-3">
-                    <i class="mb-0">Thursday</i>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getEntriesFor(getCurrentEntries, 3) }}
-                  </div>
-                </div>
-                <!--                Friday-->
-                <div class="row ml-2">
-                  <div class="col-sm-3">
-                    <i class="mb-0">Friday</i>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getEntriesFor(getCurrentEntries, 4) }}
-                  </div>
-                </div>
-                <!--                Saturday-->
-                <div class="row ml-2">
-                  <div class="col-sm-3">
-                    <i class="mb-0">Saturday</i>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ getEntriesFor(getCurrentEntries, 5) }}
-                  </div>
-                </div>
-                <!--                Sunday-->
-                <div class="row ml-2">
-                  <div class="col-sm-3">
-                    <i class="mb-0">Sunday</i>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ (getEntriesFor(getCurrentEntries, 6)) }}
-                  </div>
-                </div>
+                <Calendar/>
 
               </div>
             </div>
-
-
 
 
             <div class="row gutters-sm">
@@ -169,11 +102,7 @@
                 <div class="card h-100">
                   <div class="card-body">
                     <h6 class="d-flex align-items-center mb-3">Assigned courses</h6>
-                    <div v-for="offer in getSubscribed" :key="offer.id">
-                      <button class="btn btn-outline-success m-1">
-                        {{ offer.title }}
-                      </button>
-                    </div>
+                    <Assigned/>
                   </div>
                 </div>
               </div>
@@ -182,7 +111,7 @@
                   <div class="card-body">
                     <h6 class="d-flex align-items-center mb-3">Your courses</h6>
                     <div v-for="offer in getOfferByUser" :key="offer.id">
-                      <button class="btn btn-outline-success m-1">
+                      <button class="btn btn-outline-primary m-1">
                         {{ offer.title }}
                       </button>
                     </div>
@@ -198,9 +127,12 @@
 </template>
 
 <script>
+import Assigned from "@/components/account/Assigned";
+import Calendar from "@/components/account/Calendar";
+
 export default {
   name: "UserDetail",
-
+  components: {Calendar, Assigned},
   props: {
     user: JSON,
   },
@@ -209,46 +141,36 @@ export default {
     return {
       credits: 0,
       offerOfUser: '',
-      subscribed: '',
-      entries: '',
     }
   },
 
   computed: {
-    getCredits() {
-      return this.credits;
-    },
 
-    getOfferByUser(){
+    getOfferByUser() {
       return this.offerOfUser;
     },
 
-    getSubscribed(){
-      return this.subscribed;
+    getCredits() {
+      return this.credits;
     },
-
-    getCurrentEntries(){
-      return this.entries;
-    },
-
   },
 
   async mounted() {
-    this.credits = this.user.credits;
     this.offerOfUser = await this.$store.getters.getOwnedOffers(this.user.id);
-    this.subscribed = await this.$store.getters.getSubscribedOffers(this.user.id);
-    let fullEntries = await this.$store.getters.getCurrentTimetable();
-    this.entries = fullEntries.entries;
+    this.credits = this.user.credits;
   },
 
   emits: ['onSignOut'],
 
   methods: {
-    getEntriesFor(entries, intDay){
-        return Object.values(entries).filter(e => e.day === intDay);
+
+    isAdmin() {
+      return this.user.admin === true;
     },
 
+
     openNav() {
+      this.$forceUpdate();
       document.getElementById("UserDetailSidebarRight").style.width = "100%";
     },
 
