@@ -48,8 +48,6 @@ public class TimetableController extends
         return ok(facade.getEntryById(entryId));
     }
 
-//  @GetMapping("entry/ofOffer/{offerId}") TODO
-
     @GetMapping("forWeek/current")
     ResponseEntity<TimetableDTO> getForCurrentWeek(@RequestHeader(value = "token") String token) {
         AuthState auth = isAuthenticated(token);
