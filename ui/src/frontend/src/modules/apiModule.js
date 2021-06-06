@@ -2,10 +2,8 @@ import Cookies from "js-cookie";
 
 const apiModule = {
     state: () => ({
-        tokenName: "token"
+        tokenName: "token",
     }),
-
-    mutations: {},
 
     getters: {
 
@@ -17,6 +15,19 @@ const apiModule = {
             }
 
             return await getters.__fetchApiUser;
+        },
+
+        addSubscriptions: (state, getters) => async (userId, offerId) => {
+            await fetch("api/offers/subscribe?userId=" + userId + "&offerId=" + offerId, {
+                method: 'POST',
+                headers: {
+                    "token": getters.getAuthToken
+                }
+            });
+        },
+
+         getSubscriptions: (state, getters) => async (userId) => {
+            return await getters.__apiGet("api/offers/subscribedBy/" + userId);
         },
 
         async getAllCategories(state, getters) {
@@ -31,6 +42,10 @@ const apiModule = {
             return await getters.__apiGet("api/offers/subscribedBy/" + userId);
         },
 
+        getSubscribersOfOffer: (state, getters) => async (offerId) => {
+            return await getters.__apiGet("api/offers/subscribersOf/" + offerId);
+        },
+
         getCurrentTimetable: (state, getters) => async () => {
             let requestOptions = {
                 method: 'GET',
@@ -43,7 +58,7 @@ const apiModule = {
             return await getters.__apiPost("api/timetables/forWeek/current", requestOptions);
         },
 
-        addCredits: (state, getters) => async (userId, credits) => {
+        getCredits: (state, getters) => async (userId) => {
             let requestForCredits = {
                 method: 'GET',
                 headers: {
@@ -52,6 +67,15 @@ const apiModule = {
                 }
             };
 
+            let current = await getters.__apiPost("api/users/credits/" + userId, requestForCredits);
+
+            if (current == null)
+                return 0
+
+            return current.credits;
+        },
+
+        addCredits: (state, getters) => async (userId, credits) => {
             let requestSetCredits = {
                 method: 'POST',
                 headers: {
@@ -60,12 +84,8 @@ const apiModule = {
                 }
             };
 
-            let current = await getters.__apiPost("api/users/credits/" + userId, requestForCredits);
-
-            if(current == null)
-                return false;
-
-            let newCredits = current.credits + credits;
+            let current = await getters.getCredits(userId);
+            let newCredits = current + credits;
             let setResponse = await getters.__apiPost("api/users/setCredits/" + userId + "/" + newCredits, requestSetCredits);
 
             return setResponse != null;
@@ -84,10 +104,11 @@ const apiModule = {
 
             let result = await getters.__apiPost("api/auth/login", requestOptions);
 
-            if(result == null || !result.successful)
+            if (result == null || !result.successful)
                 return false;
 
             Cookies.set(state.tokenName, result.token);
+
             return true;
         },
 
@@ -137,7 +158,7 @@ const apiModule = {
                 console.log("DEBUG: Request [Post] to " + url);
                 let response = await fetch(url, options);
 
-                if(!response.ok) {
+                if (!response.ok) {
                     console.log("DEBUG: Result [Post] not ok: " + response.error());
                     return null;
                 }
