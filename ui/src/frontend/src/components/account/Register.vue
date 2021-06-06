@@ -109,7 +109,7 @@ export default {
   },
 
   emits: [
-      "onLogged"
+    "onLogged"
   ],
 
   methods: {
@@ -155,24 +155,25 @@ export default {
         return;
       }
 
-      if(this.password.length < 5) {
+      if (this.password.length < 5) {
         this.regResponse = "Password has to have at least four characters";
         return;
       }
 
       let regResult = await this.apiRegister();
 
-      if(!regResult){
+      if (!regResult) {
         this.regResponse = "Username already taken, use different one";
         return;
       }
 
       let logResult = await this.$store.getters.logIn(this.username, this.password);
 
-      if(!logResult){
+      if (!logResult) {
         this.regResponse = "Inner error while logging, please try log in login form";
         return;
       }
+
 
       this.cleanValues();
       this.closeNav();
@@ -187,17 +188,17 @@ export default {
       return /^(\+[0-9]{3})? ?[0-9]{3} ?[0-9]{3} ?[0-9]{3}$/.test(phone);
     },
 
-    cleanValues(){
-      this.email= '';
-      this.name= '';
-      this.password= '';
-      this.phoneNumber= '';
-      this.surname= '';
-      this.username= '';
-      this.regResponse= '';
+    cleanValues() {
+      this.email = '';
+      this.name = '';
+      this.password = '';
+      this.phoneNumber = '';
+      this.surname = '';
+      this.username = '';
+      this.regResponse = '';
     },
 
-    async apiRegister(){
+    async apiRegister() {
       try {
         const requestOptions = {
           method: "PUT",
@@ -215,7 +216,7 @@ export default {
         const response = await fetch("/api/users/signup", requestOptions);
         return response.ok;
 
-      }catch (e){
+      } catch (e) {
         return false;
       }
     },
