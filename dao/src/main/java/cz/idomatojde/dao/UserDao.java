@@ -52,8 +52,8 @@ public interface UserDao extends BaseDAO<User> {
 
     /**
      * Adds offer as subscribed by user
-     * @param userId to be added to
-     * @param offer be added
+     * @param userId id of user that subscribe offer
+     * @param offer if of offer to be subscribed to
      */
     void addSubscription(long userId, Offer offer);
 }
