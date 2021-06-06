@@ -1,11 +1,13 @@
 package cz.idomatojde.rest.controllers;
 
 import cz.idomatojde.dto.offer.OfferDTO;
+import cz.idomatojde.dto.timetable.AddTimetableDTO;
 import cz.idomatojde.dto.user.RegisterUserDTO;
 import cz.idomatojde.dto.user.UserContactInfoDTO;
 import cz.idomatojde.dto.user.UserCreditsDTO;
 import cz.idomatojde.dto.user.UserDTO;
 import cz.idomatojde.facade.OfferFacade;
+import cz.idomatojde.facade.TimetableFacade;
 import cz.idomatojde.facade.UserFacade;
 import cz.idomatojde.rest.controllers.base.AuthBaseRESTController;
 import cz.idomatojde.rest.controllers.base.AuthState;
@@ -23,6 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
+
+import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -37,11 +43,13 @@ public class UserController extends
         AuthBaseRESTController<UserFacade, RegisterUserDTO, UserDTO> {
 
     private final OfferFacade offerFacade;
+    private final TimetableFacade timetableFacade;
 
     @Inject
-    public UserController(UserFacade users, OfferFacade offers) {
+    public UserController(UserFacade users, OfferFacade offers, TimetableFacade timetables) {
         super(users, users, false, false, false, false);
         offerFacade = offers;
+        timetableFacade = timetables;
     }
 
     @GetMapping("contactInfo/{userId}")
@@ -55,7 +63,20 @@ public class UserController extends
 
     @PutMapping(value = "signup")
     ResponseEntity<Long> signup(@RequestBody RegisterUserDTO regDto) {
-        return ok(facade.register(regDto));
+        try {
+            Long userId = facade.register(regDto);
+
+            var timetable = new AddTimetableDTO();
+            timetable.setUserId(userId);
+            timetable.setYear(LocalDate.now().getYear());
+            timetable.setWeek(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
+            timetableFacade.register(timetable);
+
+            return ok(userId);
+        } catch (Exception e) {
+            // TODO provide more info if possible
+            return badRequest().body(-1L);
+        }
     }
 
     @GetMapping("credits/{userId}")
